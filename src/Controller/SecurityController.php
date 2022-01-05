@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
      * @Route("/inscription", methods={"POST"})
      */
 
-    public function inscription(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, $entity, Request $request, HttpClientInterface $client)
+    public function inscription(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
     {
 
         $form="comptes";
@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
            $user= $userService->creationCompte($extraPayload);
 
         
-            $subject = "Bienvenue chez Glam You Up";
+            $subject = "Bienvenue chez FoodLine";
           
             $email = (new TemplatedEmail())
                 ->from("foodline2022@gmail.com")
