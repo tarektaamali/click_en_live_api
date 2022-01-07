@@ -4,7 +4,7 @@ namespace App\Controller;
 
 
 use DateTime;
-use App\Entity\CodeActivation;
+use App\Entity\CodeActivation;u
 use stdClass;
 use App\Document\Entities;
 use DateInterval;
@@ -402,6 +402,41 @@ class SecurityController extends AbstractController
         }
         
     }
+
+
+        /**
+     * @Route("api/account/updateAccount/{id}", methods={"POST"})
+     */
+
+     public function updateAccount($id,UserService $userService)
+    {
+
+        $account=$this->getReporisotry(User::class)->findOneBy(array('userIdentifier'=>$id));
+
+        if(is_null($account))
+        {
+            return new JsonReponse(array('error'=>'compte introuvable'),401);
+        }
+        else{
+
+            $extraPayload = null;
+        
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $content = json_decode($request->getContent(), true);
+                $extraPayload = $content['extraPayload'];
+            }
+    
+            $data = $this->entityManager->updateResultV2($id, $extraPayload);
+    
+            $userService->updateAccount($account,$extraPayload);
+    
+            return new JsonResponse($data->getId());
+        }
+   
+            
+    }
+
+
     /**
      * @Route("api/account/updatePassword", methods={"POST"})
      */

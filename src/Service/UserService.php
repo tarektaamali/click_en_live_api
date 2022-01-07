@@ -153,5 +153,23 @@ class UserService
     }
 
 
+
+
+
+
+    public function updateAccount($user,$extraPayload)
+    {
+        $user->setNom($extraPayload["nom"]);
+        $user->setPrenom($extraPayload["prenom"]);
+        $user->setEmail($extraPayload["email"]);
+        $user->setUsername($extraPayload["email"]);
+        $user->setPhone($extraPayload['phone']);
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $user->getId();
+    }
+
+
    
 }

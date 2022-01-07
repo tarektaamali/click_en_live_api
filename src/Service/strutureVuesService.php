@@ -30,11 +30,11 @@ class strutureVuesService
     }
 
 
-    public function getDetailsEntitySerializer($vue, $data, $lang)
+    public function getDetailsEntitySerializer($indexVue,$vue, $data, $lang)
     {
         $fields = array();
 
-        $fileYaml = $this->yaml->parseFile('../config/doctrine/vuesDesEntites/' . $vue . '.yml');
+        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/'.$indexVue.'/' . $vue . '.yml');
         $fields = $fileYaml[$vue]['fields'];
 
         $i = 0;
