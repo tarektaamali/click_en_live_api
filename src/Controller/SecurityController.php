@@ -4,14 +4,14 @@ namespace App\Controller;
 
 
 use DateTime;
-use App\Entity\CodeActivation;u
+use App\Entity\CodeActivation;
 use stdClass;
 use App\Document\Entities;
 use DateInterval;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Entity\User;
 use App\Entity\ApiToken;
-use Doctrine\ORM\EntityManager;
+#use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
 use App\Repository\ApiTokenRepository;
 use App\Service\EmailsService;
@@ -41,17 +41,18 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-
 use App\Entity\Passwordlinkforgot;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
+use App\Service\entityManager;
 class SecurityController extends AbstractController
 {
 
-    public function __construct(ContainerBagInterface $params, EntityManagerInterface $em)
+    public function __construct(ContainerBagInterface $params, EntityManagerInterface $em,entityManager $entityManager)
     {
         $this->em = $em;
         $this->params = $params;
+ 	$this->entityManager = $entityManager;
+
     }
 
 

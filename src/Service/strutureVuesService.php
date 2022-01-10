@@ -142,6 +142,12 @@ class strutureVuesService
 
         $destination = $this->params->get('kernel.project_dir') . '/public/'  . $source;
         //var_dump($id);
+	if($id=="")
+	{
+
+	 return "";
+
+	}		
         $dataFile = $this->eventsManager->downloadDocument($id, $destination);
 
         $urlPhotoCouverture = $this->params->get('Hostapi') . '/' . $source . '/' . str_replace(' ', '',  $dataFile->getName());
