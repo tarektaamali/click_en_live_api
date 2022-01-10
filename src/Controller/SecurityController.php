@@ -409,14 +409,14 @@ class SecurityController extends AbstractController
      * @Route("api/account/updateAccount/{id}", methods={"POST"})
      */
 
-     public function updateAccount($id,UserService $userService)
+     public function updateAccount($id,UserService $userService,Request $request)
     {
 
-        $account=$this->getReporisotry(User::class)->findOneBy(array('userIdentifier'=>$id));
+        $account=$this->em->getRepository(User::class)->findOneBy(array('userIdentifier'=>$id));
 
         if(is_null($account))
         {
-            return new JsonReponse(array('error'=>'compte introuvable'),401);
+            return new JsonResponse(array('error'=>'compte introuvable'),401);
         }
         else{
 
@@ -462,4 +462,48 @@ class SecurityController extends AbstractController
 
         }
     }
+
+
+
+        /**
+     * @Route("/reEnvoyerCodeActivation", methods={"POST"})
+     */
+
+        public function reEnvoyerCodeActivation(MailerInterface $mailer,Request $request,UserService $userService)
+        {
+
+            $email=$request->get('email');
+
+            $user=$this->em->getRepository(User::class)->findOneBy(array('email'=>$email));
+            if(is_null($user))
+            {
+                return new JsonResponse(array('message'=>'Email invalide'),400);
+            }
+            else{
+                $test =  $userService->generateCodeActivation($user->getEmail());
+
+                $subject = "Activation compte";
+               
+                $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
+                // $emailservice->sendMailCodeForgotPassworClient($email, $code);
+                $email = (new TemplatedEmail())
+                    ->from("foodline2022@gmail.com")
+                    ->to(new Address(trim($user->getEmail())))
+                    //->bcc('touhemib@gmail.com')
+                    ->subject($subject)
+                    ->htmlTemplate('Email/mailActivation.html.twig')
+                    ->context([
+                        "nom" => $user->getNom(),
+                        "prenom" => $user->getPrenom(),
+                        "code" => $code
+                    ]);
+    
+                $mailer->send($email);
+                return new JsonResponse(array('message'=>'code envoyée'),200);
+            }
+            
+           
+
+
+        }
 }
