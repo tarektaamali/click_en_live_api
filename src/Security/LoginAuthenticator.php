@@ -133,7 +133,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         }
         // Make sure it's the correct app.
         $tokenApp = json_decode($tokenAppResp, true);
-        if (!$tokenApp || !isset($tokenApp['id']) || $tokenApp['id'] != 262063895539627) {
+        if (!$tokenApp || !isset($tokenApp['id']) || $tokenApp['id'] != 654143709352565) {
             return false;
         }
         // Get the token's FB user info.

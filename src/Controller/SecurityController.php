@@ -44,29 +44,29 @@ use Symfony\Component\Mime\Address;
 use App\Entity\Passwordlinkforgot;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use App\Service\entityManager;
+
 class SecurityController extends AbstractController
 {
 
-    public function __construct(ContainerBagInterface $params, EntityManagerInterface $em,entityManager $entityManager)
+    public function __construct(ContainerBagInterface $params, EntityManagerInterface $em, entityManager $entityManager)
     {
         $this->em = $em;
         $this->params = $params;
- 	$this->entityManager = $entityManager;
-
+        $this->entityManager = $entityManager;
     }
 
 
 
 
-        /**
+    /**
      * @Route("/inscription", methods={"POST"})
      */
 
     public function inscription(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
     {
 
-        $form="comptes";
-        $entity=null;
+        $form = "comptes";
+        $entity = null;
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
@@ -84,12 +84,12 @@ class SecurityController extends AbstractController
 
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
-            $extraPayload['Identifiant']=$data->getId();
-           $user= $userService->creationCompte($extraPayload);
+            $extraPayload['Identifiant'] = $data->getId();
+            $user = $userService->creationCompte($extraPayload);
 
-        
+
             $subject = "Bienvenue chez FoodLine";
-          
+
             $email = (new TemplatedEmail())
                 ->from("foodline2022@gmail.com")
                 ->to(new Address(trim($extraPayload["email"])))
@@ -109,7 +109,7 @@ class SecurityController extends AbstractController
                 $test =  $userService->generateCodeActivation($user->getEmail());
 
                 $subject = "Activation compte";
-               
+
                 $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
                 // $emailservice->sendMailCodeForgotPassworClient($email, $code);
                 $email = (new TemplatedEmail())
@@ -134,11 +134,142 @@ class SecurityController extends AbstractController
         } else {
             return new JsonResponse(array('message' => 'cet email déja utilisé'), 400);
         }
+    }
+
+  /**
+     * @Route("/inscriptionDirect", methods={"POST"})
+     */
+    public function inscriptionDirect(Request $request, UserService $userService, MailerInterface $mailer)
+    {
+
+        $form = "comptes";
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        if ($extraPayload["idUser"] == "facebook") {
+            $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('facebook_id' => $extraPayload["idUser"]));
+        } else {
+            $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('google_id' => $extraPayload["idUser"]));
+        }
 
 
+        if (is_null($compteExistant)) {
+
+
+            $credentials['accessToken'] = $extraPayload['accessToken'];
+            $credentials['idUser'] = $extraPayload['idUser'];
+            $test = false;
+
+            if ($extraPayload['type'] == "facebook") {
+                $test = $this->facebook_check($credentials);
+            } else {
+                $test = $this->google_check($credentials);
+            }
+
+            if($test)
+            {
+
+                $extraPayload["isActive"] = 1;
+                $extraPayload["password"] = $extraPayload["idUser"];
+                $data = $this->entityManager->setResult($form, null, $extraPayload);
+    
+                $extraPayload['Identifiant'] = $data->getId();
+                $user = $userService->creationCompte($extraPayload);
+    
+    
+                $subject = "Bienvenue chez FoodLine";
+    
+                $email = (new TemplatedEmail())
+                    ->from("foodline2022@gmail.com")
+                    ->to(new Address(trim($extraPayload["email"])))
+                    //->bcc('touhemib@gmail.com')
+                    ->subject($subject)
+                    ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
+                    ->context([
+    
+                        "nom" => $user->getNom(),
+                        "prenom" => $user->getPrenom()
+                    ]);
+    
+                $mailer->send($email);
+    
+    
+    
+                return new JsonResponse(array('message' => 'compte valide'), 200);
+            }
+            else{
+                return new JsonResponse(array('message' => 'Access token invalide'), 200);
+            }
+           
+        } else {
+
+
+            return new JsonResponse(array('message' => 'compte valide'), 200);
+        }
     }
 
 
+
+    public function facebook_check($credentials)
+    {
+
+        $token = $credentials['tokenFacebook'];
+        // Get the token's FB app info.
+        $tokenAppResp = file_get_contents('https://graph.facebook.com/app/?access_token=' . $token);
+        //   var_dump($tokenAppResp);
+        if (!$tokenAppResp) {
+            return false;
+        }
+        // Make sure it's the correct app.
+        $tokenApp = json_decode($tokenAppResp, true);
+        if (!$tokenApp || !isset($tokenApp['id']) || $tokenApp['id'] != 654143709352565) {
+            return false;
+        }
+        // Get the token's FB user info.
+        $tokenUserResp = file_get_contents('https://graph.facebook.com/me/?access_token=' . $token);
+        // var_dump($tokenUserResp);
+        if (!$tokenUserResp) {
+            return false;
+        }
+        // Try to fetch user by it's token ID, create it otherwise.
+        $tokenUser = json_decode($tokenUserResp, true);
+        if (!$tokenUser || !isset($tokenUser['id'])) {
+            return false;
+        }
+        if ($tokenUser['id'] == $credentials['idUser']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function google_check($credentials)
+    {
+
+        $token = $credentials['accessToken'];
+        // Get the token's FB app info.
+
+        // Get the token's FB user info.
+        $tokenUserResp = file_get_contents('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' . $token);
+        // var_dump($tokenUserResp);
+        if (!$tokenUserResp) {
+            return false;
+        }
+        // Try to fetch user by it's token ID, create it otherwise.
+        $tokenUser = json_decode($tokenUserResp, true);
+        if (!$tokenUser || !isset($tokenUser['sub'])) {
+            return false;
+        }
+        if ($tokenUser['sub'] == $credentials['idUser']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * @Route("/logout", name="app_logout")
      */
@@ -214,10 +345,10 @@ class SecurityController extends AbstractController
 
 
 
-        /**
+    /**
      * @Route("/account/checkCodeActivationCompte" , methods ={"POST"} , name = "api_account_checkCodeActivationCompte")
      */
-    public  function checkCodeActivationCompte(DocumentManager $dm,EntityManagerInterface $em,Request $request, UserService $userService)
+    public  function checkCodeActivationCompte(DocumentManager $dm, EntityManagerInterface $em, Request $request, UserService $userService)
 
     {
         $email = $request->get('email');
@@ -227,27 +358,25 @@ class SecurityController extends AbstractController
             $msg =  $userService->verifierCodeActivation($email, $code);
 
             if ($msg == "Success") {
-                $user=$em->getRepository(User::class)->findOneBy(array('email'=>trim($email)));
-               if($user)
-               {
-                $user->setIsActive(true);
-               
-                $em->persist($user);
+                $user = $em->getRepository(User::class)->findOneBy(array('email' => trim($email)));
+                if ($user) {
+                    $user->setIsActive(true);
 
-                $em->flush();
+                    $em->persist($user);
+
+                    $em->flush();
 
 
-                $comptes = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('comptes')
-                ->field('extraPayload.Identifiant')->equals(strval($user->getId()))
-                ->findAndUpdate()
-                ->field('extraPayload.isActive')->set(1)
-                ->getQuery()
-                ->execute();
-               }
-               else{
-                return $this->json(["msg" => "utilisateur non trouvé"], 400, [], []);
-               }
+                    $comptes = $dm->createQueryBuilder(Entities::class)
+                        ->field('name')->equals('comptes')
+                        ->field('extraPayload.Identifiant')->equals(strval($user->getId()))
+                        ->findAndUpdate()
+                        ->field('extraPayload.isActive')->set(1)
+                        ->getQuery()
+                        ->execute();
+                } else {
+                    return $this->json(["msg" => "utilisateur non trouvé"], 400, [], []);
+                }
                 return $this->json(["msg" => "compte activié"], 200, [], []);
             } elseif ($msg == "expired") {
                 return $this->json(["msg" => "code expiré"], 400, [], []);
@@ -274,22 +403,21 @@ class SecurityController extends AbstractController
         $client = $request->get('email');
 
         $lang = $request->get('lang');
-      
-        if(is_null($lang))
-        {
-            $lang='fr';
+
+        if (is_null($lang)) {
+            $lang = 'fr';
         }
-        
+
         $test =  $userService->generateCodeActivation($client);
         if ($test) {
             $account = $entityManager->getRepository(User::class)->findOneBy(array('email' => $client));
             $code = $entityManager->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $account, 'isActive' => 1));
             // $emailservice->sendMailCodeForgotPassworClient($email, $code);
-            
-            
 
-            $subject="Mot de passe oublier";
-         
+
+
+            $subject = "Mot de passe oublier";
+
             $email = (new TemplatedEmail())
                 ->from("foodline@gmail.com")
                 ->to(new Address(trim($account->getEmail())))
@@ -297,8 +425,8 @@ class SecurityController extends AbstractController
                 ->subject($subject)
                 ->htmlTemplate('Email/mailUpdatePassword.html.twig')
                 ->context([
-                    "nom"=>$account->getNom(),
-                    "prenom"=>$account->getPrenom(),
+                    "nom" => $account->getNom(),
+                    "prenom" => $account->getPrenom(),
                     "code" => $code
                 ]);
 
@@ -314,27 +442,26 @@ class SecurityController extends AbstractController
     /**
      * @Route("/account/changerPassword" , methods ={"POST"} , name = "api_account_changerPassword")
      */
-    public  function changerPassword(MailerInterface $mailer,Request $request, UserService $userService, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
+    public  function changerPassword(MailerInterface $mailer, Request $request, UserService $userService, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder)
 
     {
         $email = $request->get('email');
         $password = $request->get('password');
 
         $lang = $request->get('lang');
-      
-        if(is_null($lang))
-        {
-            $lang='fr';
+
+        if (is_null($lang)) {
+            $lang = 'fr';
         }
-       // $oldPassword = $request->get('oldPassword');
+        // $oldPassword = $request->get('oldPassword');
 
 
 
 
         try {
             $user = $entityManager->getRepository(User::class)->findOneBy(array('email' => $email));
-         //   $dd = $passwordEncoder->encodePassword($user, $oldPassword);
-          //  $passwordValid = $passwordEncoder->isPasswordValid($user, $oldPassword);
+            //   $dd = $passwordEncoder->encodePassword($user, $oldPassword);
+            //  $passwordValid = $passwordEncoder->isPasswordValid($user, $oldPassword);
 
             //  var_dump($dd);
             //  dd($passwordValid);
@@ -342,29 +469,29 @@ class SecurityController extends AbstractController
                 return $this->json(["message" => "user not found"], 400, [], []);
             } else {
                 //if ($passwordValid) {
-                    $user->setPasswordClear($password);
-                    $newPass = $passwordEncoder->encodePassword($user, $password);
-                    $user->setPassword($newPass);
-                    
-                    $entityManager->persist($user);
-                    $entityManager->flush();
+                $user->setPasswordClear($password);
+                $newPass = $passwordEncoder->encodePassword($user, $password);
+                $user->setPassword($newPass);
 
-                    $subject="Mot de passe oublier";
-                 
-                    $email = (new TemplatedEmail())
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $subject = "Mot de passe oublier";
+
+                $email = (new TemplatedEmail())
                     ->from("glamyouup0@gmail.com")
                     ->to(new Address(trim($user->getEmail())))
                     //->bcc('touhemib@gmail.com')
                     ->subject($subject)
                     ->htmlTemplate('Email/mailUpdatePasswordSuccess.html.twig')
                     ->context([
-                        "nom"=>$user->getNom(),
+                        "nom" => $user->getNom(),
                         "prenom" => $user->getPrenom()
                     ]);
-    
+
                 $mailer->send($email);
-                    return $this->json(["message" => "mot de passe change avec success"], 200, [], []);
-               /* } else {
+                return $this->json(["message" => "mot de passe change avec success"], 200, [], []);
+                /* } else {
                     return $this->json(["message" => "mot de passe incorrecte"], 400, [], []);
                 }*/
             }
@@ -383,127 +510,111 @@ class SecurityController extends AbstractController
 
 
 
-        /**
+    /**
      * @Route("api/account/checkOldPassword", methods={"POST"})
      */
-    public function checkOldPassword(Request $request,UserPasswordEncoderInterface $passwordEncoder)
+    public function checkOldPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $user=$this->getUser();
-        $oldPassword=$request->get('oldPassword');
+        $user = $this->getUser();
+        $oldPassword = $request->get('oldPassword');
 
-         
-          $passwordValid = $passwordEncoder->isPasswordValid($user, $oldPassword);
 
-        if($passwordValid)
-        {
-            return new JsonResponse(array('message'=>'valide'),200);
+        $passwordValid = $passwordEncoder->isPasswordValid($user, $oldPassword);
+
+        if ($passwordValid) {
+            return new JsonResponse(array('message' => 'valide'), 200);
+        } else {
+            return new JsonResponse(array('message' => 'invalide'), 400);
         }
-        else{
-            return new JsonResponse(array('message'=>'invalide'),400);
-        }
-        
     }
 
 
-        /**
+    /**
      * @Route("api/account/updateAccount/{id}", methods={"POST"})
      */
 
-     public function updateAccount($id,UserService $userService,Request $request)
+    public function updateAccount($id, UserService $userService, Request $request)
     {
 
-        $account=$this->em->getRepository(User::class)->findOneBy(array('userIdentifier'=>$id));
+        $account = $this->em->getRepository(User::class)->findOneBy(array('userIdentifier' => $id));
 
-        if(is_null($account))
-        {
-            return new JsonResponse(array('error'=>'compte introuvable'),401);
-        }
-        else{
+        if (is_null($account)) {
+            return new JsonResponse(array('error' => 'compte introuvable'), 401);
+        } else {
 
             $extraPayload = null;
-        
+
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $content = json_decode($request->getContent(), true);
                 $extraPayload = $content['extraPayload'];
             }
-    
+
             $data = $this->entityManager->updateResultV2($id, $extraPayload);
-    
-            $userService->updateAccount($account,$extraPayload);
-    
+
+            $userService->updateAccount($account, $extraPayload);
+
             return new JsonResponse($data->getId());
         }
-   
-            
     }
 
 
     /**
      * @Route("api/account/updatePassword", methods={"POST"})
      */
-    public function updatePassword(EntityManagerInterface $entityManager,Request $request,UserPasswordEncoderInterface $passwordEncoder)
+    public function updatePassword(EntityManagerInterface $entityManager, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $password=$request->get('password');
-        $user=$this->getUser();
-        if($user)
-        {
-        $user->setPasswordClear($password);
-        $newPass = $passwordEncoder->encodePassword($user, $password);
-        $user->setPassword($newPass);
-        
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $password = $request->get('password');
+        $user = $this->getUser();
+        if ($user) {
+            $user->setPasswordClear($password);
+            $newPass = $passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($newPass);
 
-        return new JsonResponse(array('message'=>'votre mot de passe a été modifié'),200);
-        }
-        else{
-       
-            return new JsonResponse(array('message'=>'Utilisateur non trouvé'),400);
+            $entityManager->persist($user);
+            $entityManager->flush();
 
+            return new JsonResponse(array('message' => 'votre mot de passe a été modifié'), 200);
+        } else {
+
+            return new JsonResponse(array('message' => 'Utilisateur non trouvé'), 400);
         }
     }
 
 
 
-        /**
+    /**
      * @Route("/reEnvoyerCodeActivation", methods={"POST"})
      */
 
-        public function reEnvoyerCodeActivation(MailerInterface $mailer,Request $request,UserService $userService)
-        {
+    public function reEnvoyerCodeActivation(MailerInterface $mailer, Request $request, UserService $userService)
+    {
 
-            $email=$request->get('email');
+        $email = $request->get('email');
 
-            $user=$this->em->getRepository(User::class)->findOneBy(array('email'=>$email));
-            if(is_null($user))
-            {
-                return new JsonResponse(array('message'=>'Email invalide'),400);
-            }
-            else{
-                $test =  $userService->generateCodeActivation($user->getEmail());
+        $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $email));
+        if (is_null($user)) {
+            return new JsonResponse(array('message' => 'Email invalide'), 400);
+        } else {
+            $test =  $userService->generateCodeActivation($user->getEmail());
 
-                $subject = "Activation compte";
-               
-                $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
-                // $emailservice->sendMailCodeForgotPassworClient($email, $code);
-                $email = (new TemplatedEmail())
-                    ->from("foodline2022@gmail.com")
-                    ->to(new Address(trim($user->getEmail())))
-                    //->bcc('touhemib@gmail.com')
-                    ->subject($subject)
-                    ->htmlTemplate('Email/mailActivation.html.twig')
-                    ->context([
-                        "nom" => $user->getNom(),
-                        "prenom" => $user->getPrenom(),
-                        "code" => $code
-                    ]);
-    
-                $mailer->send($email);
-                return new JsonResponse(array('message'=>'code envoyée'),200);
-            }
-            
-           
+            $subject = "Activation compte";
 
+            $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
+            // $emailservice->sendMailCodeForgotPassworClient($email, $code);
+            $email = (new TemplatedEmail())
+                ->from("foodline2022@gmail.com")
+                ->to(new Address(trim($user->getEmail())))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/mailActivation.html.twig')
+                ->context([
+                    "nom" => $user->getNom(),
+                    "prenom" => $user->getPrenom(),
+                    "code" => $code
+                ]);
 
+            $mailer->send($email);
+            return new JsonResponse(array('message' => 'code envoyée'), 200);
         }
+    }
 }
