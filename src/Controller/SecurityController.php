@@ -77,10 +77,18 @@ class SecurityController extends AbstractController
         if (!$emailExistant) {
 
             if ($extraPayload["type"] == "facebook" || $extraPayload["type"] == "google") {
-                $extraPayload["isActive"] = 1;
+                $extraPayload["isActive"] = "1";
             } else {
-                $extraPayload["isActive"] = 0;
+                $extraPayload["isActive"] = "0";
             }
+
+           
+            if(!isset($extraPayload['role']))
+            {
+                $extraPayload['role']="ROLE_CLIENT";
+
+            }
+        
 
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
@@ -149,6 +157,11 @@ class SecurityController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+        $emailExistant=$this->em->getRepository(User::class)->findOneBy(array('email'=>trim($extraPayload["email"]),'facebook_id' => null,'google_id' => null));
+        if($emailExistant)
+        {
+            return new JsonResponse(array('message'=>'email déja utilisé.'),400);
+        }
         if ($extraPayload["type"] == "facebook") {
             $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('facebook_id' => $extraPayload["idUser"]));
         } else {
@@ -172,7 +185,12 @@ class SecurityController extends AbstractController
             if($test)
             {
 
-                $extraPayload["isActive"] = 1;
+                $extraPayload["isActive"] = "1";
+                if(!isset($extraPayload['role']))
+                {
+                    $extraPayload['role']="ROLE_CLIENT";
+    
+                }
                 $extraPayload["password"] = $extraPayload["idUser"];
                 $data = $this->entityManager->setResult($form, null, $extraPayload);
     
@@ -371,7 +389,7 @@ class SecurityController extends AbstractController
                         ->field('name')->equals('comptes')
                         ->field('extraPayload.Identifiant')->equals(strval($user->getId()))
                         ->findAndUpdate()
-                        ->field('extraPayload.isActive')->set(1)
+                        ->field('extraPayload.isActive')->set("1")
                         ->getQuery()
                         ->execute();
                 } else {

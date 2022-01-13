@@ -240,6 +240,12 @@ class DefaultController extends AbstractController
             $lang = $request->get('lang');
         }
 
+        $indexVue = "CLIENT";
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
+
+
     
         switch ($version) {
             case 1:
@@ -252,7 +258,7 @@ class DefaultController extends AbstractController
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
-                
+                unset($filter['indexVue']);
                 
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
                 break;
@@ -261,12 +267,13 @@ class DefaultController extends AbstractController
         $data = $this->entityManager->serializeContent($data);
 
 
+        
         //return new JsonResponse(array('data'=>$data),200);
         //        dd($data);
         if ($vueAvancer) {
             if (isset($data['results'])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($vueAvancer, $data['results'], $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data['results'], $lang);
                 $structuresFinal['count'] = $data['count'];
                 $structuresFinal['results'] = $structureVues;
                 return new JsonResponse($structuresFinal, '200');
@@ -328,10 +335,14 @@ class DefaultController extends AbstractController
             $vueAvancer = $request->get('vueAvancer');
         }
 
+        $indexVue = "CLIENT";
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
         if ($vueAvancer) {
             if (isset($data[0])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($vueAvancer, $data, $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data, $lang);
 
                 return new JsonResponse($structureVues, '200');
             } else {

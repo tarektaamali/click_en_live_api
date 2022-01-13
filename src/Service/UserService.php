@@ -169,7 +169,14 @@ class UserService
                 } else {
                     $user->setIsActive(false);
                 }
-                $user->setRoles(['ROLE_CLIENT']);
+                if(isset($extraPayload['role']))
+                {
+                    $user->setRoles([$extraPayload['role']]);
+                }
+                else{
+                    $user->setRoles(['ROLE_CLIENT']);
+                }
+            
                 if(isset($extraPayload['Identifiant']))
                 {
                     $user->setUserIdentifier($extraPayload['Identifiant']);
