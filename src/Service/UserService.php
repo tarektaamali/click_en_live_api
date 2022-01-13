@@ -124,27 +124,71 @@ class UserService
 
         
                 $user = new User();
+                if(isset($extraPayload['type']))
+                {
                 if ($extraPayload["type"] == "facebook") {
                     $user->setFacebookId($extraPayload["idUser"]);
                 }
                 if ($extraPayload["type"] == "google") {
                     $user->setGoogle_id($extraPayload["idUser"]);
                 }
-                $user->setNom($extraPayload["nom"]);
-                $user->setPrenom($extraPayload["prenom"]);
-                $user->setEmail($extraPayload["email"]);
-                $user->setUsername($extraPayload["email"]);
-                $user->setPhone($extraPayload['phone']);
-                if (($extraPayload["type"] == "google") || ($extraPayload["type"] == "facebook")) {
+            }
+                if(isset($extraPayload["nom"]))
+                {
+                    $user->setNom($extraPayload["nom"]);
+                }
+
+
+                if(isset($extraPayload["prenom"]))
+                {
+                    $user->setPrenom($extraPayload["prenom"]);
+                }
+
+                if(isset($extraPayload["email"]))
+                {
+                    $user->setEmail($extraPayload["email"]);
+                }
+                if(isset($extraPayload["email"]))
+                {
+                    $user->setUsername($extraPayload["email"]);
+                }
+
+                if(isset($extraPayload['phone']))
+                {
+                    $user->setPhone($extraPayload['phone']);
+                    
+                }
+              
+             
+               
+               
+               
+                if ((isset($extraPayload['type']))&&($extraPayload["type"] == "google"|| $extraPayload["type"] == "facebook"))
+                 {
                     $user->setIsActive(true);
                 } else {
                     $user->setIsActive(false);
                 }
                 $user->setRoles(['ROLE_CLIENT']);
-                $user->setUserIdentifier($extraPayload['Identifiant']);
-                $user->setPasswordClear($extraPayload["password"]);
-                $newPass = $this->passwordEncoder->encodePassword($user, $extraPayload["password"]);
-                $user->setPassword($newPass);
+                if(isset($extraPayload['Identifiant']))
+                {
+                    $user->setUserIdentifier($extraPayload['Identifiant']);
+                    
+                }
+
+                if(isset($extraPayload['Identifiant']))
+                {
+                    $user->setUserIdentifier($extraPayload['Identifiant']);
+                    
+                }
+          
+                if(isset($extraPayload["password"]))
+                {
+                    $user->setPasswordClear($extraPayload["password"]);
+                    $newPass = $this->passwordEncoder->encodePassword($user, $extraPayload["password"]);
+                    $user->setPassword($newPass);
+                }
+               
                 $user->setDateCreation(new \DateTime());
                 $this->em->persist($user);
                 $this->em->flush();

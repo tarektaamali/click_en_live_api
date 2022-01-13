@@ -149,7 +149,7 @@ class SecurityController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        if ($extraPayload["idUser"] == "facebook") {
+        if ($extraPayload["type"] == "facebook") {
             $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('facebook_id' => $extraPayload["idUser"]));
         } else {
             $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('google_id' => $extraPayload["idUser"]));
