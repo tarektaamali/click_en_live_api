@@ -286,11 +286,11 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/getFielsOfVue/{vueAvancer}", methods={"GET"})
+     * @Route("/getFielsOfVue/indexVue/{vueAvancer}", methods={"GET"})
      */
-    public function getFielsOfVue($vueAvancer, strutureVuesService $strutureVuesService)
+    public function getFielsOfVue($vueAvancer,$indexVue, strutureVuesService $strutureVuesService)
     {
-        $fields = $strutureVuesService->getKeysOfStructures($vueAvancer);
+        $fields = $strutureVuesService->getKeysOfStructures($indexVue,$vueAvancer);
         return new JsonResponse($fields, '200');
     }
 
