@@ -52,12 +52,12 @@ class RestaurateurController extends AbstractController
     /**
      * @Route("/api/restaurateur/create/{form}", methods={"POST"})
      */
-    public function createAction(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, $entity, Request $request, HttpClientInterface $client)
+    public function createAction(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
-        if ($form == $entity) {
+  
             $entity = null;
-        }
+ 
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
