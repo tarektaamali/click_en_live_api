@@ -161,13 +161,18 @@ class UserService
               
              
                
-               
+            
                
                 if ((isset($extraPayload['type']))&&($extraPayload["type"] == "google"|| $extraPayload["type"] == "facebook"))
                  {
                     $user->setIsActive(true);
                 } else {
                     $user->setIsActive(false);
+                }
+
+                if(isset($extraPayload['isActive']))
+                {
+                 $user->setIsActive($extraPayload['isActive']);
                 }
                 if(isset($extraPayload['role']))
                 {
