@@ -82,13 +82,11 @@ class SecurityController extends AbstractController
                 $extraPayload["isActive"] = "0";
             }
 
-           
-            if(!isset($extraPayload['role']))
-            {
-                $extraPayload['role']="ROLE_CLIENT";
 
+            if (!isset($extraPayload['role'])) {
+                $extraPayload['role'] = "ROLE_CLIENT";
             }
-        
+
 
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
@@ -144,7 +142,7 @@ class SecurityController extends AbstractController
         }
     }
 
-  /**
+    /**
      * @Route("/inscriptionDirect", methods={"POST"})
      */
     public function inscriptionDirect(Request $request, UserService $userService, MailerInterface $mailer)
@@ -157,10 +155,9 @@ class SecurityController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        $emailExistant=$this->em->getRepository(User::class)->findOneBy(array('email'=>trim($extraPayload["email"]),'facebook_id' => null,'google_id' => null));
-        if($emailExistant)
-        {
-            return new JsonResponse(array('message'=>'email déja utilisé.'),400);
+        $emailExistant = $this->em->getRepository(User::class)->findOneBy(array('email' => trim($extraPayload["email"]), 'facebook_id' => null, 'google_id' => null));
+        if ($emailExistant) {
+            return new JsonResponse(array('message' => 'email déja utilisé.'), 400);
         }
         if ($extraPayload["type"] == "facebook") {
             $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('facebook_id' => $extraPayload["idUser"]));
@@ -182,24 +179,21 @@ class SecurityController extends AbstractController
                 $test = $this->google_check($credentials);
             }
 
-            if($test)
-            {
+            if ($test) {
 
                 $extraPayload["isActive"] = "1";
-                if(!isset($extraPayload['role']))
-                {
-                    $extraPayload['role']="ROLE_CLIENT";
-    
+                if (!isset($extraPayload['role'])) {
+                    $extraPayload['role'] = "ROLE_CLIENT";
                 }
                 $extraPayload["password"] = $extraPayload["idUser"];
                 $data = $this->entityManager->setResult($form, null, $extraPayload);
-    
+
                 $extraPayload['Identifiant'] = $data->getId();
                 $user = $userService->creationCompte($extraPayload);
-    
-    
+
+
                 $subject = "Bienvenue chez FoodLine";
-    
+
                 $email = (new TemplatedEmail())
                     ->from("foodline2022@gmail.com")
                     ->to(new Address(trim($extraPayload["email"])))
@@ -207,21 +201,19 @@ class SecurityController extends AbstractController
                     ->subject($subject)
                     ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
                     ->context([
-    
+
                         "nom" => $user->getNom(),
                         "prenom" => $user->getPrenom()
                     ]);
-    
+
                 $mailer->send($email);
-    
-    
-    
+
+
+
                 return new JsonResponse(array('message' => 'compte valide'), 200);
-            }
-            else{
+            } else {
                 return new JsonResponse(array('message' => 'Access token invalide'), 200);
             }
-           
         } else {
 
 
@@ -633,6 +625,62 @@ class SecurityController extends AbstractController
 
             $mailer->send($email);
             return new JsonResponse(array('message' => 'code envoyée'), 200);
+        }
+    }
+
+    /**
+     * @Route("api/account/createAccount", methods={"POST"})
+     */
+
+    public function createAccount(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
+    {
+        $form = "comptes";
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $emailExistant = $this->em->getRepository(User::class)->findOneBy(array('email' => $extraPayload["email"]));
+        if (!$emailExistant) {
+            $extraPayload["isActive"] = "1";
+
+
+
+            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+
+            $extraPayload['Identifiant'] = $data->getId();
+            $user = $userService->creationCompte($extraPayload);
+
+
+            $subject = "Bienvenue chez FoodLine";
+
+            $email = (new TemplatedEmail())
+                ->from("foodline2022@gmail.com")
+                ->to(new Address(trim($extraPayload["email"])))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
+                ->context([
+
+                    "nom" => $user->getNom(),
+                    "prenom" => $user->getPrenom()
+                ]);
+
+            $mailer->send($email);
+
+
+
+
+
+
+
+
+
+            return new JsonResponse($data->getId());
+        } else {
+            return new JsonResponse(array('message' => 'cet email déja utilisé'), 400);
         }
     }
 }
