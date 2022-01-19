@@ -203,19 +203,61 @@ class entityManager
                         $qb->field('extraPayload' . '.' . $property)->notEqual($arrayValue);
                     } elseif (array_key_exists("gt", $value)) {
                         $arrayValue = $value['gt'];
-                        $qb->field('extraPayload' . '.' . $property)->gt($arrayValue);
+                        if (stripos($property, "date") !== false && trim($arrayValue) != null) {
+                            $datetime = new DateTime();
+                            $arrayValue = $datetime->createFromFormat('Y-m-d', $arrayValue);
+                        }
+                        if ($property == "dateCreation" || $property == "dateLastModif") {
+                            if ($property == 'dateLastModif') {
+                                $property = 'dateLastMmodif';
+                            }
+                            $qb->field($property)->gt($arrayValue);
+                        } else {
+                            $qb->field('extraPayload' . '.' . $property)->gt($arrayValue);
+                        }
                     } elseif (array_key_exists("lt", $value)) {
                         $arrayValue = $value['lt'];
-                        $qb->field('extraPayload' . '.' . $property)->lt($arrayValue);
+                        if (stripos($property, "date") !== false && trim($arrayValue) != null) {
+                            $datetime = new DateTime();
+                            $arrayValue = $datetime->createFromFormat('Y-m-d', $arrayValue);
+                        }
+                        if ($property == "dateCreation" || $property == "dateLastModif") {
+                            if ($property == 'dateLastModif') {
+                                $property = 'dateLastMmodif';
+                            }
+                            $qb->field($property)->lt($arrayValue);
+                        } else {
+                            $qb->field('extraPayload' . '.' . $property)->gt($arrayValue);
+                        }
                     } elseif (array_key_exists("range", $value)) {
                         $arrayValue = explode(",", $value['range']);
-                        //	var_dump($arrayValue[0]); var_dump($property);		
-                        $qb->field('extraPayload' . '.' . $property)->range(intval($arrayValue[0]), intval($arrayValue[1]));
+                        if (stripos($property, "date") !== false && trim($arrayValue[0]) != null && trim($arrayValue[1]) != null) {
+                            $datetime = new DateTime();
+                            $arrayValue[0] = $datetime->createFromFormat('Y-m-d', $arrayValue[0]);
+                            $arrayValue[1] = $datetime->createFromFormat('Y-m-d', $arrayValue[1]);
+                            if ($arrayValue[0] == $arrayValue[1]) {
+                                $arrayValue[0] = $arrayValue[0]->setTime(0,0);
+                                $arrayValue[1] = $arrayValue[1]->setTime(23,59);
+                            }
+
+                            $qb->field('extraPayload' . '.' . $property)->range($arrayValue[0], $arrayValue[1]);
+                        } elseif ($property == "dateCreation" || $property == "dateLastModif") {
+                            if ($property == 'dateLastModif') {
+                                $property = 'dateLastMmodif';
+                            }
+                            $qb->field($property)->range($arrayValue[0], $arrayValue[1]);
+                        } else {
+                            $qb->field('extraPayload' . '.' . $property)->range(intval($arrayValue[0]), intval($arrayValue[1]));
+                        }
                     } elseif (array_key_exists("regex", $value)) {
                         $arrayValue = new \MongoDB\BSON\Regex($value['regex'], 'i');
                         $qb->field('extraPayload' . '.' . $property)->equals($arrayValue);
                     }
                 } else {
+                    if (stripos($property, "date") !== false && trim($value) != null) {
+                        $datetime = new DateTime();
+                        $value = $datetime->createFromFormat('Y-m-d', $value);
+                    }
                     $qb->field('extraPayload' . '.' . $property)->equals($value);
                 }
             }
@@ -272,7 +314,8 @@ class entityManager
             array_push($data, $extraPayload);
         }
         $alldata = array();
-        $alldata['results'] = $data;
+        $preparedData = $this->prepareDates($data);
+        $alldata['results'] = $preparedData;
         $alldata['count'] = $count;
         return $alldata;
     }
@@ -671,5 +714,34 @@ class entityManager
 
             return 'done';
                 
+    }
+
+    public function prepareDates($data)
+    {
+        if (count($data) > 1) {
+            foreach ($data as $key => $value) {
+                foreach (array_keys($value) as $j) {
+                    if (stripos($j, "date") !== false) {
+                        if($data[$key][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                            $mongoDate = $data[$key][$j];
+                            $datetime = $mongoDate->toDateTime();
+                            $data[$key][$j] = $datetime->format('Y-m-d');
+                        }
+                    }
+                }
+            }
+        } elseif(count($data) == 1) {
+            foreach (array_keys($data[0]) as $j) {
+                if (stripos($j, "date") !== false) {
+                    if($data[0][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                        $mongoDate = $data[0][$j];
+                        $datetime = $mongoDate->toDateTime();
+                        $data[0][$j] = $datetime->format('Y-m-d');
+                    }
+                }
+            }
+        }
+        
+        return $data;
     }
 }

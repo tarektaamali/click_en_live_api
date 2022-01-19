@@ -354,9 +354,9 @@ class DefaultController extends AbstractController
     /**
      * @Route("/listeRestaurants", methods={"GET"})
      */
-    public function listeRestaurants(DocumentManager $dm,$entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function listeRestaurants(DocumentManager $dm, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
-
+	$entity="restaurants";
 
         $listeTags = "";
 
@@ -427,8 +427,8 @@ class DefaultController extends AbstractController
 
 
         $data = $this->entityManager->serializeContent($data);
-
-
+	
+	
 
        
             if (isset($data['results'])) {
@@ -444,14 +444,14 @@ class DefaultController extends AbstractController
                 
             }
 
-            $listeTags = $this->documentManager->createQueryBuilder(Entities::class)
+            $listeTags = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('tags')
-            ->field('extraPayload.isActive')->equals(1)
+            ->field('extraPayload.isActive')->equals("1")
             ->getQuery()
             ->execute();
-            $nbreTags = $this->documentManager->createQueryBuilder(Entities::class)
+            $nbreTags = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('tags')
-            ->field('extraPayload.isActive')->equals(1)
+            ->field('extraPayload.isActive')->equals("1")
             ->count()
             ->getQuery()
             ->execute();
@@ -461,28 +461,34 @@ class DefaultController extends AbstractController
 
             foreach($listeTags as $tag)
             {
-                $results['id']=$tag->getId();
-                $results['name']=$tag->getExtraPaylod('libelle');
-                $results['listeRestaurant']=[];
+                $data=array('id'=>$tag->getId(),
+                'name'=>$tag->getExtraPayload()['libelle'],
+                'listeRestaurant'=>[]);
+		//var_dump($data);
+		array_push($results,$data);
 
             }
-            
+       //    var_dump($results);
 
-            
+ 	//	dd($structuresFinal['results']);           
 
 
             foreach($structuresFinal['results'] as $resto )
             {
-                $tabT=$resto->tags;
+                $tabT=$resto["tags"];
                 if(sizeof($tabT))
                 {
 
                     foreach($tabT as $t)
                     {
-                        $test=array_search($t, array_column($results, 'id'));
-                        if($test)
+			//var_dump($t);
+                       $test=array_search($t, array_column($results, 'id'));
+                       //var_dump($test);
+			//$test=in_array($t,$results);
+	//		var_dump($test);
+			 if(is_int($test))
                         {
-                            array_merge($results['listeRestaurant'],$resto);
+                            array_push($results[$test]['listeRestaurant'],$resto);
 
                         }
 
