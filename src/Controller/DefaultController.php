@@ -352,4 +352,12 @@ class DefaultController extends AbstractController
     }
    
 
+
+    public function listeRestaurants()
+    {
+        
+
+        return new JsonResponse();
+
+    }
 }

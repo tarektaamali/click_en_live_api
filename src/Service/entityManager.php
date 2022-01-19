@@ -35,6 +35,7 @@ class entityManager
             $extraPayload = $entity->getExtraPayload();
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
+                   $extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
 
@@ -267,6 +268,7 @@ class entityManager
             $extraPayload = $entity->getExtraPayload();
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
+            $extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
         $alldata = array();
@@ -296,8 +298,16 @@ class entityManager
             if ($value != $idName) {
                 $payload[$value] = "";
                 foreach ($extraPayload as $j => $content) {
+
+                    $type=$fileYaml[$header][$fields][$value]["type"];
                     if ($j == $value) {
-                        $payload[$value] = $content;
+                        if($type=="number"&&$value!="quantite"){
+                            $payload[$value]=floatval($content);
+                        }
+                        else{
+                            $payload[$value] = $content;
+                        }
+                      
                     }
                 }
             }
@@ -536,6 +546,7 @@ class entityManager
             $extraPayload = $entity->getExtraPayload();
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
+            $extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
         $alldata = array();
@@ -643,7 +654,7 @@ class entityManager
 
 
             
-            $log=$this->setResult('produits', null, $extraPayload);
+            $log=$this->setResult('logRecherche', null, $extraPayload);
 
           
     
