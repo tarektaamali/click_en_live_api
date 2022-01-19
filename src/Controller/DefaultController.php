@@ -55,22 +55,21 @@ class DefaultController extends AbstractController
     public function createAction(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
-        $entity=null;
+        $entity = null;
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
 
-            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
 
-            //ghorbel ==> vue
+        //ghorbel ==> vue
 
-            return new JsonResponse($data->getId());
-        
+        return new JsonResponse($data->getId());
     }
- 
+
     /**
      * @Route("/delete/{id}", methods={"DELETE"})
      */
@@ -157,7 +156,7 @@ class DefaultController extends AbstractController
 
 
 
- 
+
 
 
     /**
@@ -166,7 +165,7 @@ class DefaultController extends AbstractController
     public function updateV2Action($id, Request $request)
     {
         $extraPayload = null;
-        
+
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
@@ -187,7 +186,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/readAll/{entity}", methods={"GET"})
      */
-    public function readAvanceAll($entity, strutureVuesService $strutureVuesService, Request $request,$routeParams = array())
+    public function readAvanceAll($entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
@@ -244,20 +243,20 @@ class DefaultController extends AbstractController
         }
 
 
-    
+
         switch ($version) {
             case 1:
                 $data = $this->entityManager->getResult($entity, $vue, $vueVersion, $filter, $filterValue, $filterVersion, $maxResults, $offset);
                 break;
             case 2:
-                
+
                 $filter = array_merge($routeParams, $request->query->all());
-              
+
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
                 unset($filter['indexVue']);
-                
+
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
                 break;
         }
@@ -265,13 +264,13 @@ class DefaultController extends AbstractController
         $data = $this->entityManager->serializeContent($data);
 
 
-        
+
         //return new JsonResponse(array('data'=>$data),200);
         //        dd($data);
         if ($vueAvancer) {
             if (isset($data['results'])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data['results'], $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
                 $structuresFinal['count'] = $data['count'];
                 $structuresFinal['results'] = $structureVues;
                 return new JsonResponse($structuresFinal, '200');
@@ -340,7 +339,7 @@ class DefaultController extends AbstractController
         if ($vueAvancer) {
             if (isset($data[0])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data, $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
                 return new JsonResponse($structureVues, '200');
             } else {
@@ -350,14 +349,154 @@ class DefaultController extends AbstractController
 
         return new JsonResponse($data, '200');
     }
-   
 
 
-    public function listeRestaurants()
+    /**
+     * @Route("/listeRestaurants", methods={"GET"})
+     */
+    public function listeRestaurants(DocumentManager $dm,$entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
+
+
+        $listeTags = "";
+
+     
+
+
+        $vueAvancer="restaurants_multi";
+        $version = 2;
+        if ($request->get('version') != null) {
+            $version = $request->get('version');
+        }
+
+        $vue = null;
+        if ($request->get('vue') != null) {
+            $vue = $request->get('vue');
+        }
+
+        $vueVersion = null;
+        if ($request->get('vueVersion') != null) {
+            $vueVersion = $request->get('vueVersion');
+        }
+
+        $maxResults = 1000;
+        if ($request->get('maxResults') != null) {
+            $maxResults = $request->get('maxResults');
+        }
+
+        $offset = 0;
+        if ($request->get('maxResults') != null) {
+            $offset = $request->get('offset');
+        }
+
+        $filter = null;
+        if ($request->get('filter') != null) {
+            $filter = $request->get('filter');
+        }
+
+        $filterValue = null;
+        if ($request->get('filterValue') != null) {
+            $filterValue = $request->get('filterValue');
+        }
+
+        $filterVersion = null;
+        if ($request->get('filterVersion') != null) {
+            $filterVersion = $request->get('filterVersion');
+        }
+
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+
+        $indexVue = "CLIENT";
         
 
-        return new JsonResponse();
+
+
+
+
+        $filter = array_merge($routeParams, $request->query->all());
+
+        unset($filter['version']);
+        unset($filter['vueAvancer']);
+        unset($filter['lang']);
+        unset($filter['indexVue']);
+
+        $data = $this->entityManager->getResultFromArray($entity, $filter);
+
+
+        $data = $this->entityManager->serializeContent($data);
+
+
+
+       
+            if (isset($data['results'])) {
+
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
+                $structuresFinal['count'] = $data['count'];
+                $structuresFinal['results'] = $structureVues;
+                
+            } else {
+
+                $structuresFinal['count'] = 0;
+                $structuresFinal['results'] = [];
+                
+            }
+
+            $listeTags = $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('tags')
+            ->field('extraPayload.isActive')->equals(1)
+            ->getQuery()
+            ->execute();
+            $nbreTags = $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('tags')
+            ->field('extraPayload.isActive')->equals(1)
+            ->count()
+            ->getQuery()
+            ->execute();
+
+
+            $results=array();
+
+            foreach($listeTags as $tag)
+            {
+                $results['id']=$tag->getId();
+                $results['name']=$tag->getExtraPaylod('libelle');
+                $results['listeRestaurant']=[];
+
+            }
+            
+
+            
+
+
+            foreach($structuresFinal['results'] as $resto )
+            {
+                $tabT=$resto->tags;
+                if(sizeof($tabT))
+                {
+
+                    foreach($tabT as $t)
+                    {
+                        $test=array_search($t, array_column($results, 'id'));
+                        if($test)
+                        {
+                            array_merge($results['listeRestaurant'],$resto);
+
+                        }
+
+                    }
+                   
+
+
+
+                }
+
+
+            }
+
+            return new JsonResponse($results, '200');
 
     }
 }
