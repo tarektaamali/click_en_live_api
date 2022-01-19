@@ -36,7 +36,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
-class ClientController extends AbstractController
+class RestaurateurController extends AbstractController
 {
 
     public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
