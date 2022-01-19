@@ -55,7 +55,7 @@ class DefaultController extends AbstractController
     public function createAction(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
-       
+        $entity=null;
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
