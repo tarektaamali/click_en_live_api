@@ -286,7 +286,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/getFielsOfVue/indexVue/{vueAvancer}", methods={"GET"})
+     * @Route("/getFielsOfVue/{indexVue}/{vueAvancer}", methods={"GET"})
      */
     public function getFielsOfVue($vueAvancer,$indexVue, strutureVuesService $strutureVuesService)
     {
