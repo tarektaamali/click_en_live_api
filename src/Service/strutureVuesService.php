@@ -93,12 +93,12 @@ class strutureVuesService
     }
 
 
-    public function getKeysOfStructures($vue)
+    public function getKeysOfStructures($indexVue,$vue)
     {
 
         $fields = array();
 
-        $fileYaml = $this->yaml->parseFile('../config/doctrine/vuesDesEntites/' . $vue . '.yml');
+        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/'.$indexVue.'/' . $vue . '.yml');
         $fields = $fileYaml[$vue]['fields'];
 
         return $fields;
