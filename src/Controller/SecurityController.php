@@ -640,7 +640,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("api/account/updatePassword", methods={"POST"})
+     * @Route("api/account/createAccount", methods={"POST"})
      */
 
     public function createAccount(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
@@ -693,5 +693,46 @@ class SecurityController extends AbstractController
         } else {
             return new JsonResponse(array('message' => 'cet email déja utilisé'), 400);
         }
+    }
+
+
+    
+     /**
+     * @Route("/api/admin/updateAccount/{id}", methods={"POST"})
+     */
+
+
+    public function updateAccount($id,Request $request,UserService $userService)
+    {
+
+        $extraPayload = null;
+
+
+        $user=$this->getUser();
+      
+        if($user)
+        {
+            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+                $content = json_decode($request->getContent(), true);
+                $extraPayload = $content['extraPayload'];
+            }
+    
+            $data = $this->entityManager->updateResultV2($id, $extraPayload);
+    
+
+
+            $userService->updateCompte($user,$extraPayload);
+          
+            return new JsonResponse(array('message'=>'compte modifié'),200);
+
+        }
+        else{
+
+
+            return new JsonResponse(array('message'=>'compte introuvable'),400);
+        }
+
+
+
     }
 }

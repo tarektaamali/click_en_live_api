@@ -227,5 +227,45 @@ class UserService
     }
 
 
+    public function updateCompte($user,$extraPayload)
+    {
+
+        if(isset($extraPayload["nom"]))
+        {
+            $user->setNom($extraPayload["nom"]);
+        }
+
+
+        if(isset($extraPayload["prenom"]))
+        {
+            $user->setPrenom($extraPayload["prenom"]);
+        }
+     
+
+        if(isset($extraPayload["email"]))
+        {
+            $user->setEmail($extraPayload["email"]);
+        }
+       
+        if(isset($extraPayload["email"]))
+        {
+         $user->setUsername($extraPayload["email"]);
+        }
+       
+       
+        if(isset($extraPayload["phone"]))
+        {
+            $user->setPhone($extraPayload['phone']);
+        }
+       
+     
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $user->getId();
+    }
+   
+
+
    
 }
