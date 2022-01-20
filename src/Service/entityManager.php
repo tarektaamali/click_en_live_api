@@ -227,7 +227,7 @@ class entityManager
                             }
                             $qb->field($property)->lt($arrayValue);
                         } else {
-                            $qb->field('extraPayload' . '.' . $property)->gt($arrayValue);
+                            $qb->field('extraPayload' . '.' . $property)->lt($arrayValue);
                         }
                     } elseif (array_key_exists("range", $value)) {
                         $arrayValue = explode(",", $value['range']);
@@ -350,7 +350,12 @@ class entityManager
                         else{
                             $payload[$value] = $content;
                         }
-                      
+                        if (stripos($j, "date") !== false && trim($content) != null) {
+                            $datetime = new DateTime();
+                            $newDate = $datetime->createFromFormat('Y-m-d', $content);
+                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
+                            $payload[$j] = $newDate;
+                        }
                     }
                 }
             }
@@ -454,6 +459,12 @@ class entityManager
                         $payload[$j] = trim($payload[$j], ",");
                     } else {
                         $payload[$j] = $content;
+                        if (stripos($j, "date") !== false && trim($content) != null) {
+                            $datetime = new DateTime();
+                            $newDate = $datetime->createFromFormat('Y-m-d', $content);
+                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
+                            $payload[$j] = $newDate;
+                        }
                     }
                 }
             }
