@@ -44,6 +44,7 @@ use Symfony\Component\Mime\Address;
 use App\Entity\Passwordlinkforgot;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use App\Service\entityManager;
+use App\Service\strutureVuesService;
 
 class SecurityController extends AbstractController
 {
@@ -520,6 +521,44 @@ class SecurityController extends AbstractController
 
 
 
+
+
+
+
+
+        /**
+     * @Route("/api/account/getDetailsAccount" , methods ={"GET"} , name = "getDetailsAccount")
+     */
+    public function getDetailsAccount(strutureVuesService $strutureVuesService)
+    {
+        $user = $this->getUser();
+        if($user)
+        {
+
+            $data = $this->entityManager->getSingleResult($user->getUserIdentifier(), null, null);
+            if(isset($data[0]))
+            $data = $this->entityManager->serializeContent($data);
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer("ADMIN","comptes_single", $data, "fr");
+    
+            return new JsonResponse($structureVues, '200');
+        }
+        else
+        {
+            return new JsonResponse(array('message'=>'compte introuvable'),500);
+        }
+
+
+        
+
+
+    
+    
+        
+    }
+
+
+
+
     /**
      * @Route("api/account/checkOldPassword", methods={"POST"})
      */
@@ -537,37 +576,6 @@ class SecurityController extends AbstractController
             return new JsonResponse(array('message' => 'invalide'), 400);
         }
     }
-
-
-    /**
-     * @Route("api/account/updateAccount/{id}", methods={"POST"})
-     */
-
-    public function updateAccount($id, UserService $userService, Request $request)
-    {
-
-        $account = $this->em->getRepository(User::class)->findOneBy(array('userIdentifier' => $id));
-
-        if (is_null($account)) {
-            return new JsonResponse(array('error' => 'compte introuvable'), 401);
-        } else {
-
-            $extraPayload = null;
-
-            if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-                $content = json_decode($request->getContent(), true);
-                $extraPayload = $content['extraPayload'];
-            }
-
-            $data = $this->entityManager->updateResultV2($id, $extraPayload);
-
-            $userService->updateAccount($account, $extraPayload);
-
-            return new JsonResponse($data->getId());
-        }
-    }
-
-
     /**
      * @Route("api/account/updatePassword", methods={"POST"})
      */
@@ -589,6 +597,9 @@ class SecurityController extends AbstractController
             return new JsonResponse(array('message' => 'Utilisateur non trouvé'), 400);
         }
     }
+
+
+
 
 
 
@@ -629,7 +640,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("api/account/createAccount", methods={"POST"})
+     * @Route("api/account/updatePassword", methods={"POST"})
      */
 
     public function createAccount(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)

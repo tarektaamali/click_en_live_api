@@ -502,6 +502,16 @@ class DefaultController extends AbstractController
 
             }
 
+
+            foreach($results as $key=>$resto)
+            {
+
+                if(sizeof($results[$key]['listeRestaurant'])==0)
+                {
+                    unset($results[$key]);
+                }
+            }
+
             return new JsonResponse($results, '200');
 
     }
