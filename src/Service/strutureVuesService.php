@@ -30,11 +30,11 @@ class strutureVuesService
     }
 
 
-    public function getDetailsEntitySerializer($indexVue,$vue, $data, $lang)
+    public function getDetailsEntitySerializer($indexVue, $vue, $data, $lang)
     {
         $fields = array();
 
-        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/'.$indexVue.'/' . $vue . '.yml');
+        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/' . $indexVue . '/' . $vue . '.yml');
         $fields = $fileYaml[$vue]['fields'];
 
         $i = 0;
@@ -93,12 +93,12 @@ class strutureVuesService
     }
 
 
-    public function getKeysOfStructures($indexVue,$vue)
+    public function getKeysOfStructures($indexVue, $vue)
     {
 
         $fields = array();
 
-        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/'.$indexVue.'/' . $vue . '.yml');
+        $fileYaml = $this->yaml->parseFile('../config/doctrine/vues/' . $indexVue . '/' . $vue . '.yml');
         $fields = $fileYaml[$vue]['fields'];
 
         return $fields;
@@ -142,12 +142,10 @@ class strutureVuesService
 
         $destination = $this->params->get('kernel.project_dir') . '/public/'  . $source;
         //var_dump($id);
-	if($id=="")
-	{
+        if ($id == "") {
 
-	 return "";
-
-	}		
+            return "";
+        }
         $dataFile = $this->eventsManager->downloadDocument($id, $destination);
 
         $urlPhotoCouverture = $this->params->get('Hostapi') . '/' . $source . '/' . str_replace(' ', '',  $dataFile->getName());
@@ -161,17 +159,10 @@ class strutureVuesService
 
         $entityModificateur = $param[0];
         $reference = $param[1];
+        $listeResults = [];
 
-
-
-
-        if ($reference != '') {
-
-
-            $tab = explode(",", $reference);
-            //dd($tabCarac);	
-            $listeResults = [];
-            foreach ($tab as $val) {
+        if (is_array($reference)) {
+            foreach ($reference as $val) {
                 $entites = $this->documentManager->createQueryBuilder(Entities::class)
                     ->field('name')->equals($entityModificateur)
                     ->field('extraPayload.Identifiant')->equals($val)
@@ -183,10 +174,31 @@ class strutureVuesService
                     array_push($listeResults, $extraPayload);
                 }
             }
+        } else {
 
-            
-            return $listeResults;
+            if ($reference != '') {
+
+
+                $tab = explode(",", $reference);
+
+
+                foreach ($tab as $val) {
+                    $entites = $this->documentManager->createQueryBuilder(Entities::class)
+                        ->field('name')->equals($entityModificateur)
+                        ->field('extraPayload.Identifiant')->equals($val)
+                        ->getQuery()
+                        ->execute();
+
+                    foreach ($entites as $key => $entity) {
+                        $extraPayload = $entity->getExtraPayload();
+                        array_push($listeResults, $extraPayload);
+                    }
+                }
+            }
         }
+
+
+        return $listeResults;
     }
 
     function arborescence($param)
