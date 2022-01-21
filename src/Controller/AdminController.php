@@ -324,4 +324,35 @@ class AdminController extends AbstractController
     }
    
 
+        /**
+     * @Route("/api/admin/removeEntity", methods={"POST"})
+     */
+    public function removeEntity(Request $request)
+    {
+
+        $id=$request->get('id');
+        $entity=$request->get('entity');
+        if(is_null($id)||is_null($entity))
+        {
+
+            return new JsonResponse(array('merci de vérifier les données envoyées'),400);
+
+        }
+        else{
+
+            $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals($entity)
+            ->field('extraPayload.Identifiant')->equals($id)
+            ->findAndUpdate()
+            ->field('status')->set('delete')      
+            ->getQuery()
+            ->execute();
+            return new JsonResponse(array('message'=>'opération effectué'),200);
+        }
+
+
+
+    }
+
+
 }
