@@ -39,8 +39,9 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class RestaurateurController extends AbstractController
 {
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
-    {
+    public function __construct(DocumentManager $documentManager,EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
+    {   
+        $this->documentManager = $documentManager;
         $this->session = $session;
         $this->params = $params;
         $this->entityManager = $entityManager;
