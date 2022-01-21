@@ -698,7 +698,7 @@ class SecurityController extends AbstractController
 
     
      /**
-     * @Route("/api/admin/updateAccount/{id}", methods={"POST"})
+     * @Route("/api/account/updateAccount/{id}", methods={"POST"})
      */
 
 
