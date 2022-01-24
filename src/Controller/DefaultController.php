@@ -638,4 +638,32 @@ class DefaultController extends AbstractController
         return new JsonResponse(array_values($results), '200');
 
     }
+
+
+            /**
+     * @Route("/getImagesProduits", methods={"POST"})
+     */
+    public function getImagesProduitsAction(Request $request)
+    {
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
+        $liste=$request->get('identifiants');
+        $tab=[];
+        $i=0;
+        foreach($liste as $id)
+        {
+
+            $data = $this->eventsManager->downloadDocument($id, $destination);
+
+            $port = $request->getPort();
+            $host = $request->getHost();
+    
+    
+            $urlPhotoCouverture = 'http://' . $host . ':' . $port . '/uploads/' . str_replace(' ', '',  $data->getName());
+    
+            $tab[$i]=array('id'=>$id,'url'=>$urlPhotoCouverture);
+            $i++;
+        }
+
+            return new JsonResponse($tab,200);
+    }
 }
