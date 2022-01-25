@@ -595,13 +595,13 @@ class DefaultController extends AbstractController
         $listeCategories = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('categories')
             ->field('extraPayload.isActive')->equals("1")
-            ->field('extraPayload.Identifiant')->equals($id)
+            ->field('extraPayload.linkedRestaurant')->equals($id)
             ->getQuery()
             ->execute();
         $nbreCategories = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('categories')
             ->field('extraPayload.isActive')->equals("1")
-            ->field('extraPayload.Identifiant')->equals($id)
+            ->field('extraPayload.linkedRestaurant')->equals($id)
             ->count()
             ->getQuery()
             ->execute();
@@ -643,7 +643,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/detailsMenu/{id}", methods={"GET"})
      */
-    public function detailsMenu($id,Request $request,strutureVuesService $strutureVuesService)
+    public function detailsMenu(DocumentManager $dm,$id,Request $request,strutureVuesService $strutureVuesService)
     {
 
         $vue = null;
@@ -672,27 +672,67 @@ class DefaultController extends AbstractController
         $data = $this->entityManager->serializeContent($data);
 
 
-        $vueAvancer = null;
-        if ($request->get('vueAvancer') != null) {
-            $vueAvancer = $request->get('vueAvancer');
-        }
-
+        $vueAvancer = "menus_single";
         $indexVue = "CLIENT";
-        if ($request->get('indexVue') != null) {
-            $indexVue = $request->get('indexVue');
-        }
-        if ($vueAvancer) {
+       
+  
             if (isset($data[0])) {
 
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
+
+                $listeProduitsObligatoires=$structureVues[0]['produitsObligatoires'];
+                if(is_array($listeProduitsObligatoires))
+                {
+
+                    if(sizeof($listeProduitsObligatoires))
+                    {
+                        foreach($listeProduitsObligatoires as $key=>$po)
+                        {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['produitsObligatoires'][$key]['name']=$produit->getExtrapayload()['name'];
+                        }
+                    }
+                }
+
+
+                $listeProduitsFacultatifs=$structureVues[0]['produitsObligatoires'];
+                if(is_array($listeProduitsFacultatifs))
+                {
+
+                    if(sizeof($listeProduitsFacultatifs))
+                    {
+                        foreach($listeProduitsFacultatifs as $key=>$pf)
+                        {
+                            $produit = $dm->getRepository(Entities::class)->find($pf['id']);
+
+                            $childrens=$produit->getExtrapayload()['childrens'];
+                            $listeChildrens=[];
+                            if(sizeof($childrens))
+                            {
+                                foreach($childrens as $c)
+                                {
+                                    $child = $dm->getRepository(Entities::class)->find($c);
+
+                                    $data= array('id'=>$child->getExtrapayload()['Identifiant'],'name'=>$child->getExtrapayload()['name']);
+
+
+                                    array_push($listeChildrens,$data);
+                                }
+                            }
+                            $structureVues[0]['produitsFacultatifs'][$key]['name']=$produit->getExtrapayload()['name'];
+                            $structureVues[0]['produitsFacultatifs'][$key]['childrens']=$listeChildrens;
+                      
+                        }
+                    }
+                }
                 return new JsonResponse($structureVues, '200');
             } else {
                 return new JsonResponse($data, '200');
             }
-        }
+     
 
-        return new JsonResponse($data, '200');
+       
 
     }
 
