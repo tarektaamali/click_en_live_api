@@ -640,6 +640,62 @@ class DefaultController extends AbstractController
     }
 
 
+    /**
+     * @Route("/detailsMenu/{id}", methods={"GET"})
+     */
+    public function detailsMenu($id,Request $request,strutureVuesService $strutureVuesService)
+    {
+
+        $vue = null;
+        if ($request->get('vue') != null) {
+            $vue = $request->get('vue');
+        }
+
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+
+        $vueVersion = null;
+        if ($request->get('vueVersion') != null) {
+            $vueVersion = $request->get('vueVersion');
+        }
+
+        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion);
+
+        // launch additional events on insert
+        $fireEvent = null;
+        if ($request->get('fireEvent') != null) {
+            $fireEvent = $request->get('fireEvent');
+        }
+
+        $data = $this->entityManager->serializeContent($data);
+
+
+        $vueAvancer = null;
+        if ($request->get('vueAvancer') != null) {
+            $vueAvancer = $request->get('vueAvancer');
+        }
+
+        $indexVue = "CLIENT";
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
+        if ($vueAvancer) {
+            if (isset($data[0])) {
+
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
+
+                return new JsonResponse($structureVues, '200');
+            } else {
+                return new JsonResponse($data, '200');
+            }
+        }
+
+        return new JsonResponse($data, '200');
+
+    }
+
             /**
      * @Route("/getImagesProduits", methods={"POST"})
      */
