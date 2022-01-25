@@ -696,7 +696,7 @@ class DefaultController extends AbstractController
                 }
 
 
-                $listeProduitsFacultatifs=$structureVues[0]['produitsObligatoires'];
+                $listeProduitsFacultatifs=$structureVues[0]['produitsFacultatifs'];
                 if(is_array($listeProduitsFacultatifs))
                 {
 
