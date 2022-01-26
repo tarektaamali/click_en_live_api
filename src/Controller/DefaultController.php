@@ -636,14 +636,13 @@ class DefaultController extends AbstractController
         }
 
         return new JsonResponse(array_values($results), '200');
-
     }
 
 
     /**
      * @Route("/detailsMenu/{id}", methods={"GET"})
      */
-    public function detailsMenu(DocumentManager $dm,$id,Request $request,strutureVuesService $strutureVuesService)
+    public function detailsMenu(DocumentManager $dm, $id, Request $request, strutureVuesService $strutureVuesService)
     {
 
         $vue = null;
@@ -674,92 +673,116 @@ class DefaultController extends AbstractController
 
         $vueAvancer = "menus_single";
         $indexVue = "CLIENT";
-       
-  
-            if (isset($data[0])) {
-
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
 
-                $listeProduitsObligatoires=$structureVues[0]['produitsObligatoires'];
-                if(is_array($listeProduitsObligatoires))
-                {
+        if (isset($data[0])) {
 
-                    if(sizeof($listeProduitsObligatoires))
-                    {
-                        foreach($listeProduitsObligatoires as $key=>$po)
-                        {
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
+
+
+            if(isset($structureVues[0]['tailles']))
+            {
+                $listeTailles = $structureVues[0]['tailles'];
+                if (is_array($listeTailles)) {
+    
+                    if (sizeof($listeTailles)) {
+                        foreach ($listeTailles as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['produitsObligatoires'][$key]['name']=$produit->getExtrapayload()['name'];
+                            $structureVues[0]['tailles'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
                 }
-
-
-                $listeProduitsFacultatifs=$structureVues[0]['produitsFacultatifs'];
-                if(is_array($listeProduitsFacultatifs))
-                {
-
-                    if(sizeof($listeProduitsFacultatifs))
-                    {
-                        foreach($listeProduitsFacultatifs as $key=>$pf)
-                        {
-                            $produit = $dm->getRepository(Entities::class)->find($pf['id']);
-
-                            $childrens=$produit->getExtrapayload()['childrens'];
-                            $listeChildrens=[];
-                            if(sizeof($childrens))
-                            {
-                                foreach($childrens as $c)
-                                {
-                                    $child = $dm->getRepository(Entities::class)->find($c);
-
-                                    $data= array('id'=>$child->getExtrapayload()['Identifiant'],'name'=>$child->getExtrapayload()['name']);
-
-
-                                    array_push($listeChildrens,$data);
-                                }
-                            }
-                            $structureVues[0]['produitsFacultatifs'][$key]['name']=$produit->getExtrapayload()['name'];
-                            $structureVues[0]['produitsFacultatifs'][$key]['childrens']=$listeChildrens;
-                      
-                        }
-                    }
-                }
-                return new JsonResponse($structureVues, '200');
-            } else {
-                return new JsonResponse($data, '200');
             }
-     
 
-       
+            if(isset($structureVues[0]['sauces']))
+            {
+                $listesauces = $structureVues[0]['sauces'];
+                if (is_array($listesauces)) {
+    
+                    if (sizeof($listesauces)) {
+                        foreach ($listesauces as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                }
+            }
+            if(isset($structureVues[0]['viandes']))
+            {
+                $listeviandes = $structureVues[0]['viandes'];
+                if (is_array($listeviandes)) {
+    
+                    if (sizeof($listeviandes)) {
+                        foreach ($listeviandes as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                }
+            }
 
+
+            if(isset($structureVues[0]['garnitures']))
+            {
+                $listegarnitures = $structureVues[0]['garnitures'];
+                if (is_array($listegarnitures)) {
+    
+                    if (sizeof($listegarnitures)) {
+                        foreach ($listegarnitures as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['garnitures'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                }
+            }
+
+
+            if(isset($structureVues[0]['boisons']))
+            {
+                $listeboisons = $structureVues[0]['boisons'];
+                if (is_array($listeboisons)) {
+    
+                    if (sizeof($listeboisons)) {
+                        foreach ($listeboisons as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['boisons'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                }
+            }
+         
+
+
+
+            return new JsonResponse($structureVues, '200');
+        } else {
+            return new JsonResponse($data, '200');
+        }
     }
 
-            /**
+    /**
      * @Route("/getImagesProduits", methods={"POST"})
      */
     public function getImagesProduitsAction(Request $request)
     {
         $destination = $this->getParameter('kernel.project_dir') . '/public/uploads';
-        $liste=$request->get('identifiants');
-        $tab=[];
-        $i=0;
-        foreach($liste as $id)
-        {
+        $liste = $request->get('identifiants');
+        $tab = [];
+        $i = 0;
+        foreach ($liste as $id) {
 
             $data = $this->eventsManager->downloadDocument($id, $destination);
 
             $port = $request->getPort();
             $host = $request->getHost();
-    
-    
+
+
             $urlPhotoCouverture = 'http://' . $host . ':' . $port . '/uploads/' . str_replace(' ', '',  $data->getName());
-    
-            $tab[$i]=array('id'=>$id,'url'=>$urlPhotoCouverture);
+
+            $tab[$i] = array('id' => $id, 'url' => $urlPhotoCouverture);
             $i++;
         }
 
-            return new JsonResponse($tab,200);
+        return new JsonResponse($tab, 200);
     }
 }

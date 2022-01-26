@@ -526,34 +526,23 @@ class SecurityController extends AbstractController
 
 
 
-        /**
+    /**
      * @Route("/api/account/getDetailsAccount" , methods ={"GET"} , name = "getDetailsAccount")
      */
     public function getDetailsAccount(strutureVuesService $strutureVuesService)
     {
         $user = $this->getUser();
-        if($user)
-        {
+        if ($user) {
 
             $data = $this->entityManager->getSingleResult($user->getUserIdentifier(), null, null);
-            if(isset($data[0]))
-            $data = $this->entityManager->serializeContent($data);
-            $structureVues = $strutureVuesService->getDetailsEntitySerializer("ADMIN","comptes_single", $data, "fr");
-    
+            if (isset($data[0]))
+                $data = $this->entityManager->serializeContent($data);
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer("ADMIN", "comptes_single", $data, "fr");
+
             return new JsonResponse($structureVues, '200');
+        } else {
+            return new JsonResponse(array('message' => 'compte introuvable'), 500);
         }
-        else
-        {
-            return new JsonResponse(array('message'=>'compte introuvable'),500);
-        }
-
-
-        
-
-
-    
-    
-        
     }
 
 
@@ -696,43 +685,37 @@ class SecurityController extends AbstractController
     }
 
 
-    
-     /**
+
+    /**
      * @Route("/api/account/updateAccount/{id}", methods={"POST"})
      */
 
 
-    public function updateAccount($id,Request $request,UserService $userService)
+    public function updateAccount($id, Request $request, UserService $userService)
     {
 
         $extraPayload = null;
 
 
-        $user=$this->getUser();
-      
-        if($user)
-        {
+        $user = $this->getUser();
+
+        if ($user) {
             if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
                 $content = json_decode($request->getContent(), true);
                 $extraPayload = $content['extraPayload'];
             }
-    
+
             $data = $this->entityManager->updateResultV2($id, $extraPayload);
-    
 
 
-            $userService->updateCompte($user,$extraPayload);
-          
-            return new JsonResponse(array('message'=>'compte modifié'),200);
 
+            $userService->updateCompte($user, $extraPayload);
+
+            return new JsonResponse(array('message' => 'compte modifié'), 200);
+        } else {
+
+
+            return new JsonResponse(array('message' => 'compte introuvable'), 400);
         }
-        else{
-
-
-            return new JsonResponse(array('message'=>'compte introuvable'),400);
-        }
-
-
-
     }
 }
