@@ -469,9 +469,8 @@ class ClientController extends AbstractController
             ->field('name')->equals('menuspaniers')
             ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
             ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
-            ->count()
             ->getQuery()
-            ->execute();
+            ->getSingleResult();
             $data= $this->entityManager->updateResultV2($menupanier->getId(), $extraPayload);
         }
         else{
