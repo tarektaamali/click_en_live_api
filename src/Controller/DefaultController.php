@@ -692,6 +692,10 @@ class DefaultController extends AbstractController
                             $structureVues[0]['tailles'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
+                    else{
+                        $structureVues[0]['tailles']=[];
+                    }
+                    
                 }
             }
 
@@ -706,6 +710,9 @@ class DefaultController extends AbstractController
                             $structureVues[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
+                    else{
+                        $structureVues[0]['sauces']=[];
+                    }
                 }
             }
             if(isset($structureVues[0]['viandes']))
@@ -718,6 +725,9 @@ class DefaultController extends AbstractController
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
+                    }
+                    else{
+                        $structureVues[0]['viandes']=[];
                     }
                 }
             }
@@ -734,6 +744,9 @@ class DefaultController extends AbstractController
                             $structureVues[0]['garnitures'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
+                    else{
+                        $structureVues[0]['garnitures']=[];
+                    }
                 }
             }
 
@@ -749,8 +762,31 @@ class DefaultController extends AbstractController
                             $structureVues[0]['boisons'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
+                    else{
+                        $structureVues[0]['boisons']=[];
+                    }
                 }
             }
+
+            if(isset($structureVues[0]['autres']))
+            {
+                $listeboisons = $structureVues[0]['autres'];
+                if (is_array($listeboisons)) {
+    
+                    if (sizeof($listeboisons)) {
+                        foreach ($listeboisons as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $structureVues[0]['autres'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                    else{
+                        $structureVues[0]['autres']=[];
+                    }
+                }
+               
+
+            }
+
          
 
 
