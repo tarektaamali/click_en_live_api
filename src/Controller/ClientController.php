@@ -329,7 +329,7 @@ class ClientController extends AbstractController
     {
         $extraPayload = null;
         $entity = null;
-        $form = "panier";
+        $form = "paniers";
         $lang = "fr";
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
