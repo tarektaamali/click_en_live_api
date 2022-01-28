@@ -347,10 +347,10 @@ class ClientController extends AbstractController
             return new JsonResponse('Merci de vérifier les données envoyées.');
         }
         if ($nbrePanier == 0) {
-            $extraPayload['quantite'] = "0";
-            $extraPayload['prixHT'] = "0";
-            $extraPayload['prixTTC'] = "0";
-            $extraPayload['remise'] = "0";
+            $extraPayload['quantite'] = 0;
+            $extraPayload['prixHT'] = 0;
+            $extraPayload['prixTTC'] = 0;
+            $extraPayload['remise'] = 0;
             $extraPayload['listeMenus'] = [];
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
             $data = $this->entityManager->getSingleResult($data->getId(), null, null);
@@ -536,4 +536,164 @@ class ClientController extends AbstractController
             return new JsonResponse($monPanier, 200); 
 
     }
+
+
+   /**
+     * @Route("api/client/removeProduitFromPanier", methods={"POST"})
+     */
+
+    public function removeProduitFromPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
+    {
+
+        $extraPayload = null;
+        $entity = null;
+        $form = "produitpanier";
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+
+        $vueAvancer = "vue_produits_single_client";
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+        $nbMenuPanier = 0;
+        if (isset($extraPayload['linkedPanier']) && isset($extraPayload['linkedMenu'])) {
+            $nbMenuPanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuspaniers')
+                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
+                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->count()
+                ->getQuery()
+                ->execute();
+            // var_dump($entites);
+        } else {
+            return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
+        }
+
+
+        if ($nbMenuPanier) {
+            $monPanier = $dm->getRepository(Entities::class)->find($extraPayload['linkedPanier']);
+            //	var_dump($monPanier);
+
+            $produitpanier = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('menuspaniers')
+            ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
+            ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->getQuery()
+                ->getSingleResult();
+            //	dd( $produitpanier->getExtraPayload()['Identifiant']); 
+            $tabListeMenus = $monPanier->getExtraPayload()['listeMenus'];
+          
+            //    var_dump($tabListeProduits);
+            unset($tabListeMenus[array_search($produitpanier->getId(),   $tabListeMenus)]);
+            //dd($tabListeProduits);	
+            //Recalculer total panier.
+
+            //findProduit and remove
+            $produitpanier = $dm->createQueryBuilder(Entities::class)
+                ->findAndRemove()
+                ->field('name')->equals('menuspaniers')
+                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
+                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->getQuery()
+                ->execute();
+                $totalTTC = 0;
+                $quantite = 0;
+        
+        
+        
+                    foreach ($tabListeMenus as $mp) {
+        
+                        $menupanier =  $dm->getRepository(Entities::class)->find($mp);
+                        $totalTTC +=floatval($menupanier->getExtraPayload()['prixTTC']);
+                        $quantite += intval($menupanier->getExtraPayload()['quantite']);
+                    }
+            
+                    $dataPanier['prixTTC'] = floatval($totalTTC);
+                    $dataPanier['quantite'] = intval($quantite);
+                    $dataPanier['listeMenus'] = $tabListeMenus;
+            
+                    //Mette à jour panier
+            
+                    $panier = $this->entityManager->updateResultV2($monPanier->getId(), $dataPanier);
+            
+            
+                    $data = $this->entityManager->getSingleResult($monPanier->getId(), null, null);
+            
+                    $monPanier = $this->entityManager->serializeContent($data);
+        
+                    $listeMenus = [];
+                    if (sizeof($monPanier[0]['listeMenus'])) {
+                        foreach ($monPanier[0]['listeMenus'] as $mp) {
+                            $data = $this->entityManager->getSingleResult($mp, null, null);
+                            $menupanier = $this->entityManager->serializeContent($data);
+                            $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
+                            $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
+                            $menupanier[0]['linkedMenu'] = $dataMenu;
+                            array_push($listeMenus, $menupanier[0]);
+                        }
+                    }
+                    $monPanier[0]['listeMenus'] = $listeMenus;
+                    return new JsonResponse($monPanier, 200); 
+        } else {
+
+            return new JsonResponse(array("message" => "menu introuvable"), 400);
+        }
+    }
+
+
+
+    /**
+     * @Route("api/client/clearPanier", methods={"POST"})
+     */
+    public function clearPanier(DocumentManager $dm, Request $request)
+    {
+
+        $extraPayload = null;
+        $entity = null;
+        $form = "panier";
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+
+
+        $monPanier = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
+            ->findAndUpdate()
+            ->field('extraPayload.statut')->set('deleted')
+            //->field('status')->set("deleted")
+            ->getQuery()
+            ->execute();
+
+        //	dd($monPanier);
+        //$monPanier = $dm->getRepository(Entities::class)->find($extraPayload['linkedPanier']);
+
+
+        $dataNewPanier['linkedCompte'] = $monPanier->getExtraPayload()['linkedCompte'];
+
+        $dataNewPanier['statut'] = "en cours";
+        $dataNewPanier['quantite'] = 0;
+        $dataNewPanier['prixHT'] = 0;
+        $dataNewPanier['prixTTC'] = 0;
+        $dataNewPanier['remise'] = 0;
+        $dataNewPanier['listeMenus'] = [];
+        $data = $this->entityManager->setResult('paniers', null, $dataNewPanier);
+        $data = $this->entityManager->getSingleResult($data->getId(), null, null);
+
+        $monPanier = $this->entityManager->serializeContent($data);
+
+
+
+        return new JsonResponse($monPanier);
+    }
+
+
 }
