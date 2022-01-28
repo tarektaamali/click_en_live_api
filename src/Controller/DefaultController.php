@@ -606,7 +606,7 @@ class DefaultController extends AbstractController
             ->getQuery()
             ->execute();
 
-
+	//dd($nbreCategories);
         $results = array();
 
         foreach ($listeCategories as $cat) {
@@ -619,15 +619,16 @@ class DefaultController extends AbstractController
             array_push($results, $data);
         }
 
-
+//	dd($results);
         foreach ($structuresFinal['results'] as $menu) {
             $cat = $menu["categorie"];
             $test = array_search($cat, array_column($results, 'id'));
-            if (is_int($test)) {
+//		var_dump(is_int($test)); 
+           if (is_int($test)) {
                 array_push($results[$test]['listeMenus'], $menu);
             }
         }
-
+	//dd($results);
         foreach ($results as $key => $resto) {
 
             if (sizeof($results[$key]['listeMenus']) == 0) {
