@@ -337,7 +337,7 @@ class ClientController extends AbstractController
         }
         if (isset($extraPayload['linkedCompte'])) {
             $nbrePanier = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('panier')
+                ->field('name')->equals('paniers')
                 ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
                 ->field('extraPayload.statut')->equals("en cours")
                 ->count()
@@ -357,7 +357,7 @@ class ClientController extends AbstractController
             $monPanier = $this->entityManager->serializeContent($data);
         } else {
             $monpanier = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('panier')
+                ->field('name')->equals('paniers')
                 ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
                 ->field('extraPayload.statut')->equals("en cours")
                 ->getQuery()
@@ -415,7 +415,7 @@ class ClientController extends AbstractController
         }
 
         $menu = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('menu')
+            ->field('name')->equals('menus')
             ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenu'])
             ->getQuery()
             ->getSingleResult();
@@ -480,7 +480,7 @@ class ClientController extends AbstractController
 
 
         $monPanier = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('panier')
+        ->field('name')->equals('paniers')
         ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
         ->getQuery()
         ->getSingleResult();
