@@ -664,9 +664,9 @@ class DefaultController extends AbstractController
         }
         $identifiantMongo=null;
 
-      /*  if ($request->get('identifiantMongo') != null) {
+        if ($request->get('identifiantMongo') != null) {
             $identifiantMongo = $request->get('identifiantMongo');
-        }*/
+        }
 
         $nbreFavoris = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('favoris')
@@ -819,7 +819,7 @@ class DefaultController extends AbstractController
 
             }
 
-        //    $structureVues[0]['like']=$like;
+         $structureVues[0]['like']=$like;
             return new JsonResponse($structureVues, '200');
         } else {
             return new JsonResponse($data, '200');
