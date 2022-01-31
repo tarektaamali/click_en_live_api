@@ -662,6 +662,11 @@ class DefaultController extends AbstractController
         if ($request->get('vue') != null) {
             $vue = $request->get('vue');
         }
+        $identifiantMongo=null;
+
+        if ($request->get('identifiantMongo') != null) {
+            $vue = $request->get('identifiantMongo');
+        }
 
         $lang = 'fr';
         if ($request->get('lang') != null) {

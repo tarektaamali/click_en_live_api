@@ -39,7 +39,7 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class AdminController extends AbstractController
 {
 
-    public function __construct(DocumentManager $documentManager,EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
+    public function __construct(DocumentManager $documentManager, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
     {
         $this->documentManager = $documentManager;
         $this->session = $session;
@@ -56,24 +56,78 @@ class AdminController extends AbstractController
     public function createAction(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
-       
-            $entity = null;
-     
+
+        $entity = null;
+
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
 
-            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+        if ($form = "menus") {
 
 
-            //ghorbel ==> vue
+            if (isset($extraPayload['tailles'])) {
+                if (sizeof($extraPayload['tailles'])) {
+                    foreach ($extraPayload['tailles'] as $key => $taille) {
+                        $taille[$key]['prix'] = floatval($taille[$key]['prix']);
+                    }
+                }
+            }
 
-            return new JsonResponse($data->getId());
-        
+
+            if (isset($extraPayload['sauces'])) {
+                if (sizeof($extraPayload['sauces'])) {
+                    foreach ($extraPayload['sauces'] as $key => $taille) {
+                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                    }
+                }
+            }
+
+
+            if (isset($extraPayload['boisons'])) {
+                if (sizeof($extraPayload['boisons'])) {
+                    foreach ($extraPayload['boisons'] as $key => $taille) {
+                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                    }
+                }
+            }
+            if (isset($extraPayload['viandes'])) {
+                if (sizeof($extraPayload['viandes'])) {
+                    foreach ($extraPayload['viandes'] as $key => $taille) {
+                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                    }
+                }
+            }
+
+            if (isset($extraPayload['garnitures'])) {
+                if (sizeof($extraPayload['garnitures'])) {
+                    foreach ($extraPayload['garnitures'] as $key => $taille) {
+                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                    }
+                }
+            }
+
+
+            if (isset($extraPayload['autres'])) {
+                if (sizeof($extraPayload['autres'])) {
+                    foreach ($extraPayload['autres'] as $key => $taille) {
+                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                    }
+                }
+            }
+        }
+
+
+        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+
+
+        //ghorbel ==> vue
+
+        return new JsonResponse($data->getId());
     }
- 
+
     /**
      * @Route("/api/admin/delete/{id}", methods={"DELETE"})
      */
@@ -148,14 +202,14 @@ class AdminController extends AbstractController
 
         return new JsonResponse(array("url" => $urlPhotoCouverture), 200);
     }
-   
+
     /**
      * @Route("/api/admin/update/{id}", methods={"POST"})
      */
     public function updateV2Action($id, Request $request)
     {
         $extraPayload = null;
-        
+
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
@@ -176,7 +230,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/api/admin/readAll/{entity}", methods={"GET"})
      */
-    public function readAvanceAll($entity, strutureVuesService $strutureVuesService, Request $request,$routeParams = array())
+    public function readAvanceAll($entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
@@ -228,20 +282,20 @@ class AdminController extends AbstractController
             $lang = $request->get('lang');
         }
 
-    
+
         switch ($version) {
             case 1:
                 $data = $this->entityManager->getResult($entity, $vue, $vueVersion, $filter, $filterValue, $filterVersion, $maxResults, $offset);
                 break;
             case 2:
-                
+
                 $filter = array_merge($routeParams, $request->query->all());
-              
+
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
-                
-                
+
+
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
                 break;
         }
@@ -254,7 +308,7 @@ class AdminController extends AbstractController
         if ($vueAvancer) {
             if (isset($data['results'])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data['results'], $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
                 $structuresFinal['count'] = $data['count'];
                 $structuresFinal['results'] = $structureVues;
                 return new JsonResponse($structuresFinal, '200');
@@ -307,13 +361,13 @@ class AdminController extends AbstractController
 
 
         $indexVue = "CLIENT";
-       
-       
+
+
 
         if ($vueAvancer) {
             if (isset($data[0])) {
 
-                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue,$vueAvancer, $data, $lang);
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
                 return new JsonResponse($structureVues, '200');
             } else {
@@ -323,37 +377,29 @@ class AdminController extends AbstractController
 
         return new JsonResponse($data, '200');
     }
-   
 
-        /**
+
+    /**
      * @Route("/api/admin/removeEntity", methods={"POST"})
      */
     public function removeEntity(Request $request)
     {
 
-        $id=$request->get('id');
-        $entity=$request->get('entity');
-        if(is_null($id)||is_null($entity))
-        {
+        $id = $request->get('id');
+        $entity = $request->get('entity');
+        if (is_null($id) || is_null($entity)) {
 
-            return new JsonResponse(array('merci de vérifier les données envoyées'),400);
-
-        }
-        else{
+            return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
+        } else {
 
             $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals($entity)
-            ->field('extraPayload.Identifiant')->equals($id)
-            ->findAndUpdate()
-            ->field('status')->set('delete')      
-            ->getQuery()
-            ->execute();
-            return new JsonResponse(array('message'=>'opération effectué'),200);
+                ->field('name')->equals($entity)
+                ->field('extraPayload.Identifiant')->equals($id)
+                ->findAndUpdate()
+                ->field('status')->set('delete')
+                ->getQuery()
+                ->execute();
+            return new JsonResponse(array('message' => 'opération effectué'), 200);
         }
-
-
-
     }
-
-
 }
