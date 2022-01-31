@@ -665,8 +665,23 @@ class DefaultController extends AbstractController
         $identifiantMongo=null;
 
         if ($request->get('identifiantMongo') != null) {
-            $vue = $request->get('identifiantMongo');
+            $identifiantMongo = $request->get('identifiantMongo');
         }
+
+        $nbreFavoris = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('favoris')
+            ->field('extraPayload.restaurant')->equals($id)
+            ->field('extraPayload.compte')->equals($identifiantMongo)
+            ->count()
+            ->getQuery()
+            ->execute();
+
+        $like=false;    
+        if($nbreFavoris)
+        {
+            $like=true;
+        }    
+
 
         $lang = 'fr';
         if ($request->get('lang') != null) {
@@ -804,10 +819,7 @@ class DefaultController extends AbstractController
 
             }
 
-         
-
-
-
+            $structureVues[0]['like']=$like;
             return new JsonResponse($structureVues, '200');
         } else {
             return new JsonResponse($data, '200');

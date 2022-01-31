@@ -695,4 +695,62 @@ class ClientController extends AbstractController
     }
 
 
+
+        /**
+     * @Route("api/client/likeResto", methods={"POST"})
+     */
+    public function likeResto(DocumentManager $dm, Request $request)
+    {
+
+        $idResto=$request->get('idResto');
+        $user=$this->getUser();
+
+        if(is_null($idResto)||$idResto=="")
+        {
+            return new JsonResponse(array('merci de verifier les donnees envoyees.'),400);
+        }
+
+        if($user)
+        {
+
+            $idMongo=$user->getUserIdentifier();
+
+            $nbreFavoris = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('favoris')
+            ->field('extraPayload.restaurant')->equals($idResto)
+            ->field('extraPayload.compte')->equals($idMongo)
+            ->count()
+            ->getQuery()
+            ->execute();
+
+            if($nbreFavoris==0)
+            {
+
+                $extraPayload['compte']=$idMongo;
+                $extraPayload['restaurant']=$idResto;
+
+                $data = $this->entityManager->setResult('favoris', null, $extraPayload);
+            }
+            else{
+                $favoris=$dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('favoris')
+                ->field('extraPayload.compte')->equals($idMongo)
+                ->field('extraPayload.restaurant')->equals($idResto)
+                ->getQuery()
+                ->getSingleResult();
+
+                $entities = $dm->getRepository(Entities::class)->find($favoris->getId());
+                $dm->remove($entities);
+                $dm->flush();
+            }
+
+            return new JsonResponse(array('message'=>'done'),200);
+        }
+        else{
+            return new JsonResponse(array('merci de se connecter.'),400);
+        }
+
+
+
+    }
 }
