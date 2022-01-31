@@ -65,13 +65,13 @@ class AdminController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        if ($form = "menus") {
+        if ($form == "menus") {
 
 
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
                     foreach ($extraPayload['tailles'] as $key => $taille) {
-                        $taille[$key]['prix'] = floatval($taille[$key]['prix']);
+                        $extraPayload[$key]['prix'] = floatval($taille['prix']);
                     }
                 }
             }
@@ -80,7 +80,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['sauces'])) {
                 if (sizeof($extraPayload['sauces'])) {
                     foreach ($extraPayload['sauces'] as $key => $taille) {
-                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -89,14 +89,14 @@ class AdminController extends AbstractController
             if (isset($extraPayload['boisons'])) {
                 if (sizeof($extraPayload['boisons'])) {
                     foreach ($extraPayload['boisons'] as $key => $taille) {
-                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
             if (isset($extraPayload['viandes'])) {
                 if (sizeof($extraPayload['viandes'])) {
                     foreach ($extraPayload['viandes'] as $key => $taille) {
-                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -104,7 +104,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['garnitures'])) {
                 if (sizeof($extraPayload['garnitures'])) {
                     foreach ($extraPayload['garnitures'] as $key => $taille) {
-                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -113,12 +113,11 @@ class AdminController extends AbstractController
             if (isset($extraPayload['autres'])) {
                 if (sizeof($extraPayload['autres'])) {
                     foreach ($extraPayload['autres'] as $key => $taille) {
-                        $taille[$key]['prixFacculatitf'] = floatval($taille[$key]['prixFacculatitf']);
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
         }
-
 
         $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
@@ -204,9 +203,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/api/admin/update/{id}", methods={"POST"})
+     * @Route("/api/admin/update/entity/{id}", methods={"POST"})
      */
-    public function updateV2Action($id, Request $request)
+    public function updateV2Action($id, $entity,Request $request)
     {
         $extraPayload = null;
 
@@ -215,6 +214,59 @@ class AdminController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+        if ($entity == "menus") {
+
+
+            if (isset($extraPayload['tailles'])) {
+                if (sizeof($extraPayload['tailles'])) {
+                    foreach ($extraPayload['tailles'] as $key => $taille) {
+                        $extraPayload[$key]['prix'] = floatval($taille['prix']);
+                    }
+                }
+            }
+
+
+            if (isset($extraPayload['sauces'])) {
+                if (sizeof($extraPayload['sauces'])) {
+                    foreach ($extraPayload['sauces'] as $key => $taille) {
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                    }
+                }
+            }
+
+
+            if (isset($extraPayload['boisons'])) {
+                if (sizeof($extraPayload['boisons'])) {
+                    foreach ($extraPayload['boisons'] as $key => $taille) {
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                    }
+                }
+            }
+            if (isset($extraPayload['viandes'])) {
+                if (sizeof($extraPayload['viandes'])) {
+                    foreach ($extraPayload['viandes'] as $key => $taille) {
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                    }
+                }
+            }
+
+            if (isset($extraPayload['garnitures'])) {
+                if (sizeof($extraPayload['garnitures'])) {
+                    foreach ($extraPayload['garnitures'] as $key => $taille) {
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                    }
+                }
+            }
+
+
+            if (isset($extraPayload['autres'])) {
+                if (sizeof($extraPayload['autres'])) {
+                    foreach ($extraPayload['autres'] as $key => $taille) {
+                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                    }
+                }
+            }
+        }
         $data = $this->entityManager->updateResultV2($id, $extraPayload);
 
         $fireEvent = null;
