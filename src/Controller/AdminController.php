@@ -71,7 +71,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
                     foreach ($extraPayload['tailles'] as $key => $taille) {
-                        $extraPayload[$key]['prix'] = floatval($taille['prix']);
+                        $extraPayload['tailles'][$key]['prix'] = floatval($taille['prix']);
                     }
                 }
             }
@@ -80,7 +80,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['sauces'])) {
                 if (sizeof($extraPayload['sauces'])) {
                     foreach ($extraPayload['sauces'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['sauces'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -89,14 +89,14 @@ class AdminController extends AbstractController
             if (isset($extraPayload['boisons'])) {
                 if (sizeof($extraPayload['boisons'])) {
                     foreach ($extraPayload['boisons'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['boisons'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
             if (isset($extraPayload['viandes'])) {
                 if (sizeof($extraPayload['viandes'])) {
                     foreach ($extraPayload['viandes'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -104,7 +104,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['garnitures'])) {
                 if (sizeof($extraPayload['garnitures'])) {
                     foreach ($extraPayload['garnitures'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -113,7 +113,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['autres'])) {
                 if (sizeof($extraPayload['autres'])) {
                     foreach ($extraPayload['autres'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['autres'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -216,11 +216,10 @@ class AdminController extends AbstractController
 
         if ($entity == "menus") {
 
-
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
                     foreach ($extraPayload['tailles'] as $key => $taille) {
-                        $extraPayload[$key]['prix'] = floatval($taille['prix']);
+                        $extraPayload['tailles'][$key]['prix'] = floatval($taille['prix']);
                     }
                 }
             }
@@ -229,7 +228,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['sauces'])) {
                 if (sizeof($extraPayload['sauces'])) {
                     foreach ($extraPayload['sauces'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['sauces'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -238,14 +237,14 @@ class AdminController extends AbstractController
             if (isset($extraPayload['boisons'])) {
                 if (sizeof($extraPayload['boisons'])) {
                     foreach ($extraPayload['boisons'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['boisons'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
             if (isset($extraPayload['viandes'])) {
                 if (sizeof($extraPayload['viandes'])) {
                     foreach ($extraPayload['viandes'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -253,7 +252,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['garnitures'])) {
                 if (sizeof($extraPayload['garnitures'])) {
                     foreach ($extraPayload['garnitures'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
@@ -262,7 +261,7 @@ class AdminController extends AbstractController
             if (isset($extraPayload['autres'])) {
                 if (sizeof($extraPayload['autres'])) {
                     foreach ($extraPayload['autres'] as $key => $taille) {
-                        $extraPayload[$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        $extraPayload['autres'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
                     }
                 }
             }
