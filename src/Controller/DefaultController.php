@@ -622,11 +622,23 @@ class DefaultController extends AbstractController
 //	dd($results);
         foreach ($structuresFinal['results'] as $menu) {
             $cat = $menu["categorie"];
-            $test = array_search($cat, array_column($results, 'id'));
-//		var_dump(is_int($test)); 
-           if (is_int($test)) {
-                array_push($results[$test]['listeMenus'], $menu);
+            if(sizeof($cat))
+            {
+
+                foreach($cat as $c)
+                {
+
+                    $test = array_search($c, array_column($results, 'id'));
+                    //		var_dump(is_int($test)); 
+                    if (is_int($test)) {
+                    array_push($results[$test]['listeMenus'], $menu);
+                    }
+
+                }
+
+
             }
+        
         }
 	//dd($results);
         foreach ($results as $key => $resto) {
