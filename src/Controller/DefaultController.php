@@ -662,25 +662,6 @@ class DefaultController extends AbstractController
         if ($request->get('vue') != null) {
             $vue = $request->get('vue');
         }
-        $identifiantMongo=null;
-
-        if ($request->get('identifiantMongo') != null) {
-            $identifiantMongo = $request->get('identifiantMongo');
-        }
-
-        $nbreFavoris = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('favoris')
-            ->field('extraPayload.restaurant')->equals($id)
-            ->field('extraPayload.compte')->equals($identifiantMongo)
-            ->count()
-            ->getQuery()
-            ->execute();
-
-        $like=false;    
-        if($nbreFavoris)
-        {
-            $like=true;
-        }    
 
 
         $lang = 'fr';
@@ -819,7 +800,6 @@ class DefaultController extends AbstractController
 
             }
 
-         $structureVues[0]['like']=$like;
             return new JsonResponse($structureVues, '200');
         } else {
             return new JsonResponse($data, '200');
@@ -850,5 +830,37 @@ class DefaultController extends AbstractController
         }
 
         return new JsonResponse($tab, 200);
+    }
+
+
+
+    /**
+     * @Route("/getLiKE/{id}", methods={"GET"})
+     */
+    public function getLiKE(DocumentManager $dm, $id, Request $request, strutureVuesService $strutureVuesService)
+    {
+
+        $like=false;
+        $identifiantMongo=null;
+
+        if ($request->get('identifiantMongo') != null) {
+            $identifiantMongo = $request->get('identifiantMongo');
+        }
+
+        $nbreFavoris = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('favoris')
+            ->field('extraPayload.restaurant')->equals($id)
+            ->field('extraPayload.compte')->equals($identifiantMongo)
+            ->count()
+            ->getQuery()
+            ->execute();
+
+        $like=false;    
+        if($nbreFavoris)
+        {
+            $like=true;
+        }    
+
+        return new JsonResponse(array('like'=>$like));
     }
 }
