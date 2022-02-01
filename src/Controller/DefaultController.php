@@ -753,9 +753,9 @@ class DefaultController extends AbstractController
             if(isset($structureVues[0]['garnitures']))
             {
                 $listesauces = $structureVues[0]['garnitures'];
-                if (isset($listesauces[0]['garnitures'])) {
+                if (isset($listesauces[0]['produits'])) {
     
-                    $listeProduits=$listesauces[0]['garnitures'];
+                    $listeProduits=$listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -773,9 +773,9 @@ class DefaultController extends AbstractController
             if(isset($structureVues[0]['boisons']))
             {
                 $listesauces = $structureVues[0]['boisons'];
-                if (isset($listesauces[0]['boisons'])) {
+                if (isset($listesauces[0]['produits'])) {
     
-                    $listeProduits=$listesauces[0]['boisons'];
+                    $listeProduits=$listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -794,9 +794,9 @@ class DefaultController extends AbstractController
             if(isset($structureVues[0]['autres']))
             {
                 $listesauces = $structureVues[0]['autres'];
-                if (isset($listesauces[0]['autres'])) {
+                if (isset($listesauces[0]['produits'])) {
     
-                    $listeProduits=$listesauces[0]['autres'];
+                    $listeProduits=$listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
