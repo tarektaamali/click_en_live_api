@@ -670,7 +670,7 @@ class ClientController extends AbstractController
             ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
             ->findAndUpdate()
             ->field('extraPayload.statut')->set('deleted')
-            //->field('status')->set("deleted")
+            ->field('status')->set("deleted")
             ->getQuery()
             ->execute();
 
@@ -754,5 +754,61 @@ class ClientController extends AbstractController
 
 
 
+    }
+
+
+          /**
+     * @Route("affecterPanierUserAnonymeToClient", methods={"POST"})
+     */
+
+    public function affecterPanierUserAnonymeToClient(DocumentManager $dm,Request $request)
+    {
+
+        $idClient=$request->get('idMongo');
+        $idAnonyme=$request->get('idAnonyme');
+
+        if(is_null($idClient)||is_null($idClient))
+        {
+
+            return new JsonResponse(array('message'=>'merci de verifier les donnees envoyees'),400);
+        }
+        else{
+
+            $anciensPaniersClients = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.linkedCompte')->equals($idClient)
+            ->field('extraPayload.statut')->equals("active")
+            ->getQuery()
+            ->execute();
+            if(sizeof($anciensPaniersClients))
+            {
+                foreach($anciensPaniersClients as $panier)
+                {
+                    $p = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('paniers')
+                    ->field('extraPayload.Identifiant')->equals($panier->getId())
+                    ->findAndUpdate()
+                    ->field('extraPayload.statut')->set('deleted')
+                    ->field('status')->set('deleted')
+                    ->getQuery()
+                    ->execute();
+            
+                }
+            }
+            $panier = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.linkedCompte')->equals($idAnonyme)
+            ->field('extraPayload.statut')->equals("active")
+            ->findAndUpdate()
+            ->field('extraPayload.linkedCompte')->set($idClient)
+            ->getQuery()
+            ->execute();
+    
+    
+            return new JsonResponse(array('message'=>'done'),400);
+        }
+
+        
+        
     }
 }
