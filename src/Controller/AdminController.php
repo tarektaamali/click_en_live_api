@@ -67,7 +67,6 @@ class AdminController extends AbstractController
 
         if ($form == "menus") {
 
-
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
                     foreach ($extraPayload['tailles'] as $key => $taille) {
@@ -78,45 +77,115 @@ class AdminController extends AbstractController
 
 
             if (isset($extraPayload['sauces'])) {
-                if (sizeof($extraPayload['sauces'])) {
-                    foreach ($extraPayload['sauces'] as $key => $taille) {
-                        $extraPayload['sauces'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['sauces'][0]['qteMax']))
+                {
+                    $extraPayload['sauces'][0]['qteMax']=intval($extraPayload['sauces'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['sauces'][0]['qteMin']))
+                {
+                    $extraPayload['sauces'][0]['qteMin']=intval($extraPayload['sauces'][0]['qteMin']);
+                }
+                if(isset($extraPayload['sauces'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['sauces'][0]['produits'])) {
+                        foreach ($extraPayload['sauces'][0]['produits'] as $key => $taille) {
+                            $extraPayload['sauces'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
             }
-
 
             if (isset($extraPayload['boisons'])) {
-                if (sizeof($extraPayload['boisons'])) {
-                    foreach ($extraPayload['boisons'] as $key => $taille) {
-                        $extraPayload['boisons'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['boisons'][0]['qteMax']))
+                {
+                    $extraPayload['boisons'][0]['qteMax']=intval($extraPayload['boisons'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['boisons'][0]['qteMin']))
+                {
+                    $extraPayload['boisons'][0]['qteMin']=intval($extraPayload['boisons'][0]['qteMin']);
+                }
+                if(isset($extraPayload['boisons'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['boisons'][0]['produits'])) {
+                        foreach ($extraPayload['boisons'][0]['produits'] as $key => $taille) {
+                            $extraPayload['boisons'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
-            }
-            if (isset($extraPayload['viandes'])) {
-                if (sizeof($extraPayload['viandes'])) {
-                    foreach ($extraPayload['viandes'] as $key => $taille) {
-                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
-                    }
-                }
+              
             }
 
-            if (isset($extraPayload['garnitures'])) {
-                if (sizeof($extraPayload['garnitures'])) {
-                    foreach ($extraPayload['garnitures'] as $key => $taille) {
-                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+
+            if (isset($extraPayload['viandes'])) {
+                if(isset($extraPayload['viandes'][0]['qteMax']))
+                {
+                    $extraPayload['viandes'][0]['qteMax']=intval($extraPayload['viandes'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['viandes'][0]['qteMin']))
+                {
+                    $extraPayload['viandes'][0]['qteMin']=intval($extraPayload['viandes'][0]['qteMin']);
+                }
+                if(isset($extraPayload['viandes'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['viandes'][0]['produits'])) {
+                        foreach ($extraPayload['viandes'][0]['produits'] as $key => $taille) {
+                            $extraPayload['viandes'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
+            }
+       
+
+            
+            if (isset($extraPayload['garnitures'])) {
+                if(isset($extraPayload['garnitures'][0]['qteMax']))
+                {
+                    $extraPayload['garnitures'][0]['qteMax']=intval($extraPayload['garnitures'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['garnitures'][0]['qteMin']))
+                {
+                    $extraPayload['garnitures'][0]['qteMin']=intval($extraPayload['garnitures'][0]['qteMin']);
+                }
+                if(isset($extraPayload['garnitures'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['garnitures'][0]['produits'])) {
+                        foreach ($extraPayload['garnitures'][0]['produits'] as $key => $taille) {
+                            $extraPayload['garnitures'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
+                    }
+                }
+              
             }
 
 
             if (isset($extraPayload['autres'])) {
-                if (sizeof($extraPayload['autres'])) {
-                    foreach ($extraPayload['autres'] as $key => $taille) {
-                        $extraPayload['autres'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['autres'][0]['qteMax']))
+                {
+                    $extraPayload['autres'][0]['qteMax']=intval($extraPayload['autres'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['autres'][0]['qteMin']))
+                {
+                    $extraPayload['autres'][0]['qteMin']=intval($extraPayload['autres'][0]['qteMin']);
+                }
+                if(isset($extraPayload['autres'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['autres'][0]['produits'])) {
+                        foreach ($extraPayload['autres'][0]['produits'] as $key => $taille) {
+                            $extraPayload['autres'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
             }
+
+        
         }
 
         $data = $this->entityManager->setResult($form, $entity, $extraPayload);
@@ -226,45 +295,115 @@ class AdminController extends AbstractController
 
 
             if (isset($extraPayload['sauces'])) {
-                if (sizeof($extraPayload['sauces'])) {
-                    foreach ($extraPayload['sauces'] as $key => $taille) {
-                        $extraPayload['sauces'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['sauces'][0]['qteMax']))
+                {
+                    $extraPayload['sauces'][0]['qteMax']=intval($extraPayload['sauces'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['sauces'][0]['qteMin']))
+                {
+                    $extraPayload['sauces'][0]['qteMin']=intval($extraPayload['sauces'][0]['qteMin']);
+                }
+                if(isset($extraPayload['sauces'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['sauces'][0]['produits'])) {
+                        foreach ($extraPayload['sauces'][0]['produits'] as $key => $taille) {
+                            $extraPayload['sauces'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
             }
-
 
             if (isset($extraPayload['boisons'])) {
-                if (sizeof($extraPayload['boisons'])) {
-                    foreach ($extraPayload['boisons'] as $key => $taille) {
-                        $extraPayload['boisons'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['boisons'][0]['qteMax']))
+                {
+                    $extraPayload['boisons'][0]['qteMax']=intval($extraPayload['boisons'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['boisons'][0]['qteMin']))
+                {
+                    $extraPayload['boisons'][0]['qteMin']=intval($extraPayload['boisons'][0]['qteMin']);
+                }
+                if(isset($extraPayload['boisons'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['boisons'][0]['produits'])) {
+                        foreach ($extraPayload['boisons'][0]['produits'] as $key => $taille) {
+                            $extraPayload['boisons'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
-            }
-            if (isset($extraPayload['viandes'])) {
-                if (sizeof($extraPayload['viandes'])) {
-                    foreach ($extraPayload['viandes'] as $key => $taille) {
-                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
-                    }
-                }
+              
             }
 
-            if (isset($extraPayload['garnitures'])) {
-                if (sizeof($extraPayload['garnitures'])) {
-                    foreach ($extraPayload['garnitures'] as $key => $taille) {
-                        $extraPayload['viandes'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+
+            if (isset($extraPayload['viandes'])) {
+                if(isset($extraPayload['viandes'][0]['qteMax']))
+                {
+                    $extraPayload['viandes'][0]['qteMax']=intval($extraPayload['viandes'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['viandes'][0]['qteMin']))
+                {
+                    $extraPayload['viandes'][0]['qteMin']=intval($extraPayload['viandes'][0]['qteMin']);
+                }
+                if(isset($extraPayload['viandes'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['viandes'][0]['produits'])) {
+                        foreach ($extraPayload['viandes'][0]['produits'] as $key => $taille) {
+                            $extraPayload['viandes'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
+            }
+       
+
+            
+            if (isset($extraPayload['garnitures'])) {
+                if(isset($extraPayload['garnitures'][0]['qteMax']))
+                {
+                    $extraPayload['garnitures'][0]['qteMax']=intval($extraPayload['garnitures'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['garnitures'][0]['qteMin']))
+                {
+                    $extraPayload['garnitures'][0]['qteMin']=intval($extraPayload['garnitures'][0]['qteMin']);
+                }
+                if(isset($extraPayload['garnitures'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['garnitures'][0]['produits'])) {
+                        foreach ($extraPayload['garnitures'][0]['produits'] as $key => $taille) {
+                            $extraPayload['garnitures'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
+                    }
+                }
+              
             }
 
 
             if (isset($extraPayload['autres'])) {
-                if (sizeof($extraPayload['autres'])) {
-                    foreach ($extraPayload['autres'] as $key => $taille) {
-                        $extraPayload['autres'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                if(isset($extraPayload['autres'][0]['qteMax']))
+                {
+                    $extraPayload['autres'][0]['qteMax']=intval($extraPayload['autres'][0]['qteMax']);
+                }
+
+                if(isset($extraPayload['autres'][0]['qteMin']))
+                {
+                    $extraPayload['autres'][0]['qteMin']=intval($extraPayload['autres'][0]['qteMin']);
+                }
+                if(isset($extraPayload['autres'][0]['produits']))
+                {
+                    if (sizeof($extraPayload['autres'][0]['produits'])) {
+                        foreach ($extraPayload['autres'][0]['produits'] as $key => $taille) {
+                            $extraPayload['autres'][0]['produits'][$key]['prixFacculatitf'] = floatval($taille['prixFacculatitf']);
+                        }
                     }
                 }
+              
             }
+
+        
         }
         $data = $this->entityManager->updateResultV2($id, $extraPayload);
 
