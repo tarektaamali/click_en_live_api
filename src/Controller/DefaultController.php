@@ -715,91 +715,101 @@ class DefaultController extends AbstractController
             if(isset($structureVues[0]['sauces']))
             {
                 $listesauces = $structureVues[0]['sauces'];
-                if (is_array($listesauces)) {
+                if (isset($listesauces[0]['produits'])) {
     
-                    if (sizeof($listesauces)) {
-                        foreach ($listesauces as $key => $po) {
+                    $listeProduits=$listesauces[0]['produits'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $structureVues[0]['sauces'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                    else{
-                        $structureVues[0]['sauces']=[];
-                    }
+                   
+                }
+                else{
+                    $structureVues[0]['sauces']=[];
                 }
             }
             if(isset($structureVues[0]['viandes']))
             {
-                $listeviandes = $structureVues[0]['viandes'];
-                if (is_array($listeviandes)) {
+                $listesauces = $structureVues[0]['viandes'];
+                if (isset($listesauces[0]['produits'])) {
     
-                    if (sizeof($listeviandes)) {
-                        foreach ($listeviandes as $key => $po) {
+                    $listeProduits=$listesauces[0]['produits'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $structureVues[0]['viandes'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                    else{
-                        $structureVues[0]['viandes']=[];
-                    }
+                   
+                }
+                else{
+                    $structureVues[0]['viandes']=[];
                 }
             }
-
+          
 
             if(isset($structureVues[0]['garnitures']))
             {
-                $listegarnitures = $structureVues[0]['garnitures'];
-                if (is_array($listegarnitures)) {
+                $listesauces = $structureVues[0]['garnitures'];
+                if (isset($listesauces[0]['garnitures'])) {
     
-                    if (sizeof($listegarnitures)) {
-                        foreach ($listegarnitures as $key => $po) {
+                    $listeProduits=$listesauces[0]['garnitures'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['garnitures'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $structureVues[0]['garnitures'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                    else{
-                        $structureVues[0]['garnitures']=[];
-                    }
+                   
+                }
+                else{
+                    $structureVues[0]['garnitures']=[];
                 }
             }
 
 
             if(isset($structureVues[0]['boisons']))
             {
-                $listeboisons = $structureVues[0]['boisons'];
-                if (is_array($listeboisons)) {
+                $listesauces = $structureVues[0]['boisons'];
+                if (isset($listesauces[0]['boisons'])) {
     
-                    if (sizeof($listeboisons)) {
-                        foreach ($listeboisons as $key => $po) {
+                    $listeProduits=$listesauces[0]['boisons'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['boisons'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $structureVues[0]['boisons'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                    else{
-                        $structureVues[0]['boisons']=[];
-                    }
+                   
+                }
+                else{
+                    $structureVues[0]['boisons']=[];
                 }
             }
+            
+
 
             if(isset($structureVues[0]['autres']))
             {
-                $listeboisons = $structureVues[0]['autres'];
-                if (is_array($listeboisons)) {
+                $listesauces = $structureVues[0]['autres'];
+                if (isset($listesauces[0]['autres'])) {
     
-                    if (sizeof($listeboisons)) {
-                        foreach ($listeboisons as $key => $po) {
+                    $listeProduits=$listesauces[0]['autres'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                            $structureVues[0]['autres'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $structureVues[0]['autres'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                    else{
-                        $structureVues[0]['autres']=[];
-                    }
+                   
                 }
-               
-
+                else{
+                    $structureVues[0]['autres']=[];
+                }
             }
-
+           
             return new JsonResponse($structureVues, '200');
         } else {
             return new JsonResponse($data, '200');
