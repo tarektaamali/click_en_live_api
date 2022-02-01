@@ -339,7 +339,7 @@ class ClientController extends AbstractController
             $nbrePanier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('paniers')
                 ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
-                ->field('extraPayload.statut')->equals("en cours")
+                ->field('extraPayload.statut')->equals("active")
                 ->count()
                 ->getQuery()
                 ->execute();
@@ -352,6 +352,8 @@ class ClientController extends AbstractController
             $extraPayload['prixTTC'] = 0;
             $extraPayload['remise'] = 0;
             $extraPayload['listeMenus'] = [];
+            $extraPayload['statut']="active";
+
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
             $data = $this->entityManager->getSingleResult($data->getId(), null, null);
             $monPanier = $this->entityManager->serializeContent($data);
@@ -359,7 +361,7 @@ class ClientController extends AbstractController
             $monpanier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('paniers')
                 ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
-                ->field('extraPayload.statut')->equals("en cours")
+                ->field('extraPayload.statut')->equals("active")
                 ->getQuery()
                 ->getSingleResult();
             $data = $this->entityManager->getSingleResult($monpanier->getId(), null, null);
@@ -678,7 +680,7 @@ class ClientController extends AbstractController
 
         $dataNewPanier['linkedCompte'] = $monPanier->getExtraPayload()['linkedCompte'];
 
-        $dataNewPanier['statut'] = "en cours";
+        $dataNewPanier['statut'] = "active";
         $dataNewPanier['quantite'] = 0;
         $dataNewPanier['prixHT'] = 0;
         $dataNewPanier['prixTTC'] = 0;
