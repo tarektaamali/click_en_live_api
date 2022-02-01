@@ -695,7 +695,7 @@ class SecurityController extends AbstractController
     {
 
         $extraPayload = null;
-
+             
 
         $user = $this->getUser();
 
@@ -717,5 +717,26 @@ class SecurityController extends AbstractController
 
             return new JsonResponse(array('message' => 'compte introuvable'), 400);
         }
+    }
+
+
+ 
+    /**
+     * @Route("/userAnonyme", methods={"POST"})
+    */
+
+    public function userAnonyme(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
+    {
+
+        $form = "comptes";
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+        return new JsonResponse(array('identifiantAnonyme'=>$data->getId()),200);
     }
 }
