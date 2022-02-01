@@ -323,7 +323,7 @@ class ClientController extends AbstractController
 
 
     /**
-     * @Route("/api/client/getMonPanier", methods={"POST"})
+     * @Route("/getMonPanier", methods={"POST"})
      */
     public function getMonPanier(Request $request, DocumentManager $dm, strutureVuesService $strutureVuesService)
     {
@@ -387,7 +387,7 @@ class ClientController extends AbstractController
 
 
     /**
-     * @Route("/api/client/ajoutMenuAuPanier", methods={"POST"})
+     * @Route("/ajoutMenuAuPanier", methods={"POST"})
      */
     public function ajoutMenuAuPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
     {
@@ -538,7 +538,7 @@ class ClientController extends AbstractController
 
 
    /**
-     * @Route("api/client/removeProduitFromPanier", methods={"POST"})
+     * @Route("/removeProduitFromPanier", methods={"POST"})
      */
 
     public function removeProduitFromPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
@@ -647,7 +647,7 @@ class ClientController extends AbstractController
 
 
     /**
-     * @Route("api/client/clearPanier", methods={"POST"})
+     * @Route("/clearPanier", methods={"POST"})
      */
     public function clearPanier(DocumentManager $dm, Request $request)
     {
