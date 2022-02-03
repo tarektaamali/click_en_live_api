@@ -272,7 +272,33 @@ class DefaultController extends AbstractController
 
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
                 $structuresFinal['count'] = $data['count'];
+
                 $structuresFinal['results'] = $structureVues;
+                if($entity=="favoris")
+                {
+                    if(sizeof($structuresFinal['results']))
+                    {
+                        foreach($structuresFinal['results'] as $key=>$favoris)
+                        {
+                            if(isset($favoris['restaurant']))
+                            {
+                                $param[0]="uploads";
+                                $param[1]="single";
+                           
+
+                                $param[2]=$favoris['restaurant']['photoCouverture'];
+                               $urlphotoCouverture= $strutureVuesService->getUrl($param);
+                               $param[2]=$favoris['restaurant']['logo'];
+                                $urllogo=  $strutureVuesService->getUrl($param);
+                                $structuresFinal['results'][$key]['restaurant']['photoCouverture']=$urlphotoCouverture;
+                                $structuresFinal['results'][$key]['restaurant']['logo']=$urllogo;
+
+                            }
+                        }
+                    }
+                }
+
+      
                 return new JsonResponse($structuresFinal, '200');
             } else {
 
