@@ -416,17 +416,20 @@ class ClientController extends AbstractController
             return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
         }
 
+//var_dump($extraPayload['linkedMenu']);
         $menu = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('menus')
             ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenu'])
             ->getQuery()
             ->getSingleResult();
+//dd($menu);
+
         $newQte = intval($extraPayload['quantite']);
         $prixTTC = 0;
         if (sizeof($extraPayload['tailles'])) {
             $prixTTC = $extraPayload['tailles'][0]['prix'];
         } else {
-            $prixTTC = $menu->getExtraPayload()['prixTTC'];
+            $prixTTC = $menu->getExtraPayload()['prix'];
         }
         $prixFac = 0;
         if (isset($extraPayload['viandes'])) {
@@ -780,7 +783,16 @@ class ClientController extends AbstractController
             ->field('extraPayload.statut')->equals("active")
             ->getQuery()
             ->execute();
-            if(sizeof($anciensPaniersClients))
+
+		$nbrePaniers = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.linkedCompte')->equals($idClient)
+            ->field('extraPayload.statut')->equals("active")
+            ->getQuery()
+            ->execute();
+
+		
+            if($nbrePaniers)
             {
                 foreach($anciensPaniersClients as $panier)
                 {
