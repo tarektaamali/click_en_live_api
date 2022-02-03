@@ -286,12 +286,12 @@ class DefaultController extends AbstractController
                                 $param[1]="single";
                            
 
-                                $param[2]=$favoris['restaurant']['photoCouverture'];
+                                $param[2]=$favoris['restaurant'][0]['photoCouverture'];
                                $urlphotoCouverture= $strutureVuesService->getUrl($param);
-                               $param[2]=$favoris['restaurant']['logo'];
+                               $param[2]=$favoris['restaurant'][0]['logo'];
                                 $urllogo=  $strutureVuesService->getUrl($param);
-                                $structuresFinal['results'][$key]['restaurant']['photoCouverture']=$urlphotoCouverture;
-                                $structuresFinal['results'][$key]['restaurant']['logo']=$urllogo;
+                                $structuresFinal['results'][$key]['restaurant'][0]['photoCouverture']=$urlphotoCouverture;
+                                $structuresFinal['results'][$key]['restaurant'][0]['logo']=$urllogo;
 
                             }
                         }
