@@ -704,30 +704,30 @@ class ClientController extends AbstractController
 
 
         $nbMenuPanier = 0;
-        if (isset($extraPayload['linkedPanier']) && isset($extraPayload['linkedMenu'])) {
+        if (isset($extraPayload['linkedMenuPanier'])) {
             $nbMenuPanier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('menuspaniers')
-                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
-                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
                 ->count()
                 ->getQuery()
                 ->execute();
             // var_dump($entites);
+       
         } else {
             return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
         }
 
 
         if ($nbMenuPanier) {
-            $monPanier = $dm->getRepository(Entities::class)->find($extraPayload['linkedPanier']);
-            //	var_dump($monPanier);
-
+            
             $produitpanier = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('menuspaniers')
-            ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
-            ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+            ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
                 ->getQuery()
                 ->getSingleResult();
+            $monPanier = $dm->getRepository(Entities::class)->find($produitpanier->getExtraPayload()['linkedPanier']);
+            //	var_dump($monPanier);
+
             //	dd( $produitpanier->getExtraPayload()['Identifiant']); 
             $tabListeMenus = $monPanier->getExtraPayload()['listeMenus'];
           
@@ -740,8 +740,7 @@ class ClientController extends AbstractController
             $produitpanier = $dm->createQueryBuilder(Entities::class)
                 ->findAndRemove()
                 ->field('name')->equals('menuspaniers')
-                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
-                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
                 ->getQuery()
                 ->execute();
                 $totalTTC = 0;
