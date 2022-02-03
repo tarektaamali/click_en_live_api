@@ -478,7 +478,7 @@ class ClientController extends AbstractController
 
         $monPanier = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('paniers')
-        ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
+        ->field('extraPayload.Identifiant')->equals($menuPanier->getExtraPayload()['linkedPanier'])
         ->getQuery()
         ->getSingleResult();
 
@@ -491,7 +491,7 @@ class ClientController extends AbstractController
         $this->entityManager->updateResultV2($monPanier->getId(), $tab);
 
 
-        $monPanier = $dm->getRepository(Entities::class)->find($extraPayload['linkedPanier']);
+        $monPanier = $dm->getRepository(Entities::class)->find($menuPanier->getExtraPayload()['linkedPanier']);
         $tabListeMenusPanier=$monPanier->getExtraPayload()['listeMenus'];
 
         $totalTTC = 0;
