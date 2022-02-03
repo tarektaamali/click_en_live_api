@@ -386,12 +386,10 @@ class ClientController extends AbstractController
 
 
 
-
-
-    /**
-     * @Route("/ajoutMenuAuPanier", methods={"POST"})
+        /**
+     * @Route("/updateMenuAuPanier", methods={"POST"})
      */
-    public function ajoutMenuAuPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
+    public function updateMenuAuPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
     {
         $extraPayload = null;
         $entity = null;
@@ -403,27 +401,35 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
         $nbMenuPanier = 0;
-        if (isset($extraPayload['linkedPanier']) && isset($extraPayload['linkedMenu'])) {
+        if (isset($extraPayload['linkedMenuPanier'])) {
             $nbMenuPanier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('menuspaniers')
-                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
-                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
                 ->count()
                 ->getQuery()
                 ->execute();
-            // var_dump($entites);
+            if($nbMenuPanier==0)
+            {
+                return new JsonResponse(array('message' => 'ligne panier introuvable.'), 400);
+            }
         } else {
             return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
         }
 
+        $menuPanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuspaniers')
+                ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
+                ->getQuery()
+                ->getSingleResult();
         $menu = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('menus')
-            ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenu'])
+            ->field('extraPayload.Identifiant')->equals($menuPanier->getExtraPayload()['linkedMenu'])
             ->getQuery()
             ->getSingleResult();
         $newQte = intval($extraPayload['quantite']);
         $prixTTC = 0;
         if (sizeof($extraPayload['tailles'])) {
+            
             $prixTTC = $extraPayload['tailles'][0]['prix'];
         } else {
             $prixTTC = $menu->getExtraPayload()['prixTTC'];
@@ -465,19 +471,152 @@ class ClientController extends AbstractController
         $extraPayload['prixTTC'] = floatval($prixTotalttc);
         $extraPayload['quantite'] = intval($newQte);
 
-        if($nbMenuPanier)
-        {
-            $menupanier = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('menuspaniers')
-            ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
-            ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+     
+            $data= $this->entityManager->updateResultV2($menuPanier->getId(), $extraPayload);
+       
+
+
+        $monPanier = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('paniers')
+        ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
+        ->getQuery()
+        ->getSingleResult();
+
+        $listeMenus=$monPanier->getExtraPayload()['listeMenus'];
+
+        array_push($listeMenus,$data->getId());
+
+        $tabUnique=array_unique($listeMenus);
+        $tab['listeMenus']=array_values($tabUnique);
+        $this->entityManager->updateResultV2($monPanier->getId(), $tab);
+
+
+        $monPanier = $dm->getRepository(Entities::class)->find($extraPayload['linkedPanier']);
+        $tabListeMenusPanier=$monPanier->getExtraPayload()['listeMenus'];
+
+        $totalTTC = 0;
+        $quantite = 0;
+
+
+
+            foreach ($tabListeMenusPanier as $mp) {
+
+                $menupanier =  $dm->getRepository(Entities::class)->find($mp);
+                $totalTTC +=floatval($menupanier->getExtraPayload()['prixTTC']);
+                $quantite += intval($menupanier->getExtraPayload()['quantite']);
+            }
+    
+            $dataPanier['prixTTC'] = floatval($totalTTC);
+            $dataPanier['quantite'] = intval($quantite);
+    
+            //Mette à jour panier
+    
+            $panier = $this->entityManager->updateResultV2($monPanier->getId(), $dataPanier);
+    
+    
+            $data = $this->entityManager->getSingleResult($monPanier->getId(), null, null);
+    
+            $monPanier = $this->entityManager->serializeContent($data);
+
+            $listeMenus = [];
+            if (sizeof($monPanier[0]['listeMenus'])) {
+                foreach ($monPanier[0]['listeMenus'] as $mp) {
+                    $data = $this->entityManager->getSingleResult($mp, null, null);
+                    $menupanier = $this->entityManager->serializeContent($data);
+                    $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
+                    $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
+                    $menupanier[0]['linkedMenu'] = $dataMenu;
+                    array_push($listeMenus, $menupanier[0]);
+                }
+            }
+            $monPanier[0]['listeMenus'] = $listeMenus;
+            return new JsonResponse($monPanier, 200); 
+
+    }
+
+
+
+    /**
+     * @Route("/ajoutMenuAuPanier", methods={"POST"})
+     */
+    public function ajoutMenuAuPanier(strutureVuesService $strutureVuesService, DocumentManager $dm, Request $request)
+    {
+        $extraPayload = null;
+        $entity = null;
+
+        $lang = 'fr';
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+        $nbMenuPanier = 0;
+        if (isset($extraPayload['linkedPanier']) && isset($extraPayload['linkedMenu'])) {
+            $nbMenuPanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuspaniers')
+                ->field('extraPayload.linkedPanier')->equals($extraPayload['linkedPanier'])
+                ->field('extraPayload.linkedMenu')->equals($extraPayload['linkedMenu'])
+                ->count()
+                ->getQuery()
+                ->execute();
+            // var_dump($entites);
+        } else {
+            return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
+        }
+
+        $menu = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('menus')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenu'])
             ->getQuery()
             ->getSingleResult();
-            $data= $this->entityManager->updateResultV2($menupanier->getId(), $extraPayload);
+        $newQte = intval($extraPayload['quantite']);
+        $prixTTC = 0;
+        if (sizeof($extraPayload['tailles'])) {
+
+            $prixTTC = $extraPayload['tailles'][0]['prix'];
+        } else {
+            $prixTTC = $menu->getExtraPayload()['prixTTC'];
         }
-        else{
+        $prixFac = 0;
+        if (isset($extraPayload['viandes'])) {
+            if (sizeof($extraPayload['viandes'])) {
+                foreach ($extraPayload['viandes'] as $e) {
+                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                }
+            }
+        }
+        if (isset($extraPayload['boisons'])) {
+            if (sizeof($extraPayload['boisons'])) {
+
+                foreach ($extraPayload['boisons'] as $e) {
+                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                }
+            }
+        }
+        if (isset($extraPayload['sauces'])) {
+
+            if (sizeof($extraPayload['sauces'])) {
+
+                foreach ($extraPayload['sauces'] as $e) {
+                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                }
+            }
+        }
+        if (isset($extraPayload['garnitures'])) {
+            if (sizeof($extraPayload['garnitures'])) {
+
+                foreach ($extraPayload['garnitures'] as $e) {
+                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                }
+            }
+        }
+        $prixTotalttc = (intval($newQte) * floatval($prixTTC)) + $prixFac;
+        $extraPayload['prixTTC'] = floatval($prixTotalttc);
+        $extraPayload['quantite'] = intval($newQte);
+
+    
             $data = $this->entityManager->setResult("menuspaniers",null, $extraPayload);
-        }
+        
 
 
         $monPanier = $dm->createQueryBuilder(Entities::class)
