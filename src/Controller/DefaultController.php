@@ -712,7 +712,15 @@ class DefaultController extends AbstractController
 
 
         $vueAvancer = "menus_single";
+        if ($request->get('vueAvancer') != null) {
+            $vueAvancer = $request->get('vueAvancer');
+        }
         $indexVue = "CLIENT";
+
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
+
 
 
         if (isset($data[0])) {
