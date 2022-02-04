@@ -432,7 +432,7 @@ class ClientController extends AbstractController
             
             $prixTTC = $extraPayload['tailles'][0]['prix'];
         } else {
-            $prixTTC = $menu->getExtraPayload()['prixTTC'];
+            $prixTTC = $menu->getExtraPayload()['prix'];
         }
         $prixFac = 0;
         if (isset($extraPayload['viandes'])) {
