@@ -468,7 +468,7 @@ class ClientController extends AbstractController
             }
         }
         $prixTotalttc = (intval($newQte) * floatval($prixTTC)) + $prixFac;
-        $extraPayload['prixTTC'] = floatval($prixTotalttc);
+        $extraPayload['prixTTC'] = round($prixTotalttc,2);
         $extraPayload['quantite'] = intval($newQte);
 
      
@@ -506,7 +506,7 @@ class ClientController extends AbstractController
                 $quantite += intval($menupanier->getExtraPayload()['quantite']);
             }
     
-            $dataPanier['prixTTC'] = floatval($totalTTC);
+            $dataPanier['prixTTC'] = round($totalTTC,2);
             $dataPanier['quantite'] = intval($quantite);
     
             //Mette à jour panier
@@ -614,7 +614,7 @@ class ClientController extends AbstractController
             }
         }
         $prixTotalttc = (intval($newQte) * floatval($prixTTC)) + $prixFac;
-        $extraPayload['prixTTC'] = floatval($prixTotalttc);
+        $extraPayload['prixTTC'] = round($prixTotalttc,2);
         $extraPayload['quantite'] = intval($newQte);
 
     
@@ -652,7 +652,7 @@ class ClientController extends AbstractController
                 $quantite += intval($menupanier->getExtraPayload()['quantite']);
             }
     
-            $dataPanier['prixTTC'] = floatval($totalTTC);
+            $dataPanier['prixTTC'] = round($totalTTC,2);
             $dataPanier['quantite'] = intval($quantite);
     
             //Mette à jour panier
