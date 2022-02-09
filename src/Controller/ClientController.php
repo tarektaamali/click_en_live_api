@@ -1048,6 +1048,7 @@ class ClientController extends AbstractController
             foreach($data['results'] as $trajet)
             {
 
+                var_dump($trajet['Identifiant']);
                 $nbreTrajetCamion = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('trajetcamion')
                 ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
