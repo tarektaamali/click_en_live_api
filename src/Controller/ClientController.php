@@ -1050,7 +1050,7 @@ class ClientController extends AbstractController
 
                 $nbreTrajetCamion = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('trajetcamion')
-                ->field('extraPayload.linkedCompte')->equals($trajet['Identifiant'])
+                ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
                 ->field('extraPayload.statut')->equals("active")
                 ->field('extraPayload.isActive')->equals("1")
                 ->count()
@@ -1082,7 +1082,7 @@ class ClientController extends AbstractController
                               
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
                                 ->field('name')->equals('trajetcamion')
-                                ->field('extraPayload.linkedCompte')->equals($trajet['Identifiant'])
+                                ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
                                 ->field('extraPayload.statut')->equals("active")
                                 ->field('extraPayload.isActive')->equals("1")
                                 ->getQuery()
