@@ -1028,7 +1028,7 @@ class ClientController extends AbstractController
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
 
-
+                unset($filter['adresseLivrasion']);
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
                 break;
         }
