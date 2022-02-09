@@ -645,9 +645,10 @@ class DefaultController extends AbstractController
             array_push($results, $data);
         }
 
-//	dd($results);
+	//dd($results);
         foreach ($structuresFinal['results'] as $menu) {
-            $cat = $menu["categorie"];
+       // dd($menu);  
+	  $cat = $menu["categorie"];
             if(sizeof($cat))
             {
 

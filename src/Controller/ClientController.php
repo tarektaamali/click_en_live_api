@@ -732,8 +732,15 @@ class ClientController extends AbstractController
             $tabListeMenus = $monPanier->getExtraPayload()['listeMenus'];
           
             //    var_dump($tabListeProduits);
-            unset($tabListeMenus[array_search($produitpanier->getId(),   $tabListeMenus)]);
-            //dd($tabListeProduits);	
+           //unset($tabListeMenus[array_search($extraPayload['linkedMenuPanier'],$tabListeMenus)]);
+//	array_diff($tabListeMenus, [$extraPayload['linkedMenuPanier']]);   
+//var_dump($tabListeMenus);
+	$key = array_search($extraPayload['linkedMenuPanier'], $tabListeMenus);
+//var_dump($key);
+if (false !== $key) {
+    unset($tabListeMenus[$key]);
+}
+ //         dd($tabListeMenus);	
             //Recalculer total panier.
 
             //findProduit and remove
@@ -757,7 +764,7 @@ class ClientController extends AbstractController
             
                     $dataPanier['prixTTC'] = floatval($totalTTC);
                     $dataPanier['quantite'] = intval($quantite);
-                    $dataPanier['listeMenus'] = $tabListeMenus;
+                    $dataPanier['listeMenus'] =array_values($tabListeMenus);
             
                     //Mette à jour panier
             
@@ -955,7 +962,7 @@ class ClientController extends AbstractController
             ->execute();
     
     
-            return new JsonResponse(array('message'=>'done'),400);
+            return new JsonResponse(array('message'=>'done'),200);
         }
 
         
