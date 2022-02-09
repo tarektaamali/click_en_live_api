@@ -955,7 +955,7 @@ class ClientController extends AbstractController
      * @Route("getStationsDiponibles", methods={"GET"})
      */
 
-    public function getStationsDiponibles(DocumentManager $dm,distance $distance,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function getStationsDiponibles(DocumentManager $dm,distance $serviceDistance,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         
         $entity="trajets";
@@ -1048,21 +1048,20 @@ class ClientController extends AbstractController
             foreach($data['results'] as $trajet)
             {
 
-                var_dump($trajet['Identifiant']);
+                //var_dump($trajet['Identifiant']);
                 $nbreTrajetCamion = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('trajetcamion')
                 ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
-                ->field('extraPayload.statut')->equals("active")
                 ->field('extraPayload.isActive')->equals("1")
                 ->count()
                 ->getQuery()
                 ->execute();
 
-                var_dump('nbre t c');
-                var_dump($nbreTrajetCamion);
+                //var_dump('nbre t c');
+               // var_dump($nbreTrajetCamion);
                 if($nbreTrajetCamion)
                 {
-                    var_dump('sizof'.$trajet['stations']);
+                  //  var_dump('sizof'.$trajet['stations']);
                     if(sizeof($trajet['stations']))
                     {
                         //checkDistance 20 km
@@ -1070,28 +1069,28 @@ class ClientController extends AbstractController
                         foreach($trajet['stations'] as $station)
                         {
 
-                            var_dump($station['idStation']);
+                 ///           var_dump($station['idStation']);
                             $s= $dm->getRepository(Entities::class)->find($station['idStation']);
                             $positionStation= $s->getExtraPayload()['position'];
-                            var_dump($positionStation);
+        //                    var_dump($positionStation);
                             $latStation=$positionStation[0];
                             $longStation=$positionStation[1];
 
-                            $distance = $distance->distance(floatval($latClient),floatval($longClient),floatval($latStation),floatval($longStation));
-                            var_dump($distance);
+                            $distance = $serviceDistance->distance(floatval($latClient),floatval($longClient),floatval($latStation),floatval($longStation));
+                    //        var_dump($distance);
                             if(($distance<20)) {
                               
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
                                 ->field('name')->equals('trajetcamion')
                                 ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
-                                ->field('extraPayload.statut')->equals("active")
+                 //               ->field('extraPayload.statut')->equals("active")
                                 ->field('extraPayload.isActive')->equals("1")
                                 ->getQuery()
                                 ->execute();
 
                                 foreach($trajetCamion as $tj)
                                 {
-                                    $livreur=$dm->getRepository(Entities::class)->find($station['idStation']);
+                                    $livreur=$dm->getRepository(Entities::class)->find($tj->getExtraPayload()['livreur']);
                                     $params[0]='uploads';
                                     $params[1]='single';
                                     $params[2]=$livreur->getExtraPayload()['photoProfil'];
