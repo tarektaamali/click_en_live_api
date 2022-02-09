@@ -385,12 +385,12 @@ class entityManager
 
                     $type=$fileYaml[$header][$fields][$value]["type"];
                     if ($j == $value) {
-                        if($type=="number"&&$value!="quantite"){
+                     /*   if($type=="number"&&$value!="quantite"){
                             $payload[$value]=floatval($content);
                         }
-                        else{
+                        else{*/
                             $payload[$value] = $content;
-                        }
+                        //}
                         if (stripos($j, "date") !== false && trim($content) != null) {
                             $datetime = new DateTime();
                             $newDate = $datetime->createFromFormat('Y-m-d', $content);
