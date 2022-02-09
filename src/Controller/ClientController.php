@@ -1057,8 +1057,11 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->execute();
 
+                var_dump('nbre t c');
+                var_dump($nbreTrajetCamion);
                 if($nbreTrajetCamion)
                 {
+                    var_dump('sizof'.$trajet['stations']);
                     if(sizeof($trajet['stations']))
                     {
                         //checkDistance 20 km
@@ -1066,12 +1069,15 @@ class ClientController extends AbstractController
                         foreach($trajet['stations'] as $station)
                         {
 
+                            var_dump($station['idStation']);
                             $s= $dm->getRepository(Entities::class)->find($station['idStation']);
                             $positionStation= $s->getExtraPayload()['position'];
+                            var_dump($positionStation);
                             $latStation=$positionStation[0];
                             $longStation=$positionStation[1];
 
                             $distance = $distance->distance(floatval($latClient),floatval($longClient),floatval($latStation),floatval($longStation));
+                            var_dump($distance);
                             if(($distance<20)) {
                               
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
