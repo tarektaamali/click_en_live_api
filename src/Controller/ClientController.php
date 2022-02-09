@@ -1106,7 +1106,7 @@ class ClientController extends AbstractController
 
                                     $vitesse=40;
                                     //temps=distance/vitesse
-                                    $estimation=$distance/$vitesse;
+                                    $estimation=($distance/$vitesse)*60;
                                     $data=  array(
                                         'idStation'=>$station['idStation'],
                                         'heureArrive'=>$station['heureArrive'],
@@ -1115,8 +1115,8 @@ class ClientController extends AbstractController
                                         'nomStation'=>$s->getExtraPayload()['name'],
                                         'postion'=>$s->getExtraPayload()['position'],
                                         'trajetCamion'=>$tj->getId(),
-                                        'distance'=> $distance,
-                                        'temps'=>$estimation
+                                        'distance'=> round($distance,2),
+                                        'temps'=>round($estimation,2)
                                     );
                                       array_push($listeStationDisponibles,$data);
                                 }
