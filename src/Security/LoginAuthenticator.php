@@ -72,6 +72,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
             $credentials = [
                 'email' => $request->request->get('email'),
                 'password' => $request->request->get('password'),
+                'role' => $request->request->get('role')
             ];
         }
         return $credentials;
@@ -115,11 +116,42 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         return $this->google_check($credentials);
        }
        else{
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+
+
+        $hasRole=$this->checkRole($credentials['email'],$credentials['role']);
+        if($hasRole)
+        {
+            return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        }
+        else{
+            return false;
+        }
+       
 
        }
 
      
+    }
+
+    public function checkRole($email,$role)
+    {
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if($user)
+        {
+            if (in_array($role, $user->getRoles())) {
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+        else{
+            return false;
+        }
+
     }
     public function facebook_check($credentials)
     {
