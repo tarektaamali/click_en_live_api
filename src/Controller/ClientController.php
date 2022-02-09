@@ -1103,6 +1103,10 @@ class ClientController extends AbstractController
                                         'email'=>$livreur->getExtraPayload()['email']
 
                                     );
+
+                                    $vitesse=40;
+                                    //temps=distance/vitesse
+                                    $estimation=$distance/$vitesse;
                                     $data=  array(
                                         'idStation'=>$station['idStation'],
                                         'heureArrive'=>$station['heureArrive'],
@@ -1110,7 +1114,9 @@ class ClientController extends AbstractController
                                         'livreur'=> $infoLivreur,
                                         'nomStation'=>$s->getExtraPayload()['name'],
                                         'postion'=>$s->getExtraPayload()['position'],
-                                        'trajetCamion'=>$tj->getId()
+                                        'trajetCamion'=>$tj->getId(),
+                                        'distance'=> $distance,
+                                        'temps'=>$estimation
                                     );
                                       array_push($listeStationDisponibles,$data);
                                 }
