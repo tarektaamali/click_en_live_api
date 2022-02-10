@@ -435,14 +435,14 @@ class ClientController extends AbstractController
 
             $prixTTC = $extraPayload['tailles'][0]['prix'];
             
-            $taille=$dm->getRepository(Entities::class)->find( $extraPayload['tailles'][0]['id']);
+            $taille=$dm->getRepository(Entities::class)->find($extraPayload['tailles'][0]['id']);
 
             if($description=="")
             {
                 $description=$taille->getExtraPayload()['name'];
             }
             else{
-                $description=$description.",". $taille->getExtraPayload()['name'];
+                $description=$description." , ". $taille->getExtraPayload()['name'];
             }
 
         } else {
@@ -460,7 +460,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -477,7 +485,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -495,7 +511,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -511,7 +535,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -637,7 +669,7 @@ class ClientController extends AbstractController
                 $description=$taille->getExtraPayload()['name'];
             }
             else{
-                $description=$description.",". $taille->getExtraPayload()['name'];
+                $description=$description." , ". $taille->getExtraPayload()['name'];
             }
         } else {
             $prixTTC = $menu->getExtraPayload()['prix'];
@@ -654,7 +686,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -671,7 +711,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -689,7 +737,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
@@ -706,7 +762,15 @@ class ClientController extends AbstractController
                         $description=$option->getExtraPayload()['name'];
                     }
                     else{
-                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        if(intval($e['qte'])!=0)
+                        {
+
+                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                        }
+                        else{
+                            $description=$description." , ".$option->getExtraPayload()['name'];
+                        }
+                       
                     }
                 }
             }
