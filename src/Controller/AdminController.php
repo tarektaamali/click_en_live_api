@@ -65,7 +65,7 @@ class AdminController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        if ($form == "menus") {
+        if($form=="menus") {
 
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
