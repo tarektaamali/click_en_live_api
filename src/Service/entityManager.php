@@ -35,7 +35,7 @@ class entityManager
             $extraPayload = $entity->getExtraPayload();
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
-                   $extraPayload['statut']=$entity->getStatus();
+//$extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
 
@@ -351,7 +351,7 @@ class entityManager
             $extraPayload = $entity->getExtraPayload();
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
-            $extraPayload['statut']=$entity->getStatus();
+//$extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
         $alldata = array();
