@@ -397,6 +397,8 @@ class ClientController extends AbstractController
 
         $lang = 'fr';
 
+        $description="";
+
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
@@ -416,6 +418,7 @@ class ClientController extends AbstractController
             return new JsonResponse(array('message' => 'Merci de vérifier les données envoyées.'), 400);
         }
 
+
         $menuPanier = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('menuspaniers')
             ->field('extraPayload.Identifiant')->equals($extraPayload['linkedMenuPanier'])
@@ -431,6 +434,17 @@ class ClientController extends AbstractController
         if (sizeof($extraPayload['tailles'])) {
 
             $prixTTC = $extraPayload['tailles'][0]['prix'];
+            
+            $taille=$dm->getRepository(Entities::class)->find( $extraPayload['tailles'][0]['id']);
+
+            if($description=="")
+            {
+                $description=$taille->getExtraPayload()['name'];
+            }
+            else{
+                $description=$description.",". $taille->getExtraPayload()['name'];
+            }
+
         } else {
             $prixTTC = $menu->getExtraPayload()['prix'];
         }
@@ -439,6 +453,15 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -447,6 +470,15 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['boisons'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -456,6 +488,15 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['sauces'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -464,12 +505,22 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['garnitures'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
         $prixTotalttc = (intval($newQte) * floatval($prixTTC)) + $prixFac;
         $extraPayload['prixTTC'] = round($prixTotalttc, 2);
         $extraPayload['quantite'] = intval($newQte);
+
+        $extraPayload['description']=$description;
 
 
         $data = $this->entityManager->updateResultV2($menuPanier->getId(), $extraPayload);
@@ -544,6 +595,7 @@ class ClientController extends AbstractController
         $entity = null;
 
         $lang = 'fr';
+        $description="";
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
@@ -576,6 +628,17 @@ class ClientController extends AbstractController
         if (sizeof($extraPayload['tailles'])) {
 
             $prixTTC = $extraPayload['tailles'][0]['prix'];
+
+
+            $taille=$dm->getRepository(Entities::class)->find( $extraPayload['tailles'][0]['id']);
+
+            if($description=="")
+            {
+                $description=$taille->getExtraPayload()['name'];
+            }
+            else{
+                $description=$description.",". $taille->getExtraPayload()['name'];
+            }
         } else {
             $prixTTC = $menu->getExtraPayload()['prix'];
         }
@@ -584,6 +647,15 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -592,6 +664,15 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['boisons'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -601,6 +682,15 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['sauces'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
@@ -609,12 +699,22 @@ class ClientController extends AbstractController
 
                 foreach ($extraPayload['garnitures'] as $e) {
                     $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+
+                    $option=$dm->getRepository(Entities::class)->find($e['id']);
+                    if($description=="")
+                    {
+                        $description=$option->getExtraPayload()['name'];
+                    }
+                    else{
+                        $description=$description.",".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                    }
                 }
             }
         }
         $prixTotalttc = (intval($newQte) * floatval($prixTTC)) + $prixFac;
         $extraPayload['prixTTC'] = round($prixTotalttc, 2);
         $extraPayload['quantite'] = intval($newQte);
+        $extraPayload['description'] = $description;
 
 
         $data = $this->entityManager->setResult("menuspaniers", null, $extraPayload);
