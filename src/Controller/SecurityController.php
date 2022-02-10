@@ -211,9 +211,9 @@ class SecurityController extends AbstractController
 
 
 
-                return new JsonResponse(array('message' => 'compte valide'), 200);
+                return new JsonResponse(array('message' => 'inscription avec success'), 200);
             } else {
-                return new JsonResponse(array('message' => 'Access token invalide'), 200);
+                return new JsonResponse(array('message' => 'Access token invalide'), 400);
             }
         } else {
 
