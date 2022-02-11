@@ -272,7 +272,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/api/admin/update/entity/{id}", methods={"POST"})
+     * @Route("/api/admin/update/{entity}/{id}", methods={"POST"})
      */
     public function updateV2Action($id, $entity,Request $request)
     {
