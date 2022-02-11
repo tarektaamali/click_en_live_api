@@ -416,6 +416,23 @@ class AdminController extends AbstractController
     }
 
 
+    
+    /**
+     * @Route("/api/admin/updateTrajet/{id}", methods={"POST"})
+     */
+    public function updateTrajet($id, $entity,Request $request)
+    {
+        $extraPayload = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+        
+
+    }
 
     /**
      * @Route("/api/admin/readAll/{entity}", methods={"GET"})
@@ -595,7 +612,7 @@ class AdminController extends AbstractController
 
 
 
-
+   
 
 
 

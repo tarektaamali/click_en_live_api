@@ -1111,6 +1111,16 @@ class ClientController extends AbstractController
                 ->execute();
 
 
+
+                $adresseLivraison = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('adresseLivraison')
+                ->field('extraPayload.linkedCompte')->equals($idAnonyme)
+                ->findAndUpdate()
+                ->field('extraPayload.linkedCompte')->set($idClient)
+                ->getQuery()
+                ->execute();
+
+
             return new JsonResponse(array('message' => 'done'), 200);
         }
     }
