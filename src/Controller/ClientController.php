@@ -48,6 +48,8 @@ class ClientController extends AbstractController
         $this->eventsManager = $eventsManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
+
+        
     }
 
     /**
@@ -1481,7 +1483,7 @@ class ClientController extends AbstractController
             $extraPayload['name']=$statut;
             $extraPayload['statut']="waiting";
 
-            $data = $this->entityManager->setResult("etatsCommandes". NULL, $extraPayload);
+            $data = $this->entityManager->setResult("etatsCommandes",NULL, $extraPayload);
         }
 
 
