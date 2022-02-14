@@ -1389,6 +1389,8 @@ class ClientController extends AbstractController
             $data['boisons'] = $produitpanier->getExtraPayload()['boisons'];
             $data['autres'] = $produitpanier->getExtraPayload()['autres'];
 
+         
+
 
             $data['quantite'] = $produitpanier->getExtraPayload()['quantite'];
             $data['prixHT'] = $produitpanier->getExtraPayload()['prixHT'];
@@ -1431,4 +1433,33 @@ class ClientController extends AbstractController
         return new JsonResponse(array("idCommande" => $commande->getId(), "message" => "votre commande créée avec succès."), 200);
     }
 
+
+
+        /**
+     * @Route("affecterAddresseLivraisonToCommande", methods={"POST"})
+     */
+    
+    public function affecterAdresseLivraisonACommande()
+    {
+
+
+        
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $commande = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.Identifiant')->equals($extraPayload['idCommande'])
+        ->findAndUpdate()
+        ->field('extraPayload.livreur')->set($extraPayload['livreur'])
+        ->field('extraPayload.station')->set($extraPayload['station'])
+        ->field('extraPayload.trajetCamion')->set($extraPayload['trajetCamion'])
+        ->getQuery()
+        ->execute();
+
+
+        return new JsonResponse(array('message'=>'done'),200);
+    }
 }
