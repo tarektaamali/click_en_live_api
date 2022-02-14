@@ -1374,7 +1374,7 @@ class ClientController extends AbstractController
         foreach ($tabListeProduits as $pp) {
 
             $produitpanier = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('menuspanier')
+                ->field('name')->equals('menuspaniers')
                 ->field('extraPayload.Identifiant')->equals($pp)
                 ->getQuery()
                 ->getSingleResult();
