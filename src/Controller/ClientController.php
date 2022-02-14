@@ -1483,7 +1483,7 @@ class ClientController extends AbstractController
             $extraPayload['name']=$statut;
             $extraPayload['statut']="waiting";
 
-            $data = $this->entityManager->setResult("etatsCommandes",NULL, $extraPayload);
+            $data = $this->entityManager->setResult("etatsCommandes",null, $extraPayload);
         }
 
 
