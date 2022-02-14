@@ -1363,7 +1363,7 @@ class ClientController extends AbstractController
             ->getQuery()
             ->getSingleResult();
 
-        $listeProduits = $monPanier->getExtraPayload()['listeMenus'];
+            $tabListeProduits = $monPanier->getExtraPayload()['listeMenus'];
 
         //créer produit commande
         $totalHT = 0;
