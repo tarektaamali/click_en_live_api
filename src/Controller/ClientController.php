@@ -1356,6 +1356,8 @@ class ClientController extends AbstractController
         
         //créer commande 
         $commande = $this->entityManager->setResult('commandes', null, $extraPayload);
+
+        $this->affectEtats($commande->getId());
         //get Mon panier 
         $monPanier = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('paniers')
@@ -1462,4 +1464,30 @@ class ClientController extends AbstractController
 
         return new JsonResponse(array('message'=>'done'),200);
     }
+
+
+    public function affectEtats($id)
+    {
+        $listeStatuts=[
+            "Demande de livraison reçu",
+            "commande récupéré",
+            "livraison en cours d'acheminement",
+            "livreur sur le lieu de livraison",
+            "livreur parti"
+        ];
+        foreach($listeStatus as $statut)
+        {
+            $extraPayload['commande']=$id;
+            $extraPayload['name']=$statut;
+            $extraPayload['statut']="waiting";
+
+            $data = $this->entityManager->setResult("etatsCommandes". NULL, $extraPayload);
+        }
+
+
+        return true;
+    }
+
+
+
 }
