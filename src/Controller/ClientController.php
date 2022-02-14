@@ -1475,7 +1475,7 @@ class ClientController extends AbstractController
             "livreur sur le lieu de livraison",
             "livreur parti"
         ];
-        foreach($listeStatus as $statut)
+        foreach($listeStatuts as $statut)
         {
             $extraPayload['commande']=$id;
             $extraPayload['name']=$statut;
