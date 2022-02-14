@@ -1322,4 +1322,113 @@ class ClientController extends AbstractController
     }
 
 
+    
+    /**
+     * @Route("createCommande", methods={"POST"})
+     */
+    public function panierToCommande(Request $request, DocumentManager $dm)
+    {
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $nbreCommandes = 0;
+
+
+        $ym = date('Ym');
+        //get nbre commandes
+        $nbreCommandes = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('commandes')
+            ->count()
+            ->getQuery()
+            ->execute();
+        $num_cmd =$nbreCommandes+1;
+
+        $num_fact=$ym.'-'.strval($num_cmd);
+
+        $extraPayload['numeroCommande'] = $num_cmd;
+        $extraPayload['numeroFacture'] =  $num_fact;
+        $extraPayload['statut'] = "created";
+
+
+        
+        //créer commande 
+        $commande = $this->entityManager->setResult('commandes', null, $extraPayload);
+        //get Mon panier 
+        $monPanier = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])          
+            ->getQuery()
+            ->getSingleResult();
+
+        $listeProduits = $monPanier->getExtraPayload()['listeMenus'];
+
+        //créer produit commande
+        $totalHT = 0;
+        $totalTTC = 0;
+        $quantite = 0;
+        $listeMenusCommande=[];
+      
+        foreach ($tabListeProduits as $pp) {
+
+            $produitpanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuspanier')
+                ->field('extraPayload.Identifiant')->equals($pp)
+                ->getQuery()
+                ->getSingleResult();
+            $data['linkedCommande'] = $commande->getId();
+            $data['client']=$extraPayload['client'];
+            $data['linkedMenu'] = $produitpanier->getExtraPayload()['linkedMenu'];
+
+            $data['tailles'] = $produitpanier->getExtraPayload()['tailles'];
+            $data['sauces'] = $produitpanier->getExtraPayload()['sauces'];
+            $data['viandes'] = $produitpanier->getExtraPayload()['viandes'];
+            $data['garnitures'] = $produitpanier->getExtraPayload()['garnitures'];
+            $data['boisons'] = $produitpanier->getExtraPayload()['boisons'];
+            $data['autres'] = $produitpanier->getExtraPayload()['autres'];
+
+
+            $data['quantite'] = $produitpanier->getExtraPayload()['quantite'];
+            $data['prixHT'] = $produitpanier->getExtraPayload()['prixHT'];
+            $data['prixTTC'] = $produitpanier->getExtraPayload()['prixTTC'];
+            $data['remise'] = $produitpanier->getExtraPayload()['remise'];
+
+
+            $totalHT += intval($produitpanier->getExtraPayload()['prixHT']);
+            $totalTTC += intval($produitpanier->getExtraPayload()['prixTTC']);
+            $quantite += intval($produitpanier->getExtraPayload()['quantite']);
+            $menuCmd = $this->entityManager->setResult('menuscommandes', null, $data);
+       
+                array_push($listeMenusCommande,$menuCmd->getId());
+         
+        }
+
+
+        //affecter change statut panier
+
+        $commande = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('commandes')
+            ->field('extraPayload.Identifiant')->equals($commande->getId())
+            ->findAndUpdate()
+            ->field('extraPayload.totalHT')->set($totalHT)
+            ->field('extraPayload.totalTTC')->set($totalTTC)
+            ->field('extraPayload.quantite')->set($quantite)
+            ->field('extraPayload.listeMenusCommande')->set($listeMenusCommande)
+            ->getQuery()
+            ->execute();
+
+
+            
+        $commande = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('paniers')
+        ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
+        ->findAndUpdate()
+        ->field('extraPayload.linkedCommande')->set($commande->getId())
+        ->getQuery()
+        ->execute();
+        return new JsonResponse(array("idCommande" => $commande->getId(), "message" => "votre commande créée avec succès."), 200);
+    }
+
 }
