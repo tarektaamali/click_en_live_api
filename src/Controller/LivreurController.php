@@ -345,7 +345,6 @@ class LivreurController extends AbstractController
         ->field('name')->equals('trajetcamion')
         ->field('extraPayload.livreur')->equals($livreur)
         ->field('extraPayload.isActive')->equals("1")
-        ->count()
         ->getQuery()
         ->execute();
 
@@ -376,46 +375,55 @@ class LivreurController extends AbstractController
 
 
 
+                $datetime = new DateTime();
+                $fd = $datetime->createFromFormat('Y-m-d 00:00:00', $datetime);
+                var_dump($fd);
+                    
+                $ld = $datetime->createFromFormat('Y-m-d 23:59:59', $datetime);
+                var_dump($ld);
                 $nbreCommandes = $dm->createQueryBuilder(Entities::class)
+
                 ->field('name')->equals('commandes')
                 ->field('extraPayload.livreur')->equals($livreur->getId())
                 ->field('extraPayload.station')->equals($s->getId())
+                ->field('extraPayload.trajetCamion')->equals($tc->getExtraPayload()['Identifiant'])
+                ->field('dateCreation')->gt($fd)
+                ->field('dateCreation')->lt($s->getId())
                 ->count()
                 ->getQuery()
                 ->execute();
+
+                var_dump($nbreCommandes);
         
 
 
-                array(
+          $st=array(
                     'name'=>$s->getExtraPayload()['name'],
                     'distance'=>$distance,
                     'heureArrive'=>$station['heureArrive'],
-                    'heureDepart'=>$station['heureDepart']
+                    'heureDepart'=>$station['heureDepart'],
+                    'nbreCmd'=>$nbreCommandes
             );
         //     
 
 
-
+        array_push($listeStations,$st);
 
 
             }
-
-
-
-
 
         }
 
 
 
-            return new JsonResponse(array(''));
+            return new JsonResponse(array('listeStations'=>$listeStations),200);
 
         }
         else{
 
 
 
-            return new JsonResponse(array(''));
+            return new JsonResponse(array('listeStations'=>$listeStations),200);
         }
 
 
