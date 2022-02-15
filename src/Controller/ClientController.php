@@ -1444,7 +1444,7 @@ class ClientController extends AbstractController
      * @Route("/api/client/affecterAddresseLivraisonToCommande", methods={"POST"})
      */
     
-    public function affecterAdresseLivraisonACommande()
+    public function affecterAdresseLivraisonACommande(Request $request, DocumentManager $dm)
     {
 
 
