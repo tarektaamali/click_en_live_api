@@ -411,7 +411,9 @@ class LivreurController extends AbstractController
 
 
           $st=array(
+            'idStation'=>$s->getExtraPayload()['Identifiant'],
                     'name'=>$s->getExtraPayload()['name'],
+                    'position'=>$s->getExtraPayload()['position'],
                     'distance'=>$distance,
                     'heureArrive'=>$station['heureArrive'],
                     'heureDepart'=>$station['heureDepart'],
