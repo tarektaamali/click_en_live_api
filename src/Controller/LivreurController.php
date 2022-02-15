@@ -419,7 +419,8 @@ class LivreurController extends AbstractController
                     'distance'=>$distance,
                     'heureArrive'=>$station['heureArrive'],
                     'heureDepart'=>$station['heureDepart'],
-                    'nbreCmd'=>$nbreCommandes
+                    'nbreCmd'=>$nbreCommandes,
+                    'idTrajetCamion'=>$tc->getExtraPayload()['Identifiant']
             );
         //     
 
@@ -456,6 +457,7 @@ class LivreurController extends AbstractController
 
         $idStation=$request->get('idStation');
         $livreur=$request->get('livreur');
+        $tc=$request->get('idTrajetCamion');
 
         $nbreCommandesEnAttente = $dm->createQueryBuilder(Entities::class)
 
@@ -464,7 +466,7 @@ class LivreurController extends AbstractController
         ->field('extraPayload.station')->equals($idStation)
         ->field('extraPayload.statut')->equals('valide')
         ->field('extraPayload.statutPaiement')->equals('payed')
-        ->field('extraPayload.trajetCamion')->equals($tc->getExtraPayload()['Identifiant'])
+        ->field('extraPayload.trajetCamion')->equals($tc)
         ->field('dateCreation')->gt($fd)
         ->field('dateCreation')->lt($ld)
         ->count()
@@ -479,7 +481,7 @@ class LivreurController extends AbstractController
         ->field('extraPayload.station')->equals($idStation)
         ->field('extraPayload.statut')->equals('canceled')
        // ->field('extraPayload.statutPaiement')->equals('payed')
-        ->field('extraPayload.trajetCamion')->equals($tc->getExtraPayload()['Identifiant'])
+       ->field('extraPayload.trajetCamion')->equals($tc)
         ->field('dateCreation')->gt($fd)
         ->field('dateCreation')->lt($ld)
         ->count()
@@ -497,7 +499,7 @@ class LivreurController extends AbstractController
         ->field('extraPayload.statut')->equals('delivered')
         
        ->field('extraPayload.statutPaiement')->equals('payed')
-        ->field('extraPayload.trajetCamion')->equals($tc->getExtraPayload()['Identifiant'])
+       ->field('extraPayload.trajetCamion')->equals($tc)
         ->field('dateCreation')->gt($fd)
         ->field('dateCreation')->lt($ld)
         ->count()
