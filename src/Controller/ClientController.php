@@ -1427,7 +1427,7 @@ class ClientController extends AbstractController
 
 
             
-        $commande = $dm->createQueryBuilder(Entities::class)
+        $panier = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('paniers')
         ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
         ->findAndUpdate()
