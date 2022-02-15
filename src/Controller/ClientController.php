@@ -1326,7 +1326,7 @@ class ClientController extends AbstractController
 
     
     /**
-     * @Route("createCommande", methods={"POST"})
+     * @Route("/api/client/createCommande", methods={"POST"})
      */
     public function panierToCommande(Request $request, DocumentManager $dm)
     {
@@ -1440,7 +1440,7 @@ class ClientController extends AbstractController
 
 
         /**
-     * @Route("affecterAddresseLivraisonToCommande", methods={"POST"})
+     * @Route("/api/client/affecterAddresseLivraisonToCommande", methods={"POST"})
      */
     
     public function affecterAdresseLivraisonACommande()
