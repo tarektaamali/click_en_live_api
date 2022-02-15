@@ -330,8 +330,11 @@ class LivreurController extends AbstractController
         $livreur= $dm->getRepository(Entities::class)->find($livreur);
         
         $positionClient=$livreur->getExtraPayload()['position'];
-        $latLivreur=$positionClient[0];
-        $longLong=$positionClient[1];
+      //  $latLivreur=$positionClient[0];
+      $latLivreur=49.44294454085581;
+      //  $longLong=$positionClient[1];
+      $longLong=1.099353744467404;
+
 
         $nbretrajetcamion = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('trajetcamion')
