@@ -598,7 +598,7 @@ class LivreurController extends AbstractController
         /**
      * @Route("/api/livreur/listeDesCommandesRegroupresParStatut", methods={"GET"})
      */
-    public function listeDesCommandesRegroupresParStatut()
+    public function listeDesCommandesRegroupresParStatut(Request $request)
     {
         $idStation=$request->get('idStation');
         $livreur=$request->get('livreur');
