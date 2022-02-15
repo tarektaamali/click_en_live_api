@@ -611,6 +611,18 @@ class LivreurController extends AbstractController
         $listeCmdEnAttente=[];
         $listeCmdAnnule=[];
 
+        $nbreDelivered=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('valide')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
         $delivered = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
         ->field('extraPayload.livreur')->equals($livreur)
@@ -623,8 +635,8 @@ class LivreurController extends AbstractController
         ->getQuery()
         ->execute();        
 
-        $nbreDelivered=sizeof($delivered);
-        if(sizeof($delivered))
+     
+        if(sizeof($nbreDelivered))
         {
 
             foreach($delivered as $cmd)
@@ -648,6 +660,20 @@ class LivreurController extends AbstractController
             }
             
         }
+
+
+        $nbreenAttente= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('canceled')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
     
         $enAttente= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
@@ -662,7 +688,7 @@ class LivreurController extends AbstractController
         ->execute();
      
 
-        if(sizeof($enAttente))
+        if(sizeof($nbreenAttente))
         {
 
             foreach($enAttente as $cmd)
@@ -686,6 +712,20 @@ class LivreurController extends AbstractController
             }
             
         }
+
+
+        $nbreannule= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('delivered')        
+       ->field('extraPayload.statutPaiement')->equals('payed')
+       ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
         $annule= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
         ->field('extraPayload.livreur')->equals($livreur)
@@ -700,7 +740,7 @@ class LivreurController extends AbstractController
 
 
 
-        if(sizeof($annule))
+        if(sizeof($nbreannule))
         {
 
             foreach($annule as $cmd)
@@ -726,9 +766,9 @@ class LivreurController extends AbstractController
         }
 
         return new JsonResponse(array(
-            'delivered'=>$delivered,
-            'enAttente'=>$enAttente,
-            'annule'=>$annule
+            'delivered'=>$listeCmdDelivred,
+            'enAttente'=>$listeCmdEnAttente,
+            'annule'=>$listeCmdAnnule
         ),200);
     }
 
