@@ -647,7 +647,7 @@ class LivreurController extends AbstractController
                 'totalTTC'=>$cmd->getExtraPayload()['totalTTC'],
                 'quantite'=>$cmd->getExtraPayload()['quantite'],
                 'statut'=>$cmd->getExtraPayload()['statut'],
-                'date'=>$cmd->getExtraPayload()['dateCreation'],
+                'date'=>$cmd['dateCreation'],
                 
 
             );
@@ -699,7 +699,7 @@ class LivreurController extends AbstractController
                 'totalTTC'=>$cmd->getExtraPayload()['totalTTC'],
                 'quantite'=>$cmd->getExtraPayload()['quantite'],
                 'statut'=>$cmd->getExtraPayload()['statut'],
-                'date'=>$cmd->getExtraPayload()['dateCreation'],
+                'date'=>$cmd['dateCreation'],
                 
 
             );
@@ -751,7 +751,7 @@ class LivreurController extends AbstractController
                 'totalTTC'=>$cmd->getExtraPayload()['totalTTC'],
                 'quantite'=>$cmd->getExtraPayload()['quantite'],
                 'statut'=>$cmd->getExtraPayload()['statut'],
-                'date'=>$cmd->getExtraPayload()['dateCreation'],
+                'date'=>$cmd['dateCreation'],
                 
 
             );
