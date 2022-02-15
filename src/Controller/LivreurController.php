@@ -454,7 +454,7 @@ class LivreurController extends AbstractController
     {
 
 
-        $idStation=$request->getId('idStation');
+        $idStation=$request->get('idStation');
         $livreur=$request->get('livreur');
 
         $nbreCommandesEnAttente = $dm->createQueryBuilder(Entities::class)
