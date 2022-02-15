@@ -599,12 +599,52 @@ class LivreurController extends AbstractController
 
     public function listeDesCommandesRegroupresParStatut()
     {
+        $idStation=$request->get('idStation');
+        $livreur=$request->get('livreur');
+        $tc=$request->get('idTrajetCamion');
+        $fd=date('Y-m-d 00:00:00');
+        $ld=date('Y-m-d 23:59:59');
 
+        $delivered = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('valide')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->getQuery()
+        ->execute();        
+     
+        $enAttente= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('canceled')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->getQuery()
+        ->execute();
+     
+        $annule= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('delivered')        
+       ->field('extraPayload.statutPaiement')->equals('payed')
+       ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->getQuery()
+        ->execute();
+
+        return new JsonResponse(array(
+            'delivered'=>$delivered,
+            'enAttente'=>$enAttente,
+            'annule'=>$annule
+        ),200);
     }
-
-
-
-
-
-
 }
