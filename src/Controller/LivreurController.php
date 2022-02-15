@@ -449,9 +449,9 @@ class LivreurController extends AbstractController
     }
 
          /**
-     * @Route("/api/livreur/nbreCommandesDujour", methods={"GET"})
+     * @Route("/api/livreur/nbreCommandesDujourParStation", methods={"GET"})
      */
-    public function nbreCommandesDujour(Request $request,DocumentManager $dm)
+    public function nbreCommandesDujourParStation(Request $request,DocumentManager $dm)
     {
 
 
@@ -502,6 +502,83 @@ class LivreurController extends AbstractController
         
        ->field('extraPayload.statutPaiement')->equals('payed')
        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+
+
+
+        return new JsonResponse(array(
+            'nbreCommandesdelivered'=>$nbreCommandesdelivered,
+            'nbreCommandeEnAttente'=>$nbreCommandesEnAttente,
+            'nbreCommandesAnnule'=>$nbreCommandesAnnule
+
+        ),200);
+
+    }
+
+
+
+
+
+    
+         /**
+     * @Route("/api/livreur/nbreCommandesDujourParLivreur", methods={"GET"})
+     */
+    public function nbreCommandesDujourParLivreur(Request $request,DocumentManager $dm)
+    {
+
+
+       // $idStation=$request->get('idStation');
+        $livreur=$request->get('livreur');
+     //   $tc=$request->get('idTrajetCamion');
+        $fd=date('Y-m-d 00:00:00');
+        $ld=date('Y-m-d 23:59:59');
+
+        $nbreCommandesEnAttente = $dm->createQueryBuilder(Entities::class)
+
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+      //  ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('valide')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        //->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+        
+        $nbreCommandesAnnule= $dm->createQueryBuilder(Entities::class)
+
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        //->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('canceled')
+       // ->field('extraPayload.statutPaiement')->equals('payed')
+       //->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+
+
+        
+        $nbreCommandesdelivered= $dm->createQueryBuilder(Entities::class)
+
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        //->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('delivered')
+        
+       ->field('extraPayload.statutPaiement')->equals('payed')
+       //->field('extraPayload.trajetCamion')->equals($tc)
         ->field('dateCreation')->gt($fd)
         ->field('dateCreation')->lt($ld)
         ->count()
