@@ -315,6 +315,11 @@ class LivreurController extends AbstractController
 
     }
 
+
+
+        /**
+     * @Route("/api/livreur/listeStationsDuJour", methods={"POST"})
+     */
     public function listeStationsDuJour(Request $request,distance $serviceDistance,DocumentManager $dm)
     {
 
