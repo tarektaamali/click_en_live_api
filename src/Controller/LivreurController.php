@@ -525,19 +525,17 @@ class LivreurController extends AbstractController
 
 
     
-         /**
+    /**
      * @Route("/api/livreur/nbreCommandesDujourParLivreur", methods={"GET"})
      */
     public function nbreCommandesDujourParLivreur(Request $request,DocumentManager $dm)
     {
-
 
        // $idStation=$request->get('idStation');
         $livreur=$request->get('livreur');
      //   $tc=$request->get('idTrajetCamion');
         $fd=date('Y-m-d 00:00:00');
         $ld=date('Y-m-d 23:59:59');
-
         $nbreCommandesEnAttente = $dm->createQueryBuilder(Entities::class)
 
         ->field('name')->equals('commandes')
@@ -597,6 +595,9 @@ class LivreurController extends AbstractController
 
     }
 
+        /**
+     * @Route("/api/livreur/listeDesCommandesRegroupresParStatut", methods={"GET"})
+     */
     public function listeDesCommandesRegroupresParStatut()
     {
         $idStation=$request->get('idStation');
