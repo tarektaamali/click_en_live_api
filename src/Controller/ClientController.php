@@ -926,7 +926,7 @@ class ClientController extends AbstractController
                 $quantite += intval($menupanier->getExtraPayload()['quantite']);
             }
 
-            $dataPanier['prixTTC'] = floatval($totalTTC);
+            $dataPanier['prixTTC'] = round(floatval($totalTTC), 2);
             $dataPanier['quantite'] = intval($quantite);
             $dataPanier['listeMenus'] = array_values($tabListeMenus);
 
