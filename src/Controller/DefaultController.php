@@ -908,4 +908,63 @@ class DefaultController extends AbstractController
 
         return new JsonResponse(array('like'=>$like));
     }
+
+
+    public function searcheAvancer(Request $request)
+    {
+
+
+        $word=$request->get('word');
+
+        $regexWord=  new \MongoDB\BSON\Regex($word, 'i');
+
+
+
+        //il faut rechercher la liste des restaurants
+
+        $restaurants= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('restaurants')
+        ->field('extraPayload.titre')->regex($regexWord)
+        ->getQuery()
+        ->execute();
+
+
+        //il faut rechercher la liste Specialites puis réccupprer la liste des resto
+
+        $specialites= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('specialites')
+        ->field('extraPayload.libelle')->regex($regexWord)
+        ->getQuery()
+        ->execute();
+
+
+        $tabIdRestoFromSpec=[];
+
+
+        foreach($specialites as $spec)
+        {
+
+
+           array($tabIdRestoFromSpec,$spec->getId());
+        
+        }
+
+
+        //il faut recherche la liste menus puis réccupprer la liste des resto
+
+
+        $menus= $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('menus')
+        ->field('extraPayload.titre')->regex($regexWord)
+        ->getQuery()
+        ->execute();
+
+
+    }
+
+
+
+
+
+
 }

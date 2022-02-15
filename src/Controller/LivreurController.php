@@ -606,6 +606,11 @@ class LivreurController extends AbstractController
         $fd=date('Y-m-d 00:00:00');
         $ld=date('Y-m-d 23:59:59');
 
+
+        $listeCmdDelivred=[];
+        $listeCmdEnAttente=[];
+        $listeCmdAnnule=[];
+
         $delivered = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
         ->field('extraPayload.livreur')->equals($livreur)
@@ -617,7 +622,33 @@ class LivreurController extends AbstractController
         ->field('dateCreation')->lt($ld)
         ->getQuery()
         ->execute();        
-     
+
+        $nbreDelivered=sizeof($delivered);
+        if(sizeof($delivered))
+        {
+
+            foreach($delivered as $cmd)
+            {
+
+
+            $dataCmd=    array('numeroCommande'=>$cmd['numeroCommande'],
+                'idCommande'=>$cmd['Identifiant'],
+                'totalTTC'=>$cmd['totalTTC'],
+                'quantite'=>$cmd['quantite'],
+                'statut'=>$cmd['statut'],
+                'date'=>$cmd['dateCreation'],
+                
+
+            );
+
+
+            array_push($listeCmdDelivred,$dataCmd);
+
+
+            }
+            
+        }
+    
         $enAttente= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
         ->field('extraPayload.livreur')->equals($livreur)
@@ -630,6 +661,31 @@ class LivreurController extends AbstractController
         ->getQuery()
         ->execute();
      
+
+        if(sizeof($enAttente))
+        {
+
+            foreach($enAttente as $cmd)
+            {
+
+
+            $dataCmd=    array('numeroCommande'=>$cmd['numeroCommande'],
+                'idCommande'=>$cmd['Identifiant'],
+                'totalTTC'=>$cmd['totalTTC'],
+                'quantite'=>$cmd['quantite'],
+                'statut'=>$cmd['statut'],
+                'date'=>$cmd['dateCreation'],
+                
+
+            );
+
+
+            array_push($listeCmdEnAttente,$dataCmd);
+
+
+            }
+            
+        }
         $annule= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('commandes')
         ->field('extraPayload.livreur')->equals($livreur)
@@ -642,10 +698,41 @@ class LivreurController extends AbstractController
         ->getQuery()
         ->execute();
 
+
+
+        if(sizeof($annule))
+        {
+
+            foreach($annule as $cmd)
+            {
+
+
+            $dataCmd=    array('numeroCommande'=>$cmd['numeroCommande'],
+                'idCommande'=>$cmd['Identifiant'],
+                'totalTTC'=>$cmd['totalTTC'],
+                'quantite'=>$cmd['quantite'],
+                'statut'=>$cmd['statut'],
+                'date'=>$cmd['dateCreation'],
+                
+
+            );
+
+
+            array_push($listeCmdAnnule,$dataCmd);
+
+
+            }
+            
+        }
+
         return new JsonResponse(array(
             'delivered'=>$delivered,
             'enAttente'=>$enAttente,
             'annule'=>$annule
         ),200);
     }
+
+
+
+
 }
