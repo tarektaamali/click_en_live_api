@@ -1461,6 +1461,7 @@ class ClientController extends AbstractController
         ->field('extraPayload.livreur')->set($extraPayload['livreur'])
         ->field('extraPayload.station')->set($extraPayload['station'])
         ->field('extraPayload.trajetCamion')->set($extraPayload['trajetCamion'])
+        ->field('extraPayload.linkedAdresseLivraison')->set($extraPayload['linkedAdresseLivraison'])
         ->getQuery()
         ->execute();
 
