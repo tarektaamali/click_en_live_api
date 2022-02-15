@@ -1432,6 +1432,7 @@ class ClientController extends AbstractController
         ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
         ->findAndUpdate()
         ->field('extraPayload.linkedCommande')->set($commande->getId())
+        ->field('extraPayload.statut')->set("inactive")
         ->getQuery()
         ->execute();
         return new JsonResponse(array("idCommande" => $commande->getId(), "message" => "votre commande créée avec succès."), 200);
