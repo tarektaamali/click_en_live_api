@@ -511,7 +511,7 @@ class LivreurController extends AbstractController
 
 
 
-        return new JsonReponse(array(
+        return new JsonResponse(array(
             'nbreCommandesdelivered'=>$nbreCommandesdelivered,
             'nbreCommandeEnAttente'=>$nbreCommandesEnAttente,
             'nbreCommandesAnnule'=>$nbreCommandesAnnule
