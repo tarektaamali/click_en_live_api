@@ -333,17 +333,17 @@ class LivreurController extends AbstractController
       //  $latLivreur=$positionClient[0];
       $latLivreur=49.44294454085581;
       //  $longLong=$positionClient[1];
-      $longLong=1.099353744467404;
+      $longLivreur=1.099353744467404;
 
 
         $nbretrajetcamion = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('trajetcamion')
-        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.livreur')->equals($livreur->getId())
         ->field('extraPayload.isActive')->equals("1")
         ->count()
         ->getQuery()
         ->execute();
-
+	//var_dump($nbretrajetcamion);
         $listeStations=[];
 
         if($nbretrajetcamion)
@@ -352,7 +352,7 @@ class LivreurController extends AbstractController
             
         $trajetcamion = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('trajetcamion')
-        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.livreur')->equals($livreur->getId())
         ->field('extraPayload.isActive')->equals("1")
         ->getQuery()
         ->execute();
@@ -366,8 +366,9 @@ class LivreurController extends AbstractController
             ->getQuery()
             ->getSingleResult();
 
-            $stations=$trajet->getExtraPayload('stations');
+            $stations=$trajet->getExtraPayload()['stations'];
 
+//dd($stations);
 
             foreach($stations as $station)
             {
@@ -384,12 +385,15 @@ class LivreurController extends AbstractController
 
 
 
-                $datetime = new DateTime();
-                $fd = $datetime->createFromFormat('Y-m-d 00:00:00', $datetime);
+			$fd=date('Y-m-d 00:00:00');
+			$ld=date('Y-m-d 23:59:59');
+	//	dd($date);
+          //      $datetime = new DateTime();
+    /*            $fd = $datetime->createFromFormat('Y-m-d 00:00:00', $date);
                 var_dump($fd);
                     
-                $ld = $datetime->createFromFormat('Y-m-d 23:59:59', $datetime);
-                var_dump($ld);
+                $ld = $datetime->createFromFormat('Y-m-d 23:59:59', $date);
+                var_dump($ld);*/
                 $nbreCommandes = $dm->createQueryBuilder(Entities::class)
 
                 ->field('name')->equals('commandes')
@@ -397,12 +401,12 @@ class LivreurController extends AbstractController
                 ->field('extraPayload.station')->equals($s->getId())
                 ->field('extraPayload.trajetCamion')->equals($tc->getExtraPayload()['Identifiant'])
                 ->field('dateCreation')->gt($fd)
-                ->field('dateCreation')->lt($s->getId())
+                ->field('dateCreation')->lt($ld)
                 ->count()
                 ->getQuery()
                 ->execute();
 
-                var_dump($nbreCommandes);
+  //              var_dump($nbreCommandes);
         
 
 
