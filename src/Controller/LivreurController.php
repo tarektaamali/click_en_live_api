@@ -10,6 +10,7 @@ use Dompdf\Options;
 use Dompdf\Dompdf;
 use App\Entity\User;
 use App\Entity\CodeActivation;
+use App\Service\distance;
 use App\Service\entityManager;
 use App\Service\eventsManager;
 use App\Service\strutureVuesService;
@@ -39,15 +40,15 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class LivreurController extends AbstractController
 {
 
-    public function __construct(DocumentManager $documentManager, EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
     {
-        $this->documentManager = $documentManager;
         $this->session = $session;
         $this->params = $params;
         $this->entityManager = $entityManager;
         $this->eventsManager = $eventsManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
+                
     }
 
     /**

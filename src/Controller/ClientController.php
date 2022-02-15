@@ -48,8 +48,7 @@ class ClientController extends AbstractController
         $this->eventsManager = $eventsManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
-
-        
+                
     }
 
     /**
