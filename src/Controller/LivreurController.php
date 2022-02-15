@@ -142,7 +142,7 @@ class LivreurController extends AbstractController
     }
 
     /**
-     * @Route("/api/livreur/update/entity/{id}", methods={"POST"})
+     * @Route("/api/livreur/update/{entity}/{id}", methods={"POST"})
      */
     public function updateV2Action($id, $entity,Request $request)
     {
