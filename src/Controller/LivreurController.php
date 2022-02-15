@@ -315,7 +315,122 @@ class LivreurController extends AbstractController
 
     }
 
+    public function listeStationsDuJour(Request $request,distance $serviceDistance,DocumentManager $dm)
+    {
 
+        $livreur=$request->get('livreur');
+
+        
+        $livreur= $dm->getRepository(Entities::class)->find($livreur);
+        
+        $positionClient=$livreur->getExtraPayload()['position'];
+        $latLivreur=$positionClient[0];
+        $longLong=$positionClient[1];
+
+        $nbretrajetcamion = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajetcamion')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.isActive')->equals("1")
+        ->count()
+        ->getQuery()
+        ->execute();
+
+        $listeStations=[];
+
+        if($nbretrajetcamion)
+        {
+
+            
+        $trajetcamion = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajetcamion')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.isActive')->equals("1")
+        ->count()
+        ->getQuery()
+        ->execute();
+
+        foreach($trajetcamion as $tc)
+        {
+
+            $trajet = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('trajets')
+            ->field('extraPayload.Identifiant')->equals($tc->getExtraPayload()['trajet'])
+            ->getQuery()
+            ->getSingleResult();
+
+            $stations=$trajet->getExtraPayload('stations');
+
+
+            foreach($stations as $station)
+            {
+
+
+
+                $s= $dm->getRepository(Entities::class)->find($station['idStation']);
+                $positionStation= $s->getExtraPayload()['position'];
+//                    var_dump($positionStation);
+                $latStation=$positionStation[0];
+                $longStation=$positionStation[1];
+
+                $distance = $serviceDistance->distance(floatval($latLivreur),floatval($longLivreur),floatval($latStation),floatval($longStation));
+
+
+
+                $nbreCommandes = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.livreur')->equals($livreur->getId())
+                ->field('extraPayload.station')->equals($s->getId())
+                ->count()
+                ->getQuery()
+                ->execute();
+        
+
+
+                array(
+                    'name'=>$s->getExtraPayload()['name'],
+                    'distance'=>$distance,
+                    'heureArrive'=>$station['heureArrive'],
+                    'heureDepart'=>$station['heureDepart']
+            );
+        //     
+
+
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+
+            return new JsonResponse(array(''));
+
+        }
+        else{
+
+
+
+            return new JsonResponse(array(''));
+        }
+
+
+
+    }
+
+    public function nbreCommandesDujour()
+    {
+
+    }
+
+    public function listeDesCommandesRegroupresParStatut()
+    {
+
+    }
 
 
 

@@ -454,7 +454,7 @@ class ClientController extends AbstractController
         if (isset($extraPayload['viandes'])) {
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -479,7 +479,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['boisons'])) {
 
                 foreach ($extraPayload['boisons'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -505,7 +505,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['sauces'])) {
 
                 foreach ($extraPayload['sauces'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -530,7 +530,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['garnitures'])) {
 
                 foreach ($extraPayload['garnitures'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
                     {
@@ -680,7 +680,7 @@ class ClientController extends AbstractController
         if (isset($extraPayload['viandes'])) {
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -705,7 +705,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['boisons'])) {
 
                 foreach ($extraPayload['boisons'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -731,7 +731,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['sauces'])) {
 
                 foreach ($extraPayload['sauces'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
@@ -756,7 +756,7 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['garnitures'])) {
 
                 foreach ($extraPayload['garnitures'] as $e) {
-                    $prixFac = $prixFac + (floatval($e['prixFacculatitf']) * intval($e['qte']));
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
 
                     $option=$dm->getRepository(Entities::class)->find($e['id']);
                     if($description=="")
