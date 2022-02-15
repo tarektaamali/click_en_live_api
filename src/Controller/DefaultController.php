@@ -963,8 +963,18 @@ class DefaultController extends AbstractController
     }
 
 
+  /**
+     * @Route("/newChamps", methods={"GET"})
+     */
 
+    public function newChamps()
+    {
 
+        $data = $this->entityManager->addNewChamps();
+
+        return new JsonResponse(array('message'=>'trhe'));
+
+    }
 
 
 }

@@ -796,4 +796,66 @@ class entityManager
         
         return $data;
     }
+
+
+
+    public function addNewChamps()
+    {
+        $payload = [];
+        $dm = $this->documentManager;
+        $id_name = $this->params->get("id_name");
+
+        $comptes = $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('comptes')
+        ->getQuery()
+        ->execute();
+       
+        foreach($comptes as $c)
+        {
+        $entities = $dm->getRepository(Entities::class)->find($c->getId());
+     
+            $payload = $entities->getExtraPayload();
+            foreach ($extraPayload as $j => $content) {
+                if (array_key_exists($j, $payload)) {
+                    if ($content && $content[0] == ",") {
+                        if ($payload[$j]) {
+                            $content = ltrim($content, $content[0]);
+                            $payload[$j] = $payload[$j] . ',' . $content;
+                        } else {
+                            $content = ltrim($content, $content[0]);
+                            $payload[$j] = $content;
+                        }
+                        $payload[$j] = preg_replace("/,+/", ",", $payload[$j]);
+                        $payload[$j] = trim($payload[$j], ",");
+                    } else {
+                        $payload[$j] = $content;
+                        if (stripos($j, "date") !== false && trim($content) != null) {
+                            $datetime = new DateTime();
+                            $newDate = $datetime->createFromFormat('Y-m-d', $content);
+                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
+                            $payload[$j] = $newDate;
+                        }
+                    }
+                }
+               
+            }
+            $payload["disponible"]=false;
+            //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
+            $entities->setDateLastMmodif(new DateTime());
+            $entities->setMutex("");
+            $entities->setVues("");
+            $dm->persist($entities);
+            // Insert additional values in the extra payload
+            $payload = array_reverse($payload);
+            $payload[$id_name] = $entities->getId();
+            $payload = array_reverse($payload);
+            $entities->setExtraPayload($payload);
+            // END Insert additional values in the extra payload
+            $dm->persist($entities);
+            $dm->flush();
+      
+    }
+        return true;
+
+    }
 }
