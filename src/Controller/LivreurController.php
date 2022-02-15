@@ -636,7 +636,7 @@ class LivreurController extends AbstractController
         ->execute();        
 
      
-        if(sizeof($nbreDelivered))
+        if($nbreDelivered)
         {
 
             foreach($delivered as $cmd)
@@ -688,7 +688,7 @@ class LivreurController extends AbstractController
         ->execute();
      
 
-        if(sizeof($nbreenAttente))
+        if($nbreenAttente)
         {
 
             foreach($enAttente as $cmd)
@@ -740,7 +740,7 @@ class LivreurController extends AbstractController
 
 
 
-        if(sizeof($nbreannule))
+        if($nbreannule)
         {
 
             foreach($annule as $cmd)
