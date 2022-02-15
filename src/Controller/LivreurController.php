@@ -642,13 +642,12 @@ class LivreurController extends AbstractController
             foreach($delivered as $cmd)
             {
 
-
-            $dataCmd=    array('numeroCommande'=>$cmd['numeroCommande'],
-                'idCommande'=>$cmd['Identifiant'],
-                'totalTTC'=>$cmd['totalTTC'],
-                'quantite'=>$cmd['quantite'],
-                'statut'=>$cmd['statut'],
-                'date'=>$cmd['dateCreation'],
+                $dataCmd=    array('numeroCommande'=>$cmd->getExtraPayload()['numeroCommande'],
+                'idCommande'=>$cmd->getExtraPayload()['Identifiant'],
+                'totalTTC'=>$cmd->getExtraPayload()['totalTTC'],
+                'quantite'=>$cmd->getExtraPayload()['quantite'],
+                'statut'=>$cmd->getExtraPayload()['statut'],
+                'date'=>$cmd->getExtraPayload()['dateCreation'],
                 
 
             );
@@ -695,12 +694,12 @@ class LivreurController extends AbstractController
             {
 
 
-            $dataCmd=    array('numeroCommande'=>$cmd['numeroCommande'],
-                'idCommande'=>$cmd['Identifiant'],
-                'totalTTC'=>$cmd['totalTTC'],
-                'quantite'=>$cmd['quantite'],
-                'statut'=>$cmd['statut'],
-                'date'=>$cmd['dateCreation'],
+                $dataCmd=    array('numeroCommande'=>$cmd->getExtraPayload()['numeroCommande'],
+                'idCommande'=>$cmd->getExtraPayload()['Identifiant'],
+                'totalTTC'=>$cmd->getExtraPayload()['totalTTC'],
+                'quantite'=>$cmd->getExtraPayload()['quantite'],
+                'statut'=>$cmd->getExtraPayload()['statut'],
+                'date'=>$cmd->getExtraPayload()['dateCreation'],
                 
 
             );
