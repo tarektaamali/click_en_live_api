@@ -910,7 +910,13 @@ class DefaultController extends AbstractController
     }
 
 
-    public function searcheAvancer(Request $request)
+
+    
+    /**
+     * @Route("/searcheAvancer", methods={"GET"})
+     */
+
+    public function searcheAvancer(DocumentManager $dm,Request $request)
     {
 
 
@@ -943,11 +949,18 @@ class DefaultController extends AbstractController
 
         foreach($specialites as $spec)
         {
-
-
-           array($tabIdRestoFromSpec,$spec->getId());
-        
+           array_push($tabIdRestoFromSpec,$spec->getId());
         }
+
+
+        $listeDesRestaurantsHasSpec=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('restaurants')
+        ->field('extraPayload.specialiteRestos')->in(array_values($tabIdRestoFromSpec))
+        ->getQuery()
+        ->execute();
+
+
+        dd($listeDesRestaurantsHasSpec);
 
 
         //il faut recherche la liste menus puis réccupprer la liste des resto
@@ -958,6 +971,8 @@ class DefaultController extends AbstractController
         ->field('extraPayload.titre')->regex($regexWord)
         ->getQuery()
         ->execute();
+
+        return new JsonResponse(array(),200);
 
 
     }
