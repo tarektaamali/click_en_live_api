@@ -274,31 +274,26 @@ class DefaultController extends AbstractController
                 $structuresFinal['count'] = $data['count'];
 
                 $structuresFinal['results'] = $structureVues;
-                if($entity=="favoris")
-                {
-                    if(sizeof($structuresFinal['results']))
-                    {
-                        foreach($structuresFinal['results'] as $key=>$favoris)
-                        {
-                            if(isset($favoris['restaurant']))
-                            {
-                                $param[0]="uploads";
-                                $param[1]="single";
-                           
+                if ($entity == "favoris") {
+                    if (sizeof($structuresFinal['results'])) {
+                        foreach ($structuresFinal['results'] as $key => $favoris) {
+                            if (isset($favoris['restaurant'])) {
+                                $param[0] = "uploads";
+                                $param[1] = "single";
 
-                                $param[2]=$favoris['restaurant'][0]['photoCouverture'];
-                               $urlphotoCouverture= $strutureVuesService->getUrl($param);
-                               $param[2]=$favoris['restaurant'][0]['logo'];
-                                $urllogo=  $strutureVuesService->getUrl($param);
-                                $structuresFinal['results'][$key]['restaurant'][0]['photoCouverture']=$urlphotoCouverture;
-                                $structuresFinal['results'][$key]['restaurant'][0]['logo']=$urllogo;
 
+                                $param[2] = $favoris['restaurant'][0]['photoCouverture'];
+                                $urlphotoCouverture = $strutureVuesService->getUrl($param);
+                                $param[2] = $favoris['restaurant'][0]['logo'];
+                                $urllogo =  $strutureVuesService->getUrl($param);
+                                $structuresFinal['results'][$key]['restaurant'][0]['photoCouverture'] = $urlphotoCouverture;
+                                $structuresFinal['results'][$key]['restaurant'][0]['logo'] = $urllogo;
                             }
                         }
                     }
                 }
 
-      
+
                 return new JsonResponse($structuresFinal, '200');
             } else {
 
@@ -632,7 +627,7 @@ class DefaultController extends AbstractController
             ->getQuery()
             ->execute();
 
-	//dd($nbreCategories);
+        //dd($nbreCategories);
         $results = array();
 
         foreach ($listeCategories as $cat) {
@@ -645,29 +640,23 @@ class DefaultController extends AbstractController
             array_push($results, $data);
         }
 
-	//dd($results);
+        //dd($results);
         foreach ($structuresFinal['results'] as $menu) {
-       // dd($menu);  
-	  $cat = $menu["categorie"];
-            if(sizeof($cat))
-            {
+            // dd($menu);  
+            $cat = $menu["categorie"];
+            if (sizeof($cat)) {
 
-                foreach($cat as $c)
-                {
+                foreach ($cat as $c) {
 
                     $test = array_search($c, array_column($results, 'id'));
                     //		var_dump(is_int($test)); 
                     if (is_int($test)) {
-                    array_push($results[$test]['listeMenus'], $menu);
+                        array_push($results[$test]['listeMenus'], $menu);
                     }
-
                 }
-
-
             }
-        
         }
-	//dd($results);
+        //dd($results);
         foreach ($results as $key => $resto) {
 
             if (sizeof($results[$key]['listeMenus']) == 0) {
@@ -729,122 +718,104 @@ class DefaultController extends AbstractController
             $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
 
-            if(isset($structureVues[0]['tailles']))
-            {
+            if (isset($structureVues[0]['tailles'])) {
                 $listeTailles = $structureVues[0]['tailles'];
                 if (is_array($listeTailles)) {
-    
+
                     if (sizeof($listeTailles)) {
                         foreach ($listeTailles as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['tailles'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
+                    } else {
+                        $structureVues[0]['tailles'] = [];
                     }
-                    else{
-                        $structureVues[0]['tailles']=[];
-                    }
-                    
                 }
             }
 
-            if(isset($structureVues[0]['sauces']))
-            {
+            if (isset($structureVues[0]['sauces'])) {
                 $listesauces = $structureVues[0]['sauces'];
                 if (isset($listesauces[0]['produits'])) {
-    
-                    $listeProduits=$listesauces[0]['produits'];
+
+                    $listeProduits = $listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['sauces'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                   
-                }
-                else{
-                    $structureVues[0]['sauces']=[];
+                } else {
+                    $structureVues[0]['sauces'] = [];
                 }
             }
-            if(isset($structureVues[0]['viandes']))
-            {
+            if (isset($structureVues[0]['viandes'])) {
                 $listesauces = $structureVues[0]['viandes'];
                 if (isset($listesauces[0]['produits'])) {
-    
-                    $listeProduits=$listesauces[0]['produits'];
+
+                    $listeProduits = $listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['viandes'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                   
-                }
-                else{
-                    $structureVues[0]['viandes']=[];
+                } else {
+                    $structureVues[0]['viandes'] = [];
                 }
             }
-          
 
-            if(isset($structureVues[0]['garnitures']))
-            {
+
+            if (isset($structureVues[0]['garnitures'])) {
                 $listesauces = $structureVues[0]['garnitures'];
                 if (isset($listesauces[0]['produits'])) {
-    
-                    $listeProduits=$listesauces[0]['produits'];
+
+                    $listeProduits = $listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['garnitures'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                   
-                }
-                else{
-                    $structureVues[0]['garnitures']=[];
+                } else {
+                    $structureVues[0]['garnitures'] = [];
                 }
             }
 
 
-            if(isset($structureVues[0]['boisons']))
-            {
+            if (isset($structureVues[0]['boisons'])) {
                 $listesauces = $structureVues[0]['boisons'];
                 if (isset($listesauces[0]['produits'])) {
-    
-                    $listeProduits=$listesauces[0]['produits'];
+
+                    $listeProduits = $listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['boisons'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                   
-                }
-                else{
-                    $structureVues[0]['boisons']=[];
+                } else {
+                    $structureVues[0]['boisons'] = [];
                 }
             }
-            
 
 
-            if(isset($structureVues[0]['autres']))
-            {
+
+            if (isset($structureVues[0]['autres'])) {
                 $listesauces = $structureVues[0]['autres'];
                 if (isset($listesauces[0]['produits'])) {
-    
-                    $listeProduits=$listesauces[0]['produits'];
+
+                    $listeProduits = $listesauces[0]['produits'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
                             $structureVues[0]['autres'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
-                   
-                }
-                else{
-                    $structureVues[0]['autres']=[];
+                } else {
+                    $structureVues[0]['autres'] = [];
                 }
             }
-           
+
             return new JsonResponse($structureVues, '200');
         } else {
             return new JsonResponse($data, '200');
@@ -885,8 +856,8 @@ class DefaultController extends AbstractController
     public function getLiKE(DocumentManager $dm, $id, Request $request, strutureVuesService $strutureVuesService)
     {
 
-        $like=false;
-        $identifiantMongo=null;
+        $like = false;
+        $identifiantMongo = null;
 
         if ($request->get('identifiantMongo') != null) {
             $identifiantMongo = $request->get('identifiantMongo');
@@ -900,98 +871,250 @@ class DefaultController extends AbstractController
             ->getQuery()
             ->execute();
 
-        $like=false;    
-        if($nbreFavoris)
-        {
-            $like=true;
-        }    
+        $like = false;
+        if ($nbreFavoris) {
+            $like = true;
+        }
 
-        return new JsonResponse(array('like'=>$like));
+        return new JsonResponse(array('like' => $like));
     }
 
 
 
-    
+
     /**
      * @Route("/searcheAvancer", methods={"POST"})
      */
 
-    public function searcheAvancer(DocumentManager $dm,Request $request)
+    public function searcheAvancer(DocumentManager $dm,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
 
 
-        $word=$request->get('word');
+        $word = $request->get('word');
 
-        $regexWord=  new \MongoDB\BSON\Regex($word, 'i');
+        $regexWord =  new \MongoDB\BSON\Regex($word, 'i');
 
 
+        $listeDesIdentifiants = [];
 
         //il faut rechercher la liste des restaurants
+        $nbreRestaurants = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('restaurants')
+            ->field('extraPayload.titre')->equals($regexWord)
+            ->count()
+            ->getQuery()
+            ->execute();
 
-        $restaurants= $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('restaurants')
-        ->field('extraPayload.titre')->equals($regexWord)
-        ->getQuery()
-        ->execute();
+        if ($nbreRestaurants) {
+            $restaurants = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('restaurants')
+                ->field('extraPayload.titre')->equals($regexWord)
+                ->getQuery()
+                ->execute();
+            foreach ($restaurants as $resto) {
+                array_push($listeDesIdentifiants, $resto->getId());
+            }
+        }
+
+
+
 
 
         //il faut rechercher la liste Specialites puis réccupprer la liste des resto
 
-        $specialites= $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('specialites')
-	 ->field('status')->equals('active')
-        ->field('extraPayload.libelle')->equals($regexWord)
-        ->getQuery()
-        ->execute();
+        $nbrespecialites = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('specialites')
+            ->field('status')->equals('active')
+            ->field('extraPayload.libelle')->equals($regexWord)
+            ->count()
+            ->getQuery()
+            ->execute();
+        $idSpecialites = [];
+        if ($nbrespecialites) {
+            $specialites = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('specialites')
+                ->field('status')->equals('active')
+                ->field('extraPayload.libelle')->equals($regexWord)
+                ->getQuery()
+                ->execute();
 
-
-        $tabIdRestoFromSpec=[];
-
-
-        foreach($specialites as $spec)
-        {
-           array_push($tabIdRestoFromSpec,$spec->getId());
+            foreach ($specialites as $spec) {
+                array_push($idSpecialites, $spec->getId());
+            }
         }
 
-	//var_dump($tabIdRestoFromSpec);
 
-        $listeDesRestaurantsHasSpec=$dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('restaurants')
-	->field('status')->equals('active')
-        ->field('extraPayload.specialiteRestos')->in(array_values($tabIdRestoFromSpec))
-        ->getQuery()
-        ->execute();
+        if (sizeof($idSpecialites)) {
+            $nbreRestaurantsHasSpec = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('restaurants')
+                ->field('status')->equals('active')
+                ->field('extraPayload.specialiteRestos')->in(array_values($idSpecialites))
+                ->count()
+                ->getQuery()
+                ->execute();
+            if ($nbreRestaurantsHasSpec) {
 
-	   $tabIdRestoFromSpec=[];
+                $listeDesRestaurantsHasSpec = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('restaurants')
+                    ->field('status')->equals('active')
+                    ->field('extraPayload.specialiteRestos')->in(array_values($idSpecialites))
+                    ->getQuery()
+                    ->execute();
 
 
-        foreach($listeDesRestaurantsHasSpec as $spec)
-        {
-           array_push($tabIdRestoFromSpec,$spec->getId());
+
+                foreach ($listeDesRestaurantsHasSpec as $resto) {
+                    array_push($listeDesIdentifiants, $resto->getId());
+                }
+            }
         }
 
-	var_dump($tabIdRestoFromSpec);
-
-
- //       dd($listeDesRestaurantsHasSpec);
-
-
-        //il faut recherche la liste menus puis réccupprer la liste des resto
-
-
-        $menus= $dm->createQueryBuilder(Entities::class)
+        $nbremenus = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('menus')
+        ->field('status')->equals('active')
         ->field('extraPayload.titre')->equals($regexWord)
+        ->count()
         ->getQuery()
         ->execute();
+        if($nbremenus)
+        {
+            $menus = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('menus')
+            ->field('status')->equals('active')
+            ->field('extraPayload.titre')->equals($regexWord)
+            ->getQuery()
+            ->execute();
 
-        return new JsonResponse($listeDesRestaurantsHasSpec,200);
+            foreach ($menus as $m) {
+                if($m->getExtraPayload()['linkedRestaurant']!="")
+                {
+                    array_push($listeDesIdentifiants, $m->getExtraPayload()['linkedRestaurant']);
+                }
+              
+            }
+        }
 
 
+
+
+        $listeDesIdentifiantsUnique=array_unique($listeDesIdentifiants);
+        $chainesDesIdentifiants="";
+        foreach( $listeDesIdentifiantsUnique as $id)
+        {
+            if($chainesDesIdentifiants=="")
+            {
+
+                $chainesDesIdentifiants=$id;
+            }
+            else{
+                $chainesDesIdentifiants=$chainesDesIdentifiants.','.$id;
+            }
+        }
+        
+        $entity = "restaurants";
+        $listeTags = "";
+        $vueAvancer = "restaurants_multi";
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+        $indexVue = "CLIENT";
+
+
+
+
+
+
+        $filter = array_merge($routeParams, $request->query->all());
+
+        $filter["Identifiant"]=array("in"=>$chainesDesIdentifiants);
+
+        unset($filter['version']);
+        unset($filter['vueAvancer']);
+        unset($filter['lang']);
+        unset($filter['indexVue']);
+
+        $data = $this->entityManager->getResultFromArray($entity, $filter);
+
+
+        $data = $this->entityManager->serializeContent($data);
+
+
+
+
+        if (isset($data['results'])) {
+
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
+            $structuresFinal['count'] = $data['count'];
+            $structuresFinal['results'] = $structureVues;
+        } else {
+
+            $structuresFinal['count'] = 0;
+            $structuresFinal['results'] = [];
+        }
+
+        $listeTags = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('tags')
+            ->field('extraPayload.isActive')->equals("1")
+            ->getQuery()
+            ->execute();
+        $nbreTags = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('tags')
+            ->field('extraPayload.isActive')->equals("1")
+            ->count()
+            ->getQuery()
+            ->execute();
+
+
+        $results = array();
+
+        foreach ($listeTags as $tag) {
+            $data = array(
+                'id' => $tag->getId(),
+                'name' => $tag->getExtraPayload()['libelle'],
+                'listeRestaurant' => []
+            );
+            //var_dump($data);
+            array_push($results, $data);
+        }
+        //    var_dump($results);
+
+        //	dd($structuresFinal['results']);           
+
+
+        foreach ($structuresFinal['results'] as $resto) {
+            $tabT = $resto["tags"];
+            if (sizeof($tabT)) {
+
+                foreach ($tabT as $t) {
+                    //var_dump($t);
+                    $test = array_search($t, array_column($results, 'id'));
+                    //var_dump($test);
+                    //$test=in_array($t,$results);
+                    //		var_dump($test);
+                    if (is_int($test)) {
+                        array_push($results[$test]['listeRestaurant'], $resto);
+                    }
+                }
+            }
+        }
+
+
+        foreach ($results as $key => $resto) {
+
+            if (sizeof($results[$key]['listeRestaurant']) == 0) {
+                unset($results[$key]);
+            }
+        }
+
+        return new JsonResponse(array_values($results), '200');
+
+
+    
     }
 
 
-  /**
+    /**
      * @Route("/newChamps", methods={"GET"})
      */
 
@@ -1000,9 +1123,6 @@ class DefaultController extends AbstractController
 
         $data = $this->entityManager->addNewChamps();
 
-        return new JsonResponse(array('message'=>'trhe'));
-
+        return new JsonResponse(array('message' => 'trhe'));
     }
-
-
 }
