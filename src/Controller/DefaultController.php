@@ -913,7 +913,7 @@ class DefaultController extends AbstractController
 
     
     /**
-     * @Route("/searcheAvancer", methods={"GET"})
+     * @Route("/searcheAvancer", methods={"POST"})
      */
 
     public function searcheAvancer(DocumentManager $dm,Request $request)
