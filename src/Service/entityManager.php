@@ -812,10 +812,14 @@ class entityManager
        
         foreach($comptes as $c)
         {
+
+//	dd($c);
         $entities = $dm->getRepository(Entities::class)->find($c->getId());
-     
+  //dd($entities);
+//var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
-            foreach ($extraPayload as $j => $content) {
+//var_dump($payload);           
+ /*foreach ($extraPayload as $j => $content) {
                 if (array_key_exists($j, $payload)) {
                     if ($content && $content[0] == ",") {
                         if ($payload[$j]) {
@@ -837,9 +841,9 @@ class entityManager
                         }
                     }
                 }
-               
-            }
-            $payload["disponible"]=false;
+              
+            }*/
+            $payload["disponible"]="0";
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");

@@ -930,7 +930,7 @@ class DefaultController extends AbstractController
 
         $restaurants= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('restaurants')
-        ->field('extraPayload.titre')->regex($regexWord)
+        ->field('extraPayload.titre')->equals($regexWord)
         ->getQuery()
         ->execute();
 
@@ -939,7 +939,8 @@ class DefaultController extends AbstractController
 
         $specialites= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('specialites')
-        ->field('extraPayload.libelle')->regex($regexWord)
+	 ->field('status')->equals('active')
+        ->field('extraPayload.libelle')->equals($regexWord)
         ->getQuery()
         ->execute();
 
@@ -952,15 +953,27 @@ class DefaultController extends AbstractController
            array_push($tabIdRestoFromSpec,$spec->getId());
         }
 
+	//var_dump($tabIdRestoFromSpec);
 
         $listeDesRestaurantsHasSpec=$dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('restaurants')
+	->field('status')->equals('active')
         ->field('extraPayload.specialiteRestos')->in(array_values($tabIdRestoFromSpec))
         ->getQuery()
         ->execute();
 
+	   $tabIdRestoFromSpec=[];
 
-        dd($listeDesRestaurantsHasSpec);
+
+        foreach($listeDesRestaurantsHasSpec as $spec)
+        {
+           array_push($tabIdRestoFromSpec,$spec->getId());
+        }
+
+	var_dump($tabIdRestoFromSpec);
+
+
+ //       dd($listeDesRestaurantsHasSpec);
 
 
         //il faut recherche la liste menus puis réccupprer la liste des resto
@@ -968,11 +981,11 @@ class DefaultController extends AbstractController
 
         $menus= $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('menus')
-        ->field('extraPayload.titre')->regex($regexWord)
+        ->field('extraPayload.titre')->equals($regexWord)
         ->getQuery()
         ->execute();
 
-        return new JsonResponse(array(),200);
+        return new JsonResponse($listeDesRestaurantsHasSpec,200);
 
 
     }
