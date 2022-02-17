@@ -49,11 +49,13 @@ use App\Service\strutureVuesService;
 class SecurityController extends AbstractController
 {
 
-    public function __construct(ContainerBagInterface $params, EntityManagerInterface $em, entityManager $entityManager)
+    public function __construct(HttpClientInterface $client,DocumentManager $documentManager,ContainerBagInterface $params, EntityManagerInterface $em, entityManager $entityManager)
     {
         $this->em = $em;
         $this->params = $params;
         $this->entityManager = $entityManager;
+        $this->documentManager=$documentManager;
+        $this->client=$client;
     }
 
 
@@ -92,52 +94,64 @@ class SecurityController extends AbstractController
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
             $extraPayload['Identifiant'] = $data->getId();
-            $user = $userService->creationCompte($extraPayload);
+
+           $testCustomerId= $this->gestionComptesBancaires($extraPayload['Identifiant'],$extraPayload['nom'],$extraPayload['email']);
+
+            if($testCustomerId)
+            {
+
+                $user = $userService->creationCompte($extraPayload);
 
 
-            $subject = "Bienvenue chez FoodLine";
-
-            $email = (new TemplatedEmail())
-                ->from("foodline2022@gmail.com")
-                ->to(new Address(trim($extraPayload["email"])))
-                //->bcc('touhemib@gmail.com')
-                ->subject($subject)
-                ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
-                ->context([
-
-                    "nom" => $user->getNom(),
-                    "prenom" => $user->getPrenom()
-                ]);
-
-            $mailer->send($email);
-            if (($extraPayload["type"] != "google") && ($extraPayload["type"] != "facebook")) {
-
-
-                $test =  $userService->generateCodeActivation($user->getEmail());
-
-                $subject = "Activation compte";
-
-                $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
-                // $emailservice->sendMailCodeForgotPassworClient($email, $code);
+                $subject = "Bienvenue chez FoodLine";
+    
                 $email = (new TemplatedEmail())
                     ->from("foodline2022@gmail.com")
-                    ->to(new Address(trim($user->getEmail())))
+                    ->to(new Address(trim($extraPayload["email"])))
                     //->bcc('touhemib@gmail.com')
                     ->subject($subject)
-                    ->htmlTemplate('Email/mailActivation.html.twig')
+                    ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
                     ->context([
+    
                         "nom" => $user->getNom(),
-                        "prenom" => $user->getPrenom(),
-                        "code" => $code
+                        "prenom" => $user->getPrenom()
                     ]);
-
+    
                 $mailer->send($email);
+                if (($extraPayload["type"] != "google") && ($extraPayload["type"] != "facebook")) {
+    
+    
+                    $test =  $userService->generateCodeActivation($user->getEmail());
+    
+                    $subject = "Activation compte";
+    
+                    $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
+                    // $emailservice->sendMailCodeForgotPassworClient($email, $code);
+                    $email = (new TemplatedEmail())
+                        ->from("foodline2022@gmail.com")
+                        ->to(new Address(trim($user->getEmail())))
+                        //->bcc('touhemib@gmail.com')
+                        ->subject($subject)
+                        ->htmlTemplate('Email/mailActivation.html.twig')
+                        ->context([
+                            "nom" => $user->getNom(),
+                            "prenom" => $user->getPrenom(),
+                            "code" => $code
+                        ]);
+    
+                    $mailer->send($email);
+                }
+    
+    
+    
+    
+                return new JsonResponse($data->getId());
             }
+            else{
 
-
-
-
-            return new JsonResponse($data->getId());
+                return new JsonResponse(array('message' => 'problème lors de création customer id stripe or paypal'), 400);
+            }
+          
         } else {
             return new JsonResponse(array('message' => 'cet email déja utilisé'), 400);
         }
@@ -190,28 +204,39 @@ class SecurityController extends AbstractController
                 $data = $this->entityManager->setResult($form, null, $extraPayload);
 
                 $extraPayload['Identifiant'] = $data->getId();
-                $user = $userService->creationCompte($extraPayload);
+
+                $testCustomerId= $this->gestionComptesBancaires($extraPayload['Identifiant'],$extraPayload['nom'],$extraPayload['email']);
+                if($testCustomerId)
+                {
+
+                    $user = $userService->creationCompte($extraPayload);
 
 
-                $subject = "Bienvenue chez FoodLine";
+                    $subject = "Bienvenue chez FoodLine";
+    
+                    $email = (new TemplatedEmail())
+                        ->from("foodline2022@gmail.com")
+                        ->to(new Address(trim($extraPayload["email"])))
+                        //->bcc('touhemib@gmail.com')
+                        ->subject($subject)
+                        ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
+                        ->context([
+    
+                            "nom" => $user->getNom(),
+                            "prenom" => $user->getPrenom()
+                        ]);
+    
+                    $mailer->send($email);
+    
+    
+    
+                    return new JsonResponse(array('message' => 'inscription avec success'), 200);
+                }
+                else{
 
-                $email = (new TemplatedEmail())
-                    ->from("foodline2022@gmail.com")
-                    ->to(new Address(trim($extraPayload["email"])))
-                    //->bcc('touhemib@gmail.com')
-                    ->subject($subject)
-                    ->htmlTemplate('Email/mailConfirmationInscription.html.twig')
-                    ->context([
-
-                        "nom" => $user->getNom(),
-                        "prenom" => $user->getPrenom()
-                    ]);
-
-                $mailer->send($email);
-
-
-
-                return new JsonResponse(array('message' => 'inscription avec success'), 200);
+                    return new JsonResponse(array('message' => 'problème lors de création customer id stripe or paypal'), 400);
+                }
+            
             } else {
                 return new JsonResponse(array('message' => 'Access token invalide'), 400);
             }
@@ -738,5 +763,64 @@ class SecurityController extends AbstractController
 
         $data = $this->entityManager->setResult($form, $entity, $extraPayload);
         return new JsonResponse(array('identifiantAnonyme'=>$data->getId()),200);
+    }
+
+
+
+    function  gestionComptesBancaires($idCompte,$nom,$email)
+    {
+
+
+        $response = $this->client->request('POST', 'https://api.stripe.com/v1/customers', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '."sk_test_e1GvvAgOzefxcxxuBtezQvH400o86v0XsK",
+            ],
+            'body' => [
+                "email"=> $email,
+                "name"=>$nom
+
+            ]
+        ]);
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode == 200 ){
+            $content = $response->toArray();
+
+            $extraPayload['customerId']=$content['id'];
+            $extraPayload['compte']=$idCompte;
+            $data = $this->entityManager->setResult('comptesBancaires', null, $extraPayload);
+         
+            $commande = $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('comptes')
+            ->field('extraPayload.Identifiant')->equals($idCompte)
+            ->findAndUpdate()
+            ->field('extraPayload.idCompteBancaire')->set($data->getId())
+           
+   
+            ->getQuery()
+            ->execute();
+            
+         
+            //Paypal configuration
+            $gateway = new Gateway([
+                'environment' => 'sandbox',
+                'merchantId' => 'hfpchnqptzc9hn4x',
+                'publicKey' => 'gh9gtp42x9hh7m7d',
+                'privateKey' => '4a6b0da198056fb21814788a00cca76e'
+              
+            ]);
+//                    $gateway->clientToken()->generate();
+            //Affecter customer_id stripe to paypal
+            $result = $gateway->customer()->create([
+                'id'=>$content['id'],
+                'email' =>  $email,
+            ]);
+            $result->success;
+
+            return true;
+        }else{
+            return false;
+        }
     }
 }

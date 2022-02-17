@@ -843,7 +843,7 @@ class entityManager
                 }
               
             }*/
-            $payload["disponible"]="0";
+            $payload["idCompteBancaire"]="";
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
