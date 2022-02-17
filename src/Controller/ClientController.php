@@ -48,7 +48,6 @@ class ClientController extends AbstractController
         $this->eventsManager = $eventsManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
-                
     }
 
     /**
@@ -398,7 +397,7 @@ class ClientController extends AbstractController
 
         $lang = 'fr';
 
-        $description="";
+        $description = "";
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
@@ -435,17 +434,14 @@ class ClientController extends AbstractController
         if (sizeof($extraPayload['tailles'])) {
 
             $prixTTC = $extraPayload['tailles'][0]['prix'];
-            
-            $taille=$dm->getRepository(Entities::class)->find($extraPayload['tailles'][0]['id']);
 
-            if($description=="")
-            {
-                $description=$taille->getExtraPayload()['name'];
-            }
-            else{
-                $description=$description." , ". $taille->getExtraPayload()['name'];
-            }
+            $taille = $dm->getRepository(Entities::class)->find($extraPayload['tailles'][0]['id']);
 
+            if ($description == "") {
+                $description = $taille->getExtraPayload()['name'];
+            } else {
+                $description = $description . " , " . $taille->getExtraPayload()['name'];
+            }
         } else {
             $prixTTC = $menu->getExtraPayload()['prix'];
         }
@@ -453,23 +449,18 @@ class ClientController extends AbstractController
         if (isset($extraPayload['viandes'])) {
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -478,23 +469,18 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['boisons'])) {
 
                 foreach ($extraPayload['boisons'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -504,23 +490,18 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['sauces'])) {
 
                 foreach ($extraPayload['sauces'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -529,22 +510,17 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['garnitures'])) {
 
                 foreach ($extraPayload['garnitures'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -553,7 +529,7 @@ class ClientController extends AbstractController
         $extraPayload['prixTTC'] = round($prixTotalttc, 2);
         $extraPayload['quantite'] = intval($newQte);
 
-        $extraPayload['description']=$description;
+        $extraPayload['description'] = $description;
 
 
         $data = $this->entityManager->updateResultV2($menuPanier->getId(), $extraPayload);
@@ -628,7 +604,7 @@ class ClientController extends AbstractController
         $entity = null;
 
         $lang = 'fr';
-        $description="";
+        $description = "";
 
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
@@ -663,14 +639,12 @@ class ClientController extends AbstractController
             $prixTTC = $extraPayload['tailles'][0]['prix'];
 
 
-            $taille=$dm->getRepository(Entities::class)->find( $extraPayload['tailles'][0]['id']);
+            $taille = $dm->getRepository(Entities::class)->find($extraPayload['tailles'][0]['id']);
 
-            if($description=="")
-            {
-                $description=$taille->getExtraPayload()['name'];
-            }
-            else{
-                $description=$description." , ". $taille->getExtraPayload()['name'];
+            if ($description == "") {
+                $description = $taille->getExtraPayload()['name'];
+            } else {
+                $description = $description . " , " . $taille->getExtraPayload()['name'];
             }
         } else {
             $prixTTC = $menu->getExtraPayload()['prix'];
@@ -679,23 +653,18 @@ class ClientController extends AbstractController
         if (isset($extraPayload['viandes'])) {
             if (sizeof($extraPayload['viandes'])) {
                 foreach ($extraPayload['viandes'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -704,23 +673,18 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['boisons'])) {
 
                 foreach ($extraPayload['boisons'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -730,23 +694,18 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['sauces'])) {
 
                 foreach ($extraPayload['sauces'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -755,23 +714,18 @@ class ClientController extends AbstractController
             if (sizeof($extraPayload['garnitures'])) {
 
                 foreach ($extraPayload['garnitures'] as $e) {
-                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte']))* $newQte);
+                    $prixFac = $prixFac + ((floatval($e['prixFacculatitf']) * intval($e['qte'])) * $newQte);
 
-                    $option=$dm->getRepository(Entities::class)->find($e['id']);
-                    if($description=="")
-                    {
-                        $description=$option->getExtraPayload()['name'];
-                    }
-                    else{
-                        if(intval($e['qte'])!=0)
-                        {
+                    $option = $dm->getRepository(Entities::class)->find($e['id']);
+                    if ($description == "") {
+                        $description = $option->getExtraPayload()['name'];
+                    } else {
+                        if (intval($e['qte']) != 0) {
 
-                            $description=$description." , ".strval($e['qte']).'x'. $option->getExtraPayload()['name'];
+                            $description = $description . " , " . strval($e['qte']) . 'x' . $option->getExtraPayload()['name'];
+                        } else {
+                            $description = $description . " , " . $option->getExtraPayload()['name'];
                         }
-                        else{
-                            $description=$description." , ".$option->getExtraPayload()['name'];
-                        }
-                       
                     }
                 }
             }
@@ -1113,7 +1067,7 @@ class ClientController extends AbstractController
 
 
 
-                $adresseLivraison = $dm->createQueryBuilder(Entities::class)
+            $adresseLivraison = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('adresseLivraison')
                 ->field('extraPayload.linkedCompte')->equals($idAnonyme)
                 ->findAndUpdate()
@@ -1130,10 +1084,10 @@ class ClientController extends AbstractController
      * @Route("getStationsDiponibles", methods={"GET"})
      */
 
-    public function getStationsDiponibles(DocumentManager $dm,distance $serviceDistance,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function getStationsDiponibles(DocumentManager $dm, distance $serviceDistance, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
-        
-        $entity="trajets";
+
+        $entity = "trajets";
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
             $vueAvancer = $request->get('vueAvancer');
@@ -1184,10 +1138,9 @@ class ClientController extends AbstractController
             $lang = $request->get('lang');
         }
 
-        $adresseLivrasion=$request->get('adresseLivrasion');
-        if(is_null($adresseLivrasion))
-        {
-            return new JsonResponse(array('message'=>'Merci de vérifier adresse livraison'),400);
+        $adresseLivrasion = $request->get('adresseLivrasion');
+        if (is_null($adresseLivrasion)) {
+            return new JsonResponse(array('message' => 'Merci de vérifier adresse livraison'), 400);
         }
 
 
@@ -1211,119 +1164,98 @@ class ClientController extends AbstractController
         $data = $this->entityManager->serializeContent($data);
 
 
-        $listeStationDisponibles=[];
+        $listeStationDisponibles = [];
 
-        $adresseLivrasion= $dm->getRepository(Entities::class)->find($adresseLivrasion);
-        
-        $positionClient=$adresseLivrasion->getExtraPayload()['position'];
-        $latClient=$positionClient[0];
-        $longClient=$positionClient[1];
-        if(isset($data['results']))
-        {
-            foreach($data['results'] as $trajet)
-            {
+        $adresseLivrasion = $dm->getRepository(Entities::class)->find($adresseLivrasion);
+
+        $positionClient = $adresseLivrasion->getExtraPayload()['position'];
+        $latClient = $positionClient[0];
+        $longClient = $positionClient[1];
+        if (isset($data['results'])) {
+            foreach ($data['results'] as $trajet) {
 
                 //var_dump($trajet['Identifiant']);
                 $nbreTrajetCamion = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('trajetcamion')
-                ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
-                ->field('extraPayload.isActive')->equals("1")
-                ->count()
-                ->getQuery()
-                ->execute();
+                    ->field('name')->equals('trajetcamion')
+                    ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
+                    ->field('extraPayload.isActive')->equals("1")
+                    ->count()
+                    ->getQuery()
+                    ->execute();
 
                 //var_dump('nbre t c');
-               // var_dump($nbreTrajetCamion);
-                if($nbreTrajetCamion)
-                {
-                  //  var_dump('sizof'.$trajet['stations']);
-                    if(sizeof($trajet['stations']))
-                    {
+                // var_dump($nbreTrajetCamion);
+                if ($nbreTrajetCamion) {
+                    //  var_dump('sizof'.$trajet['stations']);
+                    if (sizeof($trajet['stations'])) {
                         //checkDistance 20 km
 
-                        foreach($trajet['stations'] as $station)
-                        {
+                        foreach ($trajet['stations'] as $station) {
 
-                 ///           var_dump($station['idStation']);
-                            $s= $dm->getRepository(Entities::class)->find($station['idStation']);
-                            $positionStation= $s->getExtraPayload()['position'];
-        //                    var_dump($positionStation);
-                            $latStation=$positionStation[0];
-                            $longStation=$positionStation[1];
+                            ///           var_dump($station['idStation']);
+                            $s = $dm->getRepository(Entities::class)->find($station['idStation']);
+                            $positionStation = $s->getExtraPayload()['position'];
+                            //                    var_dump($positionStation);
+                            $latStation = $positionStation[0];
+                            $longStation = $positionStation[1];
 
-                            $distance = $serviceDistance->distance(floatval($latClient),floatval($longClient),floatval($latStation),floatval($longStation));
-                    //        var_dump($distance);
-                            if(($distance<20)) {
-                              
+                            $distance = $serviceDistance->distance(floatval($latClient), floatval($longClient), floatval($latStation), floatval($longStation));
+                            //        var_dump($distance);
+                            if (($distance < 20)) {
+
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
-                                ->field('name')->equals('trajetcamion')
-                                ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
-                 //               ->field('extraPayload.statut')->equals("active")
-                                ->field('extraPayload.isActive')->equals("1")
-                                ->getQuery()
-                                ->execute();
+                                    ->field('name')->equals('trajetcamion')
+                                    ->field('extraPayload.trajet')->equals($trajet['Identifiant'])
+                                    //               ->field('extraPayload.statut')->equals("active")
+                                    ->field('extraPayload.isActive')->equals("1")
+                                    ->getQuery()
+                                    ->execute();
 
-                                foreach($trajetCamion as $tj)
-                                {
-                                    $livreur=$dm->getRepository(Entities::class)->find($tj->getExtraPayload()['livreur']);
-                                    $params[0]='uploads';
-                                    $params[1]='single';
-                                    $params[2]=$livreur->getExtraPayload()['photoProfil'];
-                                    $infoLivreur=array(
-                                        'Identifiant'=>$livreur->getExtraPayload()['Identifiant'],
-                                        'image'=>$strutureVuesService->getUrl($params),
-                                        'name'=>$livreur->getExtraPayload()['nom'],
-                                        'prenom'=>$livreur->getExtraPayload()['prenom'],
-                                        'phone'=>$livreur->getExtraPayload()['phone'],
-                                        'email'=>$livreur->getExtraPayload()['email']
+                                foreach ($trajetCamion as $tj) {
+                                    $livreur = $dm->getRepository(Entities::class)->find($tj->getExtraPayload()['livreur']);
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                                    $params[2] = $livreur->getExtraPayload()['photoProfil'];
+                                    $infoLivreur = array(
+                                        'Identifiant' => $livreur->getExtraPayload()['Identifiant'],
+                                        'image' => $strutureVuesService->getUrl($params),
+                                        'name' => $livreur->getExtraPayload()['nom'],
+                                        'prenom' => $livreur->getExtraPayload()['prenom'],
+                                        'phone' => $livreur->getExtraPayload()['phone'],
+                                        'email' => $livreur->getExtraPayload()['email']
 
                                     );
 
-                                    $vitesse=40;
+                                    $vitesse = 40;
                                     //temps=distance/vitesse
-                                    $estimation=($distance/$vitesse)*60;
-                                    $data=  array(
-                                        'idStation'=>$station['idStation'],
-                                        'heureArrive'=>$station['heureArrive'],
-                                        'heureDepart'=>$station['heureDepart'],
-                                        'livreur'=> $infoLivreur,
-                                        'nomStation'=>$s->getExtraPayload()['name'],
-                                        'postion'=>$s->getExtraPayload()['position'],
-                                        'trajetCamion'=>$tj->getId(),
-                                        'distance'=> round($distance,2),
-                                        'temps'=>round($estimation,2)
+                                    $estimation = ($distance / $vitesse) * 60;
+                                    $data =  array(
+                                        'idStation' => $station['idStation'],
+                                        'heureArrive' => $station['heureArrive'],
+                                        'heureDepart' => $station['heureDepart'],
+                                        'livreur' => $infoLivreur,
+                                        'nomStation' => $s->getExtraPayload()['name'],
+                                        'postion' => $s->getExtraPayload()['position'],
+                                        'trajetCamion' => $tj->getId(),
+                                        'distance' => round($distance, 2),
+                                        'temps' => round($estimation, 2)
                                     );
-                                      array_push($listeStationDisponibles,$data);
+                                    array_push($listeStationDisponibles, $data);
                                 }
-                   
                             }
                         }
-                     
-
-
-
-                        
-                        
-
-
                     }
                 }
-
-
             }
-            return new JsonResponse(array('listeStations'=>$listeStationDisponibles),200);
+            return new JsonResponse(array('listeStations' => $listeStationDisponibles), 200);
+        } else {
 
+            return new JsonResponse(array('listeStations' => $listeStationDisponibles), 200);
         }
-        else{
-
-            return new JsonResponse(array('listeStations'=>$listeStationDisponibles),200);
-        }
-
-
     }
 
 
-    
+
     /**
      * @Route("/api/client/createCommande", methods={"POST"})
      */
@@ -1345,16 +1277,16 @@ class ClientController extends AbstractController
             ->count()
             ->getQuery()
             ->execute();
-        $num_cmd =$nbreCommandes+1;
+        $num_cmd = $nbreCommandes + 1;
 
-        $num_fact=$ym.'-'.strval($num_cmd);
+        $num_fact = $ym . '-' . strval($num_cmd);
 
         $extraPayload['numeroCommande'] = $num_cmd;
         $extraPayload['numeroFacture'] =  $num_fact;
         $extraPayload['statut'] = "created";
 
 
-        
+
         //créer commande 
         $commande = $this->entityManager->setResult('commandes', null, $extraPayload);
 
@@ -1362,18 +1294,18 @@ class ClientController extends AbstractController
         //get Mon panier 
         $monPanier = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('paniers')
-            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])          
+            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
             ->getQuery()
             ->getSingleResult();
 
-            $tabListeProduits = $monPanier->getExtraPayload()['listeMenus'];
+        $tabListeProduits = $monPanier->getExtraPayload()['listeMenus'];
 
         //créer produit commande
         $totalHT = 0;
         $totalTTC = 0;
         $quantite = 0;
-        $listeMenusCommande=[];
-      
+        $listeMenusCommande = [];
+
         foreach ($tabListeProduits as $pp) {
 
             $produitpanier = $dm->createQueryBuilder(Entities::class)
@@ -1382,7 +1314,7 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->getSingleResult();
             $data['linkedCommande'] = $commande->getId();
-            $data['client']=$extraPayload['client'];
+            $data['client'] = $extraPayload['client'];
             $data['linkedMenu'] = $produitpanier->getExtraPayload()['linkedMenu'];
 
             $data['tailles'] = $produitpanier->getExtraPayload()['tailles'];
@@ -1392,7 +1324,7 @@ class ClientController extends AbstractController
             $data['boisons'] = $produitpanier->getExtraPayload()['boisons'];
             $data['autres'] = $produitpanier->getExtraPayload()['autres'];
 
-         
+
 
 
             $data['quantite'] = $produitpanier->getExtraPayload()['quantite'];
@@ -1405,9 +1337,8 @@ class ClientController extends AbstractController
             $totalTTC += intval($produitpanier->getExtraPayload()['prixTTC']);
             $quantite += intval($produitpanier->getExtraPayload()['quantite']);
             $menuCmd = $this->entityManager->setResult('menuscommandes', null, $data);
-       
-                array_push($listeMenusCommande,$menuCmd->getId());
-         
+
+            array_push($listeMenusCommande, $menuCmd->getId());
         }
 
 
@@ -1425,72 +1356,68 @@ class ClientController extends AbstractController
             ->execute();
 
 
-            
+
         $panier = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('paniers')
-        ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
-        ->findAndUpdate()
-        ->field('extraPayload.linkedCommande')->set($commande->getId())
-        ->field('extraPayload.statut')->set("inactive")
-        ->getQuery()
-        ->execute();
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
+            ->findAndUpdate()
+            ->field('extraPayload.linkedCommande')->set($commande->getId())
+            ->field('extraPayload.statut')->set("inactive")
+            ->getQuery()
+            ->execute();
         return new JsonResponse(array("idCommande" => $commande->getId(), "message" => "votre commande créée avec succès."), 200);
     }
 
 
 
-        /**
+    /**
      * @Route("/api/client/affecterAddresseLivraisonToCommande", methods={"POST"})
      */
-    
+
     public function affecterAdresseLivraisonACommande(Request $request, DocumentManager $dm)
     {
 
 
-        
+
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
 
         $commande = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('commandes')
-        ->field('extraPayload.Identifiant')->equals($extraPayload['idCommande'])
-        ->findAndUpdate()
-        ->field('extraPayload.livreur')->set($extraPayload['livreur'])
-        ->field('extraPayload.station')->set($extraPayload['station'])
-        ->field('extraPayload.trajetCamion')->set($extraPayload['trajetCamion'])
-        ->field('extraPayload.linkedAdresseLivraison')->set($extraPayload['linkedAdresseLivraison'])
-        ->getQuery()
-        ->execute();
+            ->field('name')->equals('commandes')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['idCommande'])
+            ->findAndUpdate()
+            ->field('extraPayload.livreur')->set($extraPayload['livreur'])
+            ->field('extraPayload.station')->set($extraPayload['station'])
+            ->field('extraPayload.trajetCamion')->set($extraPayload['trajetCamion'])
+            ->field('extraPayload.linkedAdresseLivraison')->set($extraPayload['linkedAdresseLivraison'])
+            ->getQuery()
+            ->execute();
 
 
-        return new JsonResponse(array('message'=>'done'),200);
+        return new JsonResponse(array('message' => 'done'), 200);
     }
 
 
     public function affectEtats($id)
     {
-        $listeStatuts=[
+        $listeStatuts = [
             "Demande de livraison reçu",
             "commande récupéré",
             "livraison en cours d'acheminement",
             "livreur sur le lieu de livraison",
             "livreur parti"
         ];
-        foreach($listeStatuts as $statut)
-        {
-            $extraPayload['commande']=$id;
-            $extraPayload['name']=$statut;
-            $extraPayload['statut']="waiting";
+        foreach ($listeStatuts as $statut) {
+            $extraPayload['commande'] = $id;
+            $extraPayload['name'] = $statut;
+            $extraPayload['statut'] = "waiting";
 
-            $data = $this->entityManager->setResult("etatsCommandes",null, $extraPayload);
+            $data = $this->entityManager->setResult("etatsCommandes", null, $extraPayload);
         }
 
 
         return true;
     }
-
-
-
 }
