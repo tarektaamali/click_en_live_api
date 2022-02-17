@@ -782,5 +782,30 @@ class LivreurController extends AbstractController
 
 
 
+           /**
+     * @Route("/api/livreur/changeStatutCommande/{id}", methods={"POST"})
+     */
+    public function changeStatutCommande($id,Request $request,DocumentManager $dm)
+    {
+
+
+        $extraPayload = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+        $data = $this->entityManager->updateResultV2($id, $extraPayload);
+
+        $fireEvent = null;
+        if ($request->get('fireEvent') != null) {
+            $fireEvent = $request->get('fireEvent');
+        }
+
+        return new JsonResponse(array('message'=>'opération effectué'),200);
+
+    }
+
+
 
 }
