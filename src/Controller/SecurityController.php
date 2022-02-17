@@ -774,7 +774,7 @@ class SecurityController extends AbstractController
         $response = $this->client->request('POST', 'https://api.stripe.com/v1/customers', [
             'headers' => [
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer '."sk_test_e1GvvAgOzefxcxxuBtezQvH400o86v0XsK",
+                'Authorization' => 'Bearer '."sk_test_51KDliCIbA1TFqS1mGO7zsozjbmQIZmAVCYf2l1VQP3flyCvJNJOvU9fmnrnGQCo9lAxNSsX1jdc5Qvh7T6sxNQ9b00ijVRFdMI",
             ],
             'body' => [
                 "email"=> $email,
