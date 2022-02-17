@@ -806,7 +806,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-        ->field('name')->equals('commandes')
+        ->field('name')->equals('comptes')
         ->getQuery()
         ->execute();
        
@@ -843,7 +843,7 @@ class entityManager
                 }
               
             }*/
-            $payload["idPaiement"]="";
+            $payload["idCompteBancaire"]="";
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
