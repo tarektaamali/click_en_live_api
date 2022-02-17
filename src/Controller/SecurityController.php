@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 
+
+use Braintree\Gateway;
+use Braintree\AddOnGateway;
+use Braintree\Configuration;
 use DateTime;
 use App\Entity\CodeActivation;
 use stdClass;
