@@ -283,7 +283,7 @@ class AdminController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        if ($entity == "menus") {
+        if($entity=="menus") {
 
             if (isset($extraPayload['tailles'])) {
                 if (sizeof($extraPayload['tailles'])) {
@@ -405,6 +405,7 @@ class AdminController extends AbstractController
 
         
         }
+
         $data = $this->entityManager->updateResultV2($id, $extraPayload);
 
         $fireEvent = null;
