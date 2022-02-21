@@ -255,14 +255,21 @@ class PaiementController extends AbstractController
                 ->field('name')->equals('commandes')
                 ->field('extraPayload.Identifiant')->equals($commande->getId())
                 ->findAndUpdate()
-                ->field('extraPayload.statutPaiement')->set('$valide')
+                ->field('extraPayload.statut')->set('valide')
                 ->field('extraPayload.modePaiement')->set($mode_paiement)
                 ->field('extraPayload.idPaiement')->set($id_payment)
                 ->field('extraPayload.statutPaiement')->set($statut_pay)
-       
                 ->getQuery()
                 ->execute();
     
+                $panier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('paniers')
+                ->field('extraPayload.Identifiant')->equals($commande->getExtraPayload()['panier'])
+                ->findAndUpdate()
+              //  ->field('extraPayload.linkedCommande')->set($commande->getId())
+                ->field('extraPayload.statut')->set("inactive")
+                ->getQuery()
+                ->execute();
               
 
 
