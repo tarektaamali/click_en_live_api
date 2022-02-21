@@ -264,7 +264,7 @@ class PaiementController extends AbstractController
     
                 $panier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('paniers')
-                ->field('extraPayload.Identifiant')->equals($commande->getExtraPayload()['panier'])
+                ->field('extraPayload.Identifiant')->equals($commande->getExtraPayload()['linkedPanier'])
                 ->findAndUpdate()
               //  ->field('extraPayload.linkedCommande')->set($commande->getId())
                 ->field('extraPayload.statut')->set("inactive")
