@@ -615,8 +615,40 @@ class AdminController extends AbstractController
 
    
 
+    /**
+     * @Route("/api/admin/createTrajetCamion", methods={"POST"})
+     */
+    public function createTrajetCamion(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer,  Request $request, HttpClientInterface $client)
+    {
+
+        $extraPayload = null;
+
+        $entity = null;
 
 
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+
+
+            $idLivreur=$extraPayload['livreur'];
+            $idCamion=$extraPayload['camion'];
+            unset($extraPayload['livreur']);
+            unset($extraPayload['camion']);
+        $trajet = $this->entityManager->setResult('trajets', $entity, $extraPayload);
+
+         $data['livreur']=$idLivreur;
+         $data['camion']=$idCamion;
+         $data['trajet']=$trajet->getId();   
+         $data['isActive']="1";  
+
+         $this->entityManager->setResult('trajetcamion', $entity, $extraPayload);
+       
+
+        return new JsonResponse($trajet->getId());
+    
+        }
+    }
 
 
 }
