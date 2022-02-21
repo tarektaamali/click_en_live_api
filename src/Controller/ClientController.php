@@ -1335,8 +1335,8 @@ class ClientController extends AbstractController
             $data['remise'] = $produitpanier->getExtraPayload()['remise'];
 
 
-            $totalHT += intval($produitpanier->getExtraPayload()['prixHT']);
-            $totalTTC += intval($produitpanier->getExtraPayload()['prixTTC']);
+            $totalHT += floatval($produitpanier->getExtraPayload()['prixHT']);
+            $totalTTC += floatval($produitpanier->getExtraPayload()['prixTTC']);
             $quantite += intval($produitpanier->getExtraPayload()['quantite']);
             $menuCmd = $this->entityManager->setResult('menuscommandes', null, $data);
 
@@ -1344,6 +1344,8 @@ class ClientController extends AbstractController
         }
 
 
+        $totalHT=round($totalHT,2);
+        $totalTTC=round($totalTTC,2);
         //affecter change statut panier
 
         $commande = $dm->createQueryBuilder(Entities::class)
