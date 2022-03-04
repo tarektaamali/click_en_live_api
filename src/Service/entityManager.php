@@ -19,23 +19,88 @@ class entityManager
     private $params;
     private $yaml;
 
-    public function __construct(DocumentManager $documentManager, ParameterBagInterface  $params)
+    public function __construct(DocumentManager $documentManager, ParameterBagInterface  $params, strutureVuesService $strutureVuesService)
     {
         $this->documentManager = $documentManager;
         $this->params = $params;
         $this->yaml = new Yaml();
+        $this->strutureVuesService = $strutureVuesService;
     }
 
-    public function getSingleResult($id, $vue = 'none', $vueVersion = 'latest')
+    public function getSingleResult($id, $vue = 'none', $vueVersion = 'latest', $details = 'none')
     {
         $data = [];
+        $detailedView = "";
+        if ($details != "none") {
+            $detailedView = $details;
+        }
         $dm = $this->documentManager;
         $entity = $dm->getRepository(Entities::class)->find($id);
         if ($entity) {
             $extraPayload = $entity->getExtraPayload();
+
+            if ($detailedView != "none") {
+                $levels = explode(",", $detailedView);
+                $number_levels = count($levels);
+            }
+            if ($detailedView != "none" && array_key_exists($levels[0], $extraPayload)) {
+                $views = $extraPayload[$levels[0]];
+                if ($views) {
+                    if (is_string($views)) {
+                        $views = [$views];
+                    }
+                    $finaldetails = array();
+                    foreach ($views as $f => $view) {
+                        if ($number_levels == 1) {
+                            if ($levels[0] == "photoProfil") {
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                                $params[2] = $view;
+                                array_push($finaldetails, $this->strutureVuesService->getUrl($params));
+                            } else {
+                                array_push($finaldetails, $this->getSingleResult($view)[0]);
+                            }
+                        } elseif ($number_levels == 2) {
+                            $prePushed = $this->getSingleResult($view)[0];
+                            $levelDetail = "";
+                            $levelDetail = $prePushed[$levels[1]];
+                            if ($levelDetail) {
+                                $prePushed[$levels[1]] = $this->getSingleResult($levelDetail);
+                                if ($levels[1] == "photoProfil") {
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                                    $params[2] = $levelDetail;
+                                    $prePushed[$levels[1]] = $this->strutureVuesService->getUrl($params);
+                                }
+                            }
+                            array_push($finaldetails, $prePushed);
+                        } elseif ($number_levels == 3) {
+                            $prePushed = $this->getSingleResult($view)[0];
+                            $levelDetail = "";
+                            $levelDetail = $prePushed[$levels[1]];
+                            if ($levelDetail) {
+                                $prePushed[$levels[1]] = $this->getSingleResult($levelDetail);
+                                if (array_key_exists($levels[2],$prePushed[$levels[1]][0])) {
+                                    $sublevelDetails = $prePushed[$levels[1]][0][$levels[2]];
+                                    $prePushed[$levels[1]][0][$levels[2]] = $this->getSingleResult($sublevelDetails)[0];
+                                    if ($levels[2] == "photoProfil") {
+                                        $params[0] = 'uploads';
+                                        $params[1] = 'single';
+                                        $params[2] = $sublevelDetails;
+                                        $prePushed[$levels[1]][0][$levels[2]] = $this->strutureVuesService->getUrl($params);
+                                    }
+                                }
+                            }
+                            array_push($finaldetails, $prePushed);
+                        }
+                    }
+                    $extraPayload[$levels[0]] = $finaldetails;
+                }
+            }
+
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
-//$extraPayload['statut']=$entity->getStatus();
+            //$extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
 
@@ -116,6 +181,7 @@ class entityManager
         $data = [];
         $sort = '';
         $maxResults = '1000';
+        $detailedView = "";
 
         $offset = 0;
         if (array_key_exists("maxResults", $filter)) {
@@ -126,7 +192,10 @@ class entityManager
             $offset = $filter["offset"];
             unset($filter["offset"]);
         }
-
+        if (array_key_exists("details", $filter)) {
+            $detailedView = $filter["details"];
+            unset($filter["details"]);
+        }
 
         $sortOrder = ''; // DESC / ASC
         $sortValue = '';
@@ -236,8 +305,8 @@ class entityManager
                             $arrayValue[0] = $datetime->createFromFormat('Y-m-d', $arrayValue[0]);
                             $arrayValue[1] = $datetime->createFromFormat('Y-m-d', $arrayValue[1]);
                             if ($arrayValue[0] == $arrayValue[1]) {
-                                $arrayValue[0] = $arrayValue[0]->setTime(0,0);
-                                $arrayValue[1] = $arrayValue[1]->setTime(23,59);
+                                $arrayValue[0] = $arrayValue[0]->setTime(0, 0);
+                                $arrayValue[1] = $arrayValue[1]->setTime(23, 59);
                             }
 
                             $qb->field('extraPayload' . '.' . $property)->range($arrayValue[0], $arrayValue[1]);
@@ -318,8 +387,8 @@ class entityManager
                             $arrayValue[0] = $datetime->createFromFormat('Y-m-d', $arrayValue[0]);
                             $arrayValue[1] = $datetime->createFromFormat('Y-m-d', $arrayValue[1]);
                             if ($arrayValue[0] == $arrayValue[1]) {
-                                $arrayValue[0] = $arrayValue[0]->setTime(0,0);
-                                $arrayValue[1] = $arrayValue[1]->setTime(23,59);
+                                $arrayValue[0] = $arrayValue[0]->setTime(0, 0);
+                                $arrayValue[1] = $arrayValue[1]->setTime(23, 59);
                             }
 
                             $qb->field('extraPayload' . '.' . $property)->range($arrayValue[0], $arrayValue[1]);
@@ -349,9 +418,75 @@ class entityManager
         }
         foreach ($entities as $key => $entity) {
             $extraPayload = $entity->getExtraPayload();
+
+            if ($detailedView) {
+                $levels = explode(",", $detailedView);
+                $number_levels = count($levels);
+            }
+            if ($detailedView && array_key_exists($levels[0], $extraPayload)) {
+                $views = $extraPayload[$levels[0]];
+                if ($views) {
+                    $finaldetails = array();
+                    if (is_string($views)) {
+                        $views = [$views];
+                    }
+                    foreach ($views as $f => $view) {
+                        if ($number_levels == 1) {
+                            array_push($finaldetails, $this->getSingleResult($view)[0]);
+                            if ($levels[0] == "photoProfil") {
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                                $params[2] = $view;
+                                array_push($finaldetails, $this->strutureVuesService->getUrl($params));
+                            }
+                        } elseif ($number_levels == 2) {
+                            $prePushed = $this->getSingleResult($view)[0];
+                            $levelDetail = "";
+                            $levelDetail = $prePushed[$levels[1]];
+                            if ($levelDetail) {
+                                $prePushed[$levels[1]] = $this->getSingleResult($levelDetail);
+                                if ($levels[1] == "photoProfil") {
+                                    $prePushed[$levels[1]] = "";
+                                    if ($levelDetail) {
+                                        $params[0] = 'uploads';
+                                        $params[1] = 'single';
+                                        $params[2] = $levelDetail;
+                                        $prePushed[$levels[1]] = $this->strutureVuesService->getUrl($params);
+                                    }
+                                }
+                            }
+                            array_push($finaldetails, $prePushed);
+                        } elseif ($number_levels == 3) {
+                            $prePushed = $this->getSingleResult($view)[0];
+                            $levelDetail = "";
+                            $levelDetail = $prePushed[$levels[1]];
+                            if ($levelDetail) {
+                                $prePushed[$levels[1]] = $this->getSingleResult($levelDetail);
+                                if (array_key_exists($levels[2],$prePushed[$levels[1]][0])) {
+                                    $sublevelDetails = $prePushed[$levels[1]][0][$levels[2]];
+                                    if ($sublevelDetails) {
+                                        $prePushed[$levels[1]][0][$levels[2]] = $this->getSingleResult($sublevelDetails)[0];
+                                        if ($levels[2] == "photoProfil") {
+                                            $params[0] = 'uploads';
+                                            $params[1] = 'single';
+                                            $params[2] = $sublevelDetails;
+                                            $prePushed[$levels[1]][0][$levels[2]] = $this->strutureVuesService->getUrl($params);
+                                        }
+                                    } else {
+                                        $prePushed[$levels[1]][0][$levels[2]] = null;
+                                    }
+                                }
+                            }
+                            array_push($finaldetails, $prePushed);
+                        }
+                    }
+                    $extraPayload[$levels[0]] = $finaldetails;
+                }
+            }
+
             $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
             $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
-//$extraPayload['statut']=$entity->getStatus();
+            //$extraPayload['statut']=$entity->getStatus();
             array_push($data, $extraPayload);
         }
         $alldata = array();
@@ -383,13 +518,13 @@ class entityManager
                 $payload[$value] = "";
                 foreach ($extraPayload as $j => $content) {
 
-                    $type=$fileYaml[$header][$fields][$value]["type"];
+                    $type = $fileYaml[$header][$fields][$value]["type"];
                     if ($j == $value) {
-                     /*   if($type=="number"&&$value!="quantite"){
+                        /*   if($type=="number"&&$value!="quantite"){
                             $payload[$value]=floatval($content);
                         }
                         else{*/
-                            $payload[$value] = $content;
+                        $payload[$value] = $content;
                         //}
                         if (stripos($j, "date") !== false && trim($content) != null) {
                             $datetime = new DateTime();
@@ -562,94 +697,91 @@ class entityManager
         $linkTags = array_values($this->searchTags($listeTags, $lang));
         //	dd($linkTags);
 
-        if(($word==""||is_null($word))&&sizeof($linkProduits)==0&&sizeof($linkTags)==0&&(is_null($prix) || sizeof($prix)==0))
-        {
+        if (($word == "" || is_null($word)) && sizeof($linkProduits) == 0 && sizeof($linkTags) == 0 && (is_null($prix) || sizeof($prix) == 0)) {
             $alldata = array();
             $alldata['results'] = [];
-            $alldata['count'] =0;
+            $alldata['count'] = 0;
             return $alldata;
-        }
-        else{
+        } else {
 
             $qb = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('produits')
-            ->field('status')->equals("active");
-        if (sizeof($linkProduits)) {
-            $qb->field('extraPayload.Identifiant')->in($linkProduits);
-        }
-
-        if (!is_null($word) && $word != "") {
-            $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
-            $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
-            //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
-        }
-
-        if (sizeof($linkTags)) {
-
-            foreach ($linkTags as $tag) {
-
-                $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
-                //  var_dump($arrayValue);
-                $qb->field('extraPayload.listeTags')->equals($arrayValue);
+                ->field('name')->equals('produits')
+                ->field('status')->equals("active");
+            if (sizeof($linkProduits)) {
+                $qb->field('extraPayload.Identifiant')->in($linkProduits);
             }
-        }
-        if (!is_null($prix) && sizeof($prix)) {
 
-            //rechercheParPrix
-            $qb->field('extraPayload.prixTTC')->range(intval($prix[0]), intval($prix[1]));
-        }
-
-        $qb->limit($maxResults)
-            ->skip($maxResults * ($offset - 1));
-        $entities = $qb->getQuery()
-            ->execute();
-
-        ///nombre des produits
-        $qb = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('produits')
-            ->field('status')->equals("active");
-        if (sizeof($linkProduits)) {
-            $qb->field('extraPayload.Identifiant')->in($linkProduits);
-        }
-
-        if (!is_null($word) && $word != "") {
-            $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
-            $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
-            // $qb->field('extraPayload.en_designation')->equals($arrayValue);
-        }
-
-
-        if (sizeof($linkTags)) {
-
-            foreach ($linkTags as $tag) {
-
-                $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
-                $qb->field('extraPayload.listeTags')->equals($arrayValue);
+            if (!is_null($word) && $word != "") {
+                $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
+                $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
+                //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
             }
-        }
-        if (!is_null($prix) && sizeof($prix)) {
 
-            //rechercheParPrix
-            $qb->field('extraPayload.prixTTC')->range(intval($prix[0]), intval($prix[1]));
-        }
-        $count = $qb->count()
-            ->getQuery()
-            ->execute();
+            if (sizeof($linkTags)) {
+
+                foreach ($linkTags as $tag) {
+
+                    $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
+                    //  var_dump($arrayValue);
+                    $qb->field('extraPayload.listeTags')->equals($arrayValue);
+                }
+            }
+            if (!is_null($prix) && sizeof($prix)) {
+
+                //rechercheParPrix
+                $qb->field('extraPayload.prixTTC')->range(intval($prix[0]), intval($prix[1]));
+            }
+
+            $qb->limit($maxResults)
+                ->skip($maxResults * ($offset - 1));
+            $entities = $qb->getQuery()
+                ->execute();
+
+            ///nombre des produits
+            $qb = $this->documentManager->createQueryBuilder(Entities::class)
+                ->field('name')->equals('produits')
+                ->field('status')->equals("active");
+            if (sizeof($linkProduits)) {
+                $qb->field('extraPayload.Identifiant')->in($linkProduits);
+            }
+
+            if (!is_null($word) && $word != "") {
+                $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
+                $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
+                // $qb->field('extraPayload.en_designation')->equals($arrayValue);
+            }
 
 
-        foreach ($entities as $key => $entity) {
-            $extraPayload = $entity->getExtraPayload();
-            $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
-            $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
-       //     $extraPayload['statut']=$entity->getStatus();
-            array_push($data, $extraPayload);
-        }
-        $alldata = array();
-        $alldata['results'] = $data;
-        $alldata['count'] = $count;
-        return $alldata;
-        }
+            if (sizeof($linkTags)) {
 
+                foreach ($linkTags as $tag) {
+
+                    $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
+                    $qb->field('extraPayload.listeTags')->equals($arrayValue);
+                }
+            }
+            if (!is_null($prix) && sizeof($prix)) {
+
+                //rechercheParPrix
+                $qb->field('extraPayload.prixTTC')->range(intval($prix[0]), intval($prix[1]));
+            }
+            $count = $qb->count()
+                ->getQuery()
+                ->execute();
+
+
+            foreach ($entities as $key => $entity) {
+                $extraPayload = $entity->getExtraPayload();
+                $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
+                $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
+                //     $extraPayload['statut']=$entity->getStatus();
+                array_push($data, $extraPayload);
+            }
+            $alldata = array();
+            $alldata['results'] = $data;
+            $alldata['count'] = $count;
+            return $alldata;
+        }
     }
 
 
@@ -736,36 +868,35 @@ class entityManager
     }
 
 
-    public function logRechercheProduits($identifiantMg,$listeTags,$listeCouleurs,$listeTailles,$prix,$word)
+    public function logRechercheProduits($identifiantMg, $listeTags, $listeCouleurs, $listeTailles, $prix, $word)
     {
 
 
-            $extraPayload['listeTags']=$listeTags;
-            $extraPayload['listeCouleurs']=$listeCouleurs;
-            $extraPayload['listeTailles']=$listeTailles;
-            $extraPayload['prix']=$prix;
-            $extraPayload['word']=$listeTags;
-            $extraPayload['linkedCompte']=$identifiantMg;
+        $extraPayload['listeTags'] = $listeTags;
+        $extraPayload['listeCouleurs'] = $listeCouleurs;
+        $extraPayload['listeTailles'] = $listeTailles;
+        $extraPayload['prix'] = $prix;
+        $extraPayload['word'] = $listeTags;
+        $extraPayload['linkedCompte'] = $identifiantMg;
 
 
-            
-            $log=$this->setResult('logRecherche', null, $extraPayload);
 
-          
-    
-            $compte = $this->documentManager->createQueryBuilder(Entities::class)
+        $log = $this->setResult('logRecherche', null, $extraPayload);
+
+
+
+        $compte = $this->documentManager->createQueryBuilder(Entities::class)
             ->field('name')->equals('comptes')
             ->field('extraPayload.Identifiant')->equals($identifiantMg)
             ->findAndUpdate()
             ->field('extraPayload.linkedRechercheProduits')->set($log->getId())
-           
+
             ->getQuery()
             ->execute();
 
 
 
-            return 'done';
-                
+        return 'done';
     }
 
     public function prepareDates($data)
@@ -774,7 +905,7 @@ class entityManager
             foreach ($data as $key => $value) {
                 foreach (array_keys($value) as $j) {
                     if (stripos($j, "date") !== false) {
-                        if($data[$key][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                        if ($data[$key][$j] instanceof \MongoDB\BSON\UTCDateTime) {
                             $mongoDate = $data[$key][$j];
                             $datetime = $mongoDate->toDateTime();
                             $data[$key][$j] = $datetime->format('Y-m-d');
@@ -782,10 +913,10 @@ class entityManager
                     }
                 }
             }
-        } elseif(count($data) == 1) {
+        } elseif (count($data) == 1) {
             foreach (array_keys($data[0]) as $j) {
                 if (stripos($j, "date") !== false) {
-                    if($data[0][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                    if ($data[0][$j] instanceof \MongoDB\BSON\UTCDateTime) {
                         $mongoDate = $data[0][$j];
                         $datetime = $mongoDate->toDateTime();
                         $data[0][$j] = $datetime->format('Y-m-d');
@@ -793,7 +924,7 @@ class entityManager
                 }
             }
         }
-        
+
         return $data;
     }
 
@@ -806,20 +937,19 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-        ->field('name')->equals('comptes')
-        ->getQuery()
-        ->execute();
-       
-        foreach($comptes as $c)
-        {
+            ->field('name')->equals('restaurants')
+            ->getQuery()
+            ->execute();
 
-//	dd($c);
-        $entities = $dm->getRepository(Entities::class)->find($c->getId());
-  //dd($entities);
-//var_dump($c->getId());   
+        foreach ($comptes as $c) {
+
+            //	dd($c);
+            $entities = $dm->getRepository(Entities::class)->find($c->getId());
+            //dd($entities);
+            //var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
-//var_dump($payload);           
- /*foreach ($extraPayload as $j => $content) {
+            //var_dump($payload);           
+            /*foreach ($extraPayload as $j => $content) {
                 if (array_key_exists($j, $payload)) {
                     if ($content && $content[0] == ",") {
                         if ($payload[$j]) {
@@ -843,7 +973,7 @@ class entityManager
                 }
               
             }*/
-            $payload["idCompteBancaire"]="";
+            $payload["nbreMaxCommande"] = 30;
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
@@ -857,9 +987,7 @@ class entityManager
             // END Insert additional values in the extra payload
             $dm->persist($entities);
             $dm->flush();
-      
-    }
+        }
         return true;
-
     }
 }

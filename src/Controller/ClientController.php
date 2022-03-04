@@ -287,7 +287,12 @@ class ClientController extends AbstractController
             $vueVersion = $request->get('vueVersion');
         }
 
-        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion);
+        $details = null;
+        if ($request->get('details') != null) {
+            $details = $request->get('details');
+        }
+
+        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion, $details);
 
         // launch additional events on insert
         $fireEvent = null;
@@ -336,10 +341,19 @@ class ClientController extends AbstractController
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
-        if (isset($extraPayload['linkedCompte'])) {
+        if (array_key_exists('linkedCompte', $extraPayload) && isset($extraPayload['linkedCompte'])) {
+
             $nbrePanier = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('paniers')
                 ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
+                ->field('extraPayload.statut')->equals("active")
+                ->count()
+                ->getQuery()
+                ->execute();
+        } elseif (array_key_exists('Identifiant', $extraPayload) && isset($extraPayload['Identifiant'])) {
+            $nbrePanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('paniers')
+                ->field('extraPayload.Identifiant')->equals($extraPayload['Identifiant'])
                 ->field('extraPayload.statut')->equals("active")
                 ->count()
                 ->getQuery()
@@ -359,12 +373,22 @@ class ClientController extends AbstractController
             $data = $this->entityManager->getSingleResult($data->getId(), null, null);
             $monPanier = $this->entityManager->serializeContent($data);
         } else {
-            $monpanier = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('paniers')
-                ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
-                ->field('extraPayload.statut')->equals("active")
-                ->getQuery()
-                ->getSingleResult();
+            if (array_key_exists('linkedCompte', $extraPayload)) {
+                $monpanier = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('paniers')
+                    ->field('extraPayload.linkedCompte')->equals($extraPayload['linkedCompte'])
+                    ->field('extraPayload.statut')->equals("active")
+                    ->getQuery()
+                    ->getSingleResult();
+            } elseif (array_key_exists('Identifiant', $extraPayload)) {
+                $monpanier = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('paniers')
+                    ->field('extraPayload.Identifiant')->equals($extraPayload['Identifiant'])
+                    ->field('extraPayload.statut')->equals("active")
+                    ->getQuery()
+                    ->getSingleResult();
+            }
+            
             $data = $this->entityManager->getSingleResult($monpanier->getId(), null, null);
             $monPanier = $this->entityManager->serializeContent($data);
         }
@@ -1213,18 +1237,21 @@ class ClientController extends AbstractController
 
                                 foreach ($trajetCamion as $tj) {
                                     $livreur = $dm->getRepository(Entities::class)->find($tj->getExtraPayload()['livreur']);
-                                    $params[0] = 'uploads';
-                                    $params[1] = 'single';
-                                    $params[2] = $livreur->getExtraPayload()['photoProfil'];
-                                    $infoLivreur = array(
-                                        'Identifiant' => $livreur->getExtraPayload()['Identifiant'],
-                                        'image' => $strutureVuesService->getUrl($params),
-                                        'name' => $livreur->getExtraPayload()['nom'],
-                                        'prenom' => $livreur->getExtraPayload()['prenom'],
-                                        'phone' => $livreur->getExtraPayload()['phone'],
-                                        'email' => $livreur->getExtraPayload()['email']
+                                    $infoLivreur = array();
+                                    if ($livreur) {
+                                        $params[0] = 'uploads';
+                                        $params[1] = 'single';
+                                        $params[2] = $livreur->getExtraPayload()['photoProfil'];
+                                        $infoLivreur = array(
+                                            'Identifiant' => $livreur->getExtraPayload()['Identifiant'],
+                                            'image' => $strutureVuesService->getUrl($params),
+                                            'name' => $livreur->getExtraPayload()['nom'],
+                                            'prenom' => $livreur->getExtraPayload()['prenom'],
+                                            'phone' => $livreur->getExtraPayload()['phone'],
+                                            'email' => $livreur->getExtraPayload()['email']
 
-                                    );
+                                        );
+                                    }
 
                                     $vitesse = 40;
                                     //temps=distance/vitesse
@@ -1344,8 +1371,8 @@ class ClientController extends AbstractController
         }
 
 
-        $totalHT=round($totalHT,2);
-        $totalTTC=round($totalTTC,2);
+        $totalHT = round($totalHT, 2);
+        $totalTTC = round($totalTTC, 2);
         //affecter change statut panier
 
         $commande = $dm->createQueryBuilder(Entities::class)
@@ -1366,7 +1393,7 @@ class ClientController extends AbstractController
             ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
             ->findAndUpdate()
             ->field('extraPayload.linkedCommande')->set($commande->getId())
-          //  ->field('extraPayload.statut')->set("inactive")
+            //  ->field('extraPayload.statut')->set("inactive")
             ->getQuery()
             ->execute();
         return new JsonResponse(array("idCommande" => $commande->getId(), "message" => "votre commande créée avec succès."), 200);
@@ -1424,8 +1451,4 @@ class ClientController extends AbstractController
 
         return true;
     }
-
-
-
-    
 }

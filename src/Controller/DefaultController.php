@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Entity\CodeActivation;
 use App\Service\entityManager;
 use App\Service\eventsManager;
+use App\Service\firebaseManager;
 use App\Service\strutureVuesService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,7 +40,7 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class DefaultController extends AbstractController
 {
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, SessionInterface $session, ParameterBagInterface $params, entityManager $entityManager, eventsManager $eventsManager, firebaseManager $firebaseManager)
     {
         $this->session = $session;
         $this->params = $params;
@@ -47,6 +48,7 @@ class DefaultController extends AbstractController
         $this->eventsManager = $eventsManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->em = $em;
+        $this->firebaseManager = $firebaseManager;
     }
 
     /**
@@ -337,7 +339,12 @@ class DefaultController extends AbstractController
             $vueVersion = $request->get('vueVersion');
         }
 
-        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion);
+        $details = null;
+        if ($request->get('details') != null) {
+            $details = $request->get('details');
+        }
+
+        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion, $details);
 
         // launch additional events on insert
         $fireEvent = null;
@@ -1124,5 +1131,15 @@ class DefaultController extends AbstractController
         $data = $this->entityManager->addNewChamps();
 
         return new JsonResponse(array('message' => 'trhe'));
+    }
+
+    /**
+     * @Route("/syncFirebase", methods={"GET"})
+     */
+
+    public function syncFirebase()
+    {
+       $firebaseMessage = $this->firebaseManager->sendMessage("clLJ6S7FRiyLWiLdgZi-nq:APA91bGEpVDiY9xRBKXKZRG2pa5Bbm3tQKCAZIZhKV-o1TiLfJMn9rWmeDuxLGQBreOZco8z-YgeQCwMaau8CDfZ_VZgJabwzJzH2GYsbXBmeiqJ_c-cjkw_C19DVPrWrOUGmhZ4S--T");
+       return new JsonResponse($firebaseMessage);
     }
 }
