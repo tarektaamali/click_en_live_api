@@ -1124,8 +1124,8 @@ class entityManager
       $restaurant= $dm->getRepository(Entities::class)->find($id);
        $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
        $tanbreMaxCommande=$restaurant->getExtraPayload()['nbreMaxCommande'];
-       $tab['restant']= $tabNbreCurrentCommande[$temps];
-       $tab['max']=   $tanbreMaxCommande[$temps];
+       $tab['restant']= intval($tabNbreCurrentCommande[$temps]);
+       $tab['max']=  intval($tanbreMaxCommande[$temps]);
 
 
 

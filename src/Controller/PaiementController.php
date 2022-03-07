@@ -320,7 +320,7 @@ class PaiementController extends AbstractController
                     $reste=$val-$nbreMenus;
 
 
-                    $tabNbreCurrentCommande[$temps]=$reste;
+                    $tabNbreCurrentCommande[$temps]=intval($reste);
 		//	var_dump($reste);
 		
 		//	var_dump($tabNbreCurrentCommande);
