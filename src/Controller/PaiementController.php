@@ -348,7 +348,7 @@ class PaiementController extends AbstractController
                 return $this->json(['message' => 'pas de commande'], 400);
             }
         } catch (\Throwable $th) {
-            return new JsonResponse($th->getMessage(), 400);
+            return new JsonResponse($th->getMessage(), 500);
         }
     }
     /**
