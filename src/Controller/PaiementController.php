@@ -296,15 +296,15 @@ class PaiementController extends AbstractController
             
                         if($tempsLivraison=="Midi")
                         {
-                            $tempsLivraison=="midi";
+                            $tempsLivraison="midi";
                         }
                         elseif($tempsLivraison=="Soir")
                         {
-                            $tempsLivraison=="soir";
+                            $tempsLivraison="soir";
                         }
                         elseif($tempsLivraison=="Nuit")
                         {
-                            $tempsLivraison=="nuit";
+                            $tempsLivraison="nuit";
                         }
                  
             
