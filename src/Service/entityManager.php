@@ -973,7 +973,7 @@ class entityManager
                 }
               
             }*/
-            $payload["nbreMaxCommande"] = [
+            $tabMax = [
                 "midiNow"=>30,
                 "midiTomorrow"=>30,
                 "soirNow"=>20,
@@ -982,8 +982,9 @@ class entityManager
                 "nuitTomorrow"=>10
 
             ];
+            array_push($payload["nbreMaxCommande"],$tabMax); 
 
-            $payload["nbreCurrentCommande"] = [
+           $tabCurrent=[
                 "midiNow"=>30,
                 "midiTomorrow"=>30,
                 "soirNow"=>20,
@@ -992,6 +993,7 @@ class entityManager
                 "nuitTomorrow"=>10
 
             ];
+          array_push($payload["nbreCurrentCommande"],$tabCurrent); 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
