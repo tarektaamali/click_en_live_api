@@ -441,6 +441,11 @@ class DefaultController extends AbstractController
 
 
 
+        $identifiantMongo = null;
+
+        if ($request->get('identifiantMongo') != null) {
+            $identifiantMongo = $request->get('identifiantMongo');
+        }
 
 
 
@@ -510,6 +515,8 @@ class DefaultController extends AbstractController
                     //$test=in_array($t,$results);
                     //		var_dump($test);
                     if (is_int($test)) {
+
+                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
                         array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }

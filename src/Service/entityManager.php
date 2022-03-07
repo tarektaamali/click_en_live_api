@@ -1014,4 +1014,71 @@ class entityManager
         }
         return true;
     }
+
+
+    public function checkDiponibiliteResto($id,$idClient)
+    {
+        $test=false;
+
+        $dm = $this->documentManager;
+
+        if(is_null($idClient))
+        {
+            return false;
+        }
+
+        
+        $client = $dm->getRepository(Entities::class)->find($idClient);
+
+        if($client)
+        {
+
+            $dateLivraison=$client->getExtraPayload()['dateLivraison'];
+
+            $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+        }
+        else{
+            return false;
+        }
+
+
+
+      $temps=$tempsLivraison.$dateLivraison;
+
+
+
+      if(is_null($id))
+      {
+          return false;
+      }
+      $restaurant= $dm->getRepository(Entities::class)->find($id);
+
+
+      if($restaurant)
+      {
+        $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
+      }
+      else{
+          return false;
+      }
+    
+
+      if(isset($tabNbreCurrentCommande[$temps]))
+      {
+
+       $val= $tabNbreCurrentCommande[$temps];
+        if($val==0)
+        {
+            $test=false;
+        }
+        else
+        {
+            $test=true;
+        }
+      }
+
+        return $test;
+    }
+
+
 }
