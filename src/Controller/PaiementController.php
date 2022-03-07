@@ -282,9 +282,9 @@ class PaiementController extends AbstractController
                 foreach($menusCommandes as $mc)
                 {
 
-                    $menu= $dm->getRepository(Entities::class)->find($mc['linkedMenu']);
+                    $menu= $dm->getRepository(Entities::class)->find($mc->getExtraPayload()['linkedMenu']);
 
-                    $restaurant=$dm->getRepository(Entities::class)->find($menu->getExtaPayload()['linkedRestaurant']);
+                    $restaurant=$dm->getRepository(Entities::class)->find($menu->getExtraPayload()['linkedRestaurant']);
 
 
                     $client = $dm->getRepository(Entities::class)->find($commande->getExtraPayload()['linkedCompte']);
@@ -310,21 +310,23 @@ class PaiementController extends AbstractController
             
 
             
-                  $nbreMenus=$mc['quantite'];     
+                  $nbreMenus=$mc->getExtraPayload()['quantite'];     
                   $temps=$tempsLivraison.$dateLivraison;
                     $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
-
+		//	var_dump($tabNbreCurrentCommande);
                     $val= $tabNbreCurrentCommande[$temps];
-
+		//	var_dump($val);
 
                     $reste=$val-$nbreMenus;
 
 
                     $tabNbreCurrentCommande[$temps]=$reste;
-
-
+		//	var_dump($reste);
+		
+		//	var_dump($tabNbreCurrentCommande);
+		//	var_dump($restaurant->getId());
                     $resto = $dm->createQueryBuilder(Entities::class)
-                    ->field('name')->equals('restaurant')
+                    ->field('name')->equals('restaurants')
                     ->field('extraPayload.Identifiant')->equals($restaurant->getId())
                     ->findAndUpdate()
                     ->field('extraPayload.nbreCurrentCommande')->set($tabNbreCurrentCommande)
@@ -347,7 +349,7 @@ class PaiementController extends AbstractController
             } else {
                 return $this->json(['message' => 'pas de commande'], 400);
             }
-        } catch (\Throwable $th) {
+       } catch (\Throwable $th) {
             return new JsonResponse($th->getMessage(), 500);
         }
     }
