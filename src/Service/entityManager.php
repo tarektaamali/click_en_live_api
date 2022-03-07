@@ -937,7 +937,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('restaurants')
+            ->field('name')->equals('comptes')
             ->getQuery()
             ->execute();
 
@@ -973,30 +973,17 @@ class entityManager
                 }
               
             }*/
-            	$tabMax=array();
-               $payload["nbreMaxCommande"]["midiNow"]=30;
-               $payload["nbreMaxCommande"]["midiTomorrow"]=30;
-                $payload["nbreMaxCommande"]["soirNow"]=20;
-               $payload["nbreMaxCommande"]["soirTomorrow"]=20;
-                $payload["nbreMaxCommande"]["nuitNow"]=10;
-               $payload["nbreMaxCommande"]["nuitTomorrow"]=10;
-
+        
            
 
 
-           // $payload["nbreMaxCommande"]=[]; 
-
-           $tabCurrent=array();
-                $payload["nbreCurrentCommande"]["midiNow"]=30;
-                $payload["nbreCurrentCommande"]["midiTomorrow"]=30;
-               $payload["nbreCurrentCommande"]["soirNow"]=20;
-                $payload["nbreCurrentCommande"]["soirTomorrow"]=20;
-                $payload["nbreCurrentCommande"]["nuitNow"]=10;
-               $payload["nbreCurrentCommande"]["nuitTomorrow"]=10;
+       
 
            
 
-         //$payload["nbreCurrentCommande"]=[]; 
+           
+
+         $payload["dateLivraison"]="Now"; 
 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
@@ -1035,7 +1022,23 @@ class entityManager
 
             $dateLivraison=$client->getExtraPayload()['dateLivraison'];
 
+
+          
+
             $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+
+            if($tempsLivraison=="Midi")
+            {
+                $tempsLivraison=="midi";
+            }
+            elseif($tempsLivraison=="Soir")
+            {
+                $tempsLivraison=="soir";
+            }
+            elseif($tempsLivraison=="Nuit")
+            {
+                $tempsLivraison=="nuit";
+            }
         }
         else{
             return false;
