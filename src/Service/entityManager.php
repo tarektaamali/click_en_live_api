@@ -937,7 +937,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('restaurants')
+            ->field('name')->equals('comptes')
             ->getQuery()
             ->execute();
 
@@ -973,7 +973,7 @@ class entityManager
                 }
               
             }*/
-            $payload["nbreMaxCommande"] = 30;
+            $payload["dateLivraison"] = "now";
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
