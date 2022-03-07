@@ -983,7 +983,7 @@ class entityManager
 
            
 
-         $payload["dateLivraison"]="Now"; 
+         $payload["timeLivraison"]="Now"; 
 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
@@ -1020,7 +1020,7 @@ class entityManager
         if($client)
         {
 
-            $dateLivraison=$client->getExtraPayload()['dateLivraison'];
+            $dateLivraison=$client->getExtraPayload()['timeLivraison'];
 
 
           

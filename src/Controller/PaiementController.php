@@ -291,7 +291,7 @@ class PaiementController extends AbstractController
 
                 
             
-                        $dateLivraison=$client->getExtraPayload()['dateLivraison'];                                  
+                        $dateLivraison=$client->getExtraPayload()['timeLivraison'];                                  
                         $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
             
                         if($tempsLivraison=="Midi")
