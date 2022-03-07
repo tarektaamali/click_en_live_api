@@ -270,7 +270,73 @@ class PaiementController extends AbstractController
                 ->field('extraPayload.statut')->set("inactive")
                 ->getQuery()
                 ->execute();
+
+                //Modifier capacite resto
+
+                $menusCommandes = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuscommandes')
+                ->field('extraPayload.linkedCommande')->equals($commande->getId())
+                ->getQuery()
+                ->execute();
+
+                foreach($menusCommandes as $mc)
+                {
+
+                    $menu= $dm->getRepository(Entities::class)->find($mc['linkedMenu']);
+
+                    $restaurant=$dm->getRepository(Entities::class)->find($menu->getExtaPayload()['linkedRestaurant']);
+
+
+                    $client = $dm->getRepository(Entities::class)->find($commande->getExtraPayload()['linkedCompte']);
+
+                
+            
+                        $dateLivraison=$client->getExtraPayload()['dateLivraison'];                                  
+                        $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+            
+                        if($tempsLivraison=="Midi")
+                        {
+                            $tempsLivraison=="midi";
+                        }
+                        elseif($tempsLivraison=="Soir")
+                        {
+                            $tempsLivraison=="soir";
+                        }
+                        elseif($tempsLivraison=="Nuit")
+                        {
+                            $tempsLivraison=="nuit";
+                        }
+                 
+            
+
+            
+                  $nbreMenus=$mc['quantite'];     
+                  $temps=$tempsLivraison.$dateLivraison;
+                    $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
+
+                    $val= $tabNbreCurrentCommande[$temps];
+
+
+                    $reste=$val-$nbreMenus;
+
+
+                    $tabNbreCurrentCommande[$temps]=$reste;
+
+
+                    $resto = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('restaurant')
+                    ->field('extraPayload.Identifiant')->equals($restaurant->getId())
+                    ->findAndUpdate()
+                    ->field('extraPayload.nbreCurrentCommande')->set($tabNbreCurrentCommande)
+                    ->getQuery()
+                    ->execute();
+
+
+                }
+
+               // fin Modifier capacite resto
               
+                
 
 
                 return $this->json(["message" => 'cette commande a été bien validée'], 200);
