@@ -973,27 +973,31 @@ class entityManager
                 }
               
             }*/
-            $tabMax = [
-                "midiNow"=>30,
-                "midiTomorrow"=>30,
-                "soirNow"=>20,
-                "soirTomorrow"=>20,
-                "nuitNow"=>10,
-                "nuitTomorrow"=>10
+            	$tabMax=array();
+               $payload["nbreMaxCommande"]["midiNow"]=30;
+               $payload["nbreMaxCommande"]["midiTomorrow"]=30;
+                $payload["nbreMaxCommande"]["soirNow"]=20;
+               $payload["nbreMaxCommande"]["soirTomorrow"]=20;
+                $payload["nbreMaxCommande"]["nuitNow"]=10;
+               $payload["nbreMaxCommande"]["nuitTomorrow"]=10;
 
-            ];
-            array_push($payload["nbreMaxCommande"],$tabMax); 
+           
 
-           $tabCurrent=[
-                "midiNow"=>30,
-                "midiTomorrow"=>30,
-                "soirNow"=>20,
-                "soirTomorrow"=>20,
-                "nuitNow"=>10,
-                "nuitTomorrow"=>10
 
-            ];
-          array_push($payload["nbreCurrentCommande"],$tabCurrent); 
+           // $payload["nbreMaxCommande"]=[]; 
+
+           $tabCurrent=array();
+                $payload["nbreCurrentCommande"]["midiNow"]=30;
+                $payload["nbreCurrentCommande"]["midiTomorrow"]=30;
+               $payload["nbreCurrentCommande"]["soirNow"]=20;
+                $payload["nbreCurrentCommande"]["soirTomorrow"]=20;
+                $payload["nbreCurrentCommande"]["nuitNow"]=10;
+               $payload["nbreCurrentCommande"]["nuitTomorrow"]=10;
+
+           
+
+         //$payload["nbreCurrentCommande"]=[]; 
+
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
