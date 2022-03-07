@@ -504,7 +504,7 @@ class DefaultController extends AbstractController
         //	dd($structuresFinal['results']);           
 
 
-        foreach ($structuresFinal['results'] as $resto) {
+        foreach ($structuresFinal['results'] as $key=>$resto) {
             $tabT = $resto["tags"];
             if (sizeof($tabT)) {
 
@@ -516,7 +516,7 @@ class DefaultController extends AbstractController
                     //		var_dump($test);
                     if (is_int($test)) {
 
-                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
+                        $structuresFinal['results'][$key]['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
                         array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }
