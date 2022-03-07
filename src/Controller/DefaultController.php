@@ -455,7 +455,7 @@ class DefaultController extends AbstractController
         unset($filter['vueAvancer']);
         unset($filter['lang']);
         unset($filter['indexVue']);
-
+	  unset($filter['identifiantMongo']);
         $data = $this->entityManager->getResultFromArray($entity, $filter);
 
 
@@ -515,9 +515,11 @@ class DefaultController extends AbstractController
                     //$test=in_array($t,$results);
                     //		var_dump($test);
                     if (is_int($test)) {
-
-                        $structuresFinal['results'][$key]['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
-                        array_push($results[$test]['listeRestaurant'], $resto);
+		//	dd($resto);
+                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
+               //    dd($resto);
+  
+		        array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }
             }

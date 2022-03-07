@@ -1029,15 +1029,15 @@ class entityManager
 
             if($tempsLivraison=="Midi")
             {
-                $tempsLivraison=="midi";
+                $tempsLivraison="midi";
             }
             elseif($tempsLivraison=="Soir")
             {
-                $tempsLivraison=="soir";
+                $tempsLivraison="soir";
             }
             elseif($tempsLivraison=="Nuit")
             {
-                $tempsLivraison=="nuit";
+                $tempsLivraison="nuit";
             }
         }
         else{
@@ -1048,7 +1048,7 @@ class entityManager
 
       $temps=$tempsLivraison.$dateLivraison;
 
-
+//	var_dump($temps);
 
       if(is_null($id))
       {
@@ -1065,12 +1065,13 @@ class entityManager
           return false;
       }
     
-
+//	var_dump($tabNbreCurrentCommande);
       if(isset($tabNbreCurrentCommande[$temps]))
       {
 
        $val= $tabNbreCurrentCommande[$temps];
-        if($val==0)
+      // var_dump($val);
+	 if($val==0)
         {
             $test=false;
         }
