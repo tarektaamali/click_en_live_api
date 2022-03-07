@@ -1086,4 +1086,54 @@ class entityManager
     }
 
 
+    public function getCapaciteResto($id,$idClient)
+    {
+        $tab=array();
+        $tab['max']=0;
+        $tab['restant']=0;
+
+
+
+        $dm = $this->documentManager;
+
+        
+        
+        $client = $dm->getRepository(Entities::class)->find($idClient);
+
+
+            $dateLivraison=$client->getExtraPayload()['timeLivraison'];
+            $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+
+            if($tempsLivraison=="Midi")
+            {
+                $tempsLivraison="midi";
+            }
+            elseif($tempsLivraison=="Soir")
+            {
+                $tempsLivraison="soir";
+            }
+            elseif($tempsLivraison=="Nuit")
+            {
+                $tempsLivraison="nuit";
+            }
+     
+
+
+
+      $temps=$tempsLivraison.$dateLivraison;
+      $restaurant= $dm->getRepository(Entities::class)->find($id);
+       $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
+       $tanbreMaxCommande=$restaurant->getExtraPayload()['nbreMaxCommande'];
+       $tab['restant']= $tabNbreCurrentCommande[$temps];
+       $tab['max']=   $tanbreMaxCommande[$temps];
+
+
+
+        return $tab;
+    }
+
+
+
+
+
 }
