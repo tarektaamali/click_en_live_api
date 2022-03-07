@@ -517,6 +517,23 @@ class DefaultController extends AbstractController
                     if (is_int($test)) {
 		//	dd($resto);
                         $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
+                     $capaciteResto=   $this->entityManager->getCapaciteResto($resto['Identifiant'],$identifiantMongo) ;
+                     if(isset($capaciteResto['max']))
+                     {
+                        $resto['qteMax']=$capaciteResto['max'];
+                     }
+                     else{
+                        $resto['qteMax']=0;
+                     }
+
+                     if(isset($capaciteResto['restant']))
+                     {
+                       
+                        $resto['qteRestant']=$capaciteResto['restant'];
+                     }
+                     else{
+                        $resto['qteRestant']=0;
+                     }
                //    dd($resto);
   
 		        array_push($results[$test]['listeRestaurant'], $resto);
