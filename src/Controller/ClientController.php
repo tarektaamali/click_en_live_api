@@ -388,7 +388,7 @@ class ClientController extends AbstractController
                     ->getQuery()
                     ->getSingleResult();
             }
-            
+
             $data = $this->entityManager->getSingleResult($monpanier->getId(), null, null);
             $monPanier = $this->entityManager->serializeContent($data);
         }
@@ -1238,6 +1238,7 @@ class ClientController extends AbstractController
                                 foreach ($trajetCamion as $tj) {
                                     $livreur = $dm->getRepository(Entities::class)->find($tj->getExtraPayload()['livreur']);
                                     $infoLivreur = array();
+                                    $testDispoLivreur = false;
                                     if ($livreur) {
                                         $params[0] = 'uploads';
                                         $params[1] = 'single';
@@ -1251,7 +1252,34 @@ class ClientController extends AbstractController
                                             'email' => $livreur->getExtraPayload()['email']
 
                                         );
+
+
+
+                                        //il faut que le livreur sera diponible
+
+                                        if ($livreur->getExtraPayload()['disponible'] == "1") {
+
+                                            $testDispoLivreur = true;
+                                        }
                                     }
+
+
+
+                                    $camion = $dm->getRepository(Entities::class)->find($tj->getExtraPayload()['camion']);
+
+
+                                    $testDispoCamion = false;
+                                    if ($camion) {
+                                        //il faut que le camion n'atteint pas sa charge maximale,
+
+                                        if ($camion->getExtraPayload()['reste'] == 0) {
+                                            $testDispoCamion = false;
+                                        } else {
+                                            $testDispoCamion = true;
+                                        }
+                                    }
+
+
 
                                     $vitesse = 40;
                                     //temps=distance/vitesse
@@ -1267,7 +1295,11 @@ class ClientController extends AbstractController
                                         'distance' => round($distance, 2),
                                         'temps' => round($estimation, 2)
                                     );
-                                    array_push($listeStationDisponibles, $data);
+                                    if($testDispoCamion&&$testDispoLivreur)
+                                    {
+                                        array_push($listeStationDisponibles, $data);
+                                    }
+                                 
                                 }
                             }
                         }
