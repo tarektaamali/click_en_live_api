@@ -930,6 +930,12 @@ class DefaultController extends AbstractController
 
         $regexWord =  new \MongoDB\BSON\Regex($word, 'i');
 
+        $identifiantMongo = null;
+
+        if ($request->get('identifiantMongo') != null) {
+            $identifiantMongo = $request->get('identifiantMongo');
+        }
+
 
         $listeDesIdentifiants = [];
 
@@ -1069,7 +1075,7 @@ class DefaultController extends AbstractController
         unset($filter['vueAvancer']);
         unset($filter['lang']);
         unset($filter['indexVue']);
-
+        unset($filter['identifiantMongo']);
         $data = $this->entityManager->getResultFromArray($entity, $filter);
 
 
@@ -1129,6 +1135,30 @@ class DefaultController extends AbstractController
                     //$test=in_array($t,$results);
                     //		var_dump($test);
                     if (is_int($test)) {
+
+
+                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
+                        $capaciteResto=   $this->entityManager->getCapaciteResto($resto['Identifiant'],$identifiantMongo) ;
+                        if(isset($capaciteResto['max']))
+                        {
+                           $resto['qteMax']=$capaciteResto['max'];
+                        }
+                        else{
+                           $resto['qteMax']=0;
+                        }
+   
+                        if(isset($capaciteResto['restant']))
+                        {
+                          
+                           $resto['qteRestant']=$capaciteResto['restant'];
+                        }
+                        else{
+                           $resto['qteRestant']=0;
+                        }
+   
+   
+                        $resto['like']=$this->entityManager->checkFavoris($resto['Identifiant'],$identifiantMongo) ;
+                  //    dd($resto);
                         array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }
