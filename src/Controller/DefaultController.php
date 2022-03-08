@@ -308,10 +308,14 @@ class DefaultController extends AbstractController
                         ->getQuery()
                         ->getSingleResult();
 
-                        if($statutCmd=="valide"&&$etatCommande->getExtraPayload()['statut']=="inprogress")
+                        if(isset($etatCommande->getExtraPayload()['statut']))
                         {
-                            $structureVues[$key]['statut']="inprogress";
-                        }
+                            if($statutCmd=="valide"&&$etatCommande->getExtraPayload()['statut']=="inprogress")
+                            {
+                                $structureVues[$key]['statut']="inprogress";
+                            }
+                       
+                     
 
                         $etatCommande   = $dm->createQueryBuilder(Entities::class)
                         ->field('name')->equals('etatsCommandes')
@@ -324,6 +328,8 @@ class DefaultController extends AbstractController
                         if($statutCmd=="valide"&&$etatCommande->getExtraPayload()['statut']=="inprogress")
                         {
                             $structureVues[$key]['statut']="received";
+                        }
+
                         }
                     }
                 
