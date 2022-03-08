@@ -188,7 +188,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/readAll/{entity}", methods={"GET"})
      */
-    public function readAvanceAll(DocumentManager $dm,$entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function readAvanceAll(DocumentManager $dm, $entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
@@ -293,53 +293,39 @@ class DefaultController extends AbstractController
                             }
                         }
                     }
-                }
-               elseif($entity=="commandes")
-                {
-                    
-                    foreach($structureVues as $key=>$commande)
-                    {
-                        $statutCmd=$commande['statut'];
+                } elseif ($entity == "commandes") {
+
+                    foreach ($structureVues as $key => $commande) {
+                        $statutCmd = $commande['statut'];
                         $etatCommande   = $dm->createQueryBuilder(Entities::class)
-                        ->field('name')->equals('etatsCommandes')
-                        ->field('extraPayload.commande')->equals($commande['Identifiant'])
-                        ->field('extraPayload.name')->equals('Demande de livraison reçu')
-
-                        ->getQuery()
-                        ->getSingleResult();
-                        if($etatCommande)
-                        {
-
-                            if(isset($etatCommande->getExtraPayload()['statut']))
-                            {
-                                var_dump($etatCommande->getExtraPayload()['statut']);
-                                if($statutCmd=="valide"&&$etatCommande->getExtraPayload()['statut']=="inprogress")
-                                {
-                                    $structureVues[$key]['statut']="inprogress";
-                                }
-    
-                            }
-                            $etatCommande   = $dm->createQueryBuilder(Entities::class)
                             ->field('name')->equals('etatsCommandes')
                             ->field('extraPayload.commande')->equals($commande['Identifiant'])
-                            ->field('extraPayload.name')->equals('commande récupéré')
+                            ->field('extraPayload.name')->equals('Demande de livraison reçu')
+
                             ->getQuery()
                             ->getSingleResult();
-                            if(isset($etatCommande->getExtraPayload()['statut']))
-                            {
-                                var_dump($etatCommande->getExtraPayload()['statut']);
-                            if($statutCmd=="valide"&&$etatCommande->getExtraPayload()['statut']=="inprogress")
-                            {
-                                $structureVues[$key]['statut']="received";
-                            }
-    
-                        }
-                            
+                        if ($etatCommande) {
 
+                            if (isset($etatCommande->getExtraPayload()['statut'])) {
+                                var_dump($etatCommande->getExtraPayload()['statut']);
+                                if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
+                                    $structureVues[$key]['statut'] = "inprogress";
+                                }
+                            }
+                            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                                ->field('name')->equals('etatsCommandes')
+                                ->field('extraPayload.commande')->equals($commande['Identifiant'])
+                                ->field('extraPayload.name')->equals('commande récupéré')
+                                ->getQuery()
+                                ->getSingleResult();
+                            if (isset($etatCommande->getExtraPayload()['statut'])) {
+                                var_dump($etatCommande->getExtraPayload()['statut']);
+                                if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
+                                    $structureVues[$key]['statut'] = "received";
+                                }
+                            }
                         }
-                      
                     }
-                
                 }
 
 
@@ -502,7 +488,7 @@ class DefaultController extends AbstractController
         unset($filter['vueAvancer']);
         unset($filter['lang']);
         unset($filter['indexVue']);
-	  unset($filter['identifiantMongo']);
+        unset($filter['identifiantMongo']);
         $data = $this->entityManager->getResultFromArray($entity, $filter);
 
 
@@ -551,7 +537,7 @@ class DefaultController extends AbstractController
         //	dd($structuresFinal['results']);           
 
 
-        foreach ($structuresFinal['results'] as $key=>$resto) {
+        foreach ($structuresFinal['results'] as $key => $resto) {
             $tabT = $resto["tags"];
             if (sizeof($tabT)) {
 
@@ -562,31 +548,27 @@ class DefaultController extends AbstractController
                     //$test=in_array($t,$results);
                     //		var_dump($test);
                     if (is_int($test)) {
-		//	dd($resto);
-                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
-                     $capaciteResto=   $this->entityManager->getCapaciteResto($resto['Identifiant'],$identifiantMongo) ;
-                     if(isset($capaciteResto['max']))
-                     {
-                        $resto['qteMax']=$capaciteResto['max'];
-                     }
-                     else{
-                        $resto['qteMax']=0;
-                     }
+                        //	dd($resto);
+                        $resto['disponible'] = $this->entityManager->checkDiponibiliteResto($resto['Identifiant'], $identifiantMongo);
+                        $capaciteResto =   $this->entityManager->getCapaciteResto($resto['Identifiant'], $identifiantMongo);
+                        if (isset($capaciteResto['max'])) {
+                            $resto['qteMax'] = $capaciteResto['max'];
+                        } else {
+                            $resto['qteMax'] = 0;
+                        }
 
-                     if(isset($capaciteResto['restant']))
-                     {
-                       
-                        $resto['qteRestant']=$capaciteResto['restant'];
-                     }
-                     else{
-                        $resto['qteRestant']=0;
-                     }
+                        if (isset($capaciteResto['restant'])) {
+
+                            $resto['qteRestant'] = $capaciteResto['restant'];
+                        } else {
+                            $resto['qteRestant'] = 0;
+                        }
 
 
-                     $resto['like']=$this->entityManager->checkFavoris($resto['Identifiant'],$identifiantMongo) ;
-               //    dd($resto);
-  
-		        array_push($results[$test]['listeRestaurant'], $resto);
+                        $resto['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
+                        //    dd($resto);
+
+                        array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }
             }
@@ -969,7 +951,7 @@ class DefaultController extends AbstractController
      * @Route("/searcheAvancer", methods={"POST"})
      */
 
-    public function searcheAvancer(DocumentManager $dm,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function searcheAvancer(DocumentManager $dm, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
 
 
@@ -1059,47 +1041,41 @@ class DefaultController extends AbstractController
         }
 
         $nbremenus = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('menus')
-        ->field('status')->equals('active')
-        ->field('extraPayload.titre')->equals($regexWord)
-        ->count()
-        ->getQuery()
-        ->execute();
-        if($nbremenus)
-        {
-            $menus = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('menus')
             ->field('status')->equals('active')
             ->field('extraPayload.titre')->equals($regexWord)
+            ->count()
             ->getQuery()
             ->execute();
+        if ($nbremenus) {
+            $menus = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menus')
+                ->field('status')->equals('active')
+                ->field('extraPayload.titre')->equals($regexWord)
+                ->getQuery()
+                ->execute();
 
             foreach ($menus as $m) {
-                if($m->getExtraPayload()['linkedRestaurant']!="")
-                {
+                if ($m->getExtraPayload()['linkedRestaurant'] != "") {
                     array_push($listeDesIdentifiants, $m->getExtraPayload()['linkedRestaurant']);
                 }
-              
             }
         }
 
 
 
 
-        $listeDesIdentifiantsUnique=array_unique($listeDesIdentifiants);
-        $chainesDesIdentifiants="";
-        foreach( $listeDesIdentifiantsUnique as $id)
-        {
-            if($chainesDesIdentifiants=="")
-            {
+        $listeDesIdentifiantsUnique = array_unique($listeDesIdentifiants);
+        $chainesDesIdentifiants = "";
+        foreach ($listeDesIdentifiantsUnique as $id) {
+            if ($chainesDesIdentifiants == "") {
 
-                $chainesDesIdentifiants=$id;
-            }
-            else{
-                $chainesDesIdentifiants=$chainesDesIdentifiants.','.$id;
+                $chainesDesIdentifiants = $id;
+            } else {
+                $chainesDesIdentifiants = $chainesDesIdentifiants . ',' . $id;
             }
         }
-        
+
         $entity = "restaurants";
         $listeTags = "";
         $vueAvancer = "restaurants_multi";
@@ -1116,7 +1092,7 @@ class DefaultController extends AbstractController
 
         $filter = array_merge($routeParams, $request->query->all());
 
-        $filter["Identifiant"]=array("in"=>$chainesDesIdentifiants);
+        $filter["Identifiant"] = array("in" => $chainesDesIdentifiants);
 
         unset($filter['version']);
         unset($filter['vueAvancer']);
@@ -1183,29 +1159,25 @@ class DefaultController extends AbstractController
                     //		var_dump($test);
                     if (is_int($test)) {
 
-  
-                        $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
-                        $capaciteResto=   $this->entityManager->getCapaciteResto($resto['Identifiant'],$identifiantMongo) ;
-                        if(isset($capaciteResto['max']))
-                        {
-                           $resto['qteMax']=$capaciteResto['max'];
+
+                        $resto['disponible'] = $this->entityManager->checkDiponibiliteResto($resto['Identifiant'], $identifiantMongo);
+                        $capaciteResto =   $this->entityManager->getCapaciteResto($resto['Identifiant'], $identifiantMongo);
+                        if (isset($capaciteResto['max'])) {
+                            $resto['qteMax'] = $capaciteResto['max'];
+                        } else {
+                            $resto['qteMax'] = 0;
                         }
-                        else{
-                           $resto['qteMax']=0;
+
+                        if (isset($capaciteResto['restant'])) {
+
+                            $resto['qteRestant'] = $capaciteResto['restant'];
+                        } else {
+                            $resto['qteRestant'] = 0;
                         }
-   
-                        if(isset($capaciteResto['restant']))
-                        {
-                          
-                           $resto['qteRestant']=$capaciteResto['restant'];
-                        }
-                        else{
-                           $resto['qteRestant']=0;
-                        }
-   
-   
-                        $resto['like']=$this->entityManager->checkFavoris($resto['Identifiant'],$identifiantMongo) ;
-                  //    dd($resto);
+
+
+                        $resto['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
+                        //    dd($resto);
                         array_push($results[$test]['listeRestaurant'], $resto);
                     }
                 }
@@ -1221,9 +1193,6 @@ class DefaultController extends AbstractController
         }
 
         return new JsonResponse(array_values($results), '200');
-
-
-    
     }
 
 
@@ -1245,7 +1214,7 @@ class DefaultController extends AbstractController
 
     public function syncFirebase()
     {
-       $firebaseMessage = $this->firebaseManager->sendMessage("clLJ6S7FRiyLWiLdgZi-nq:APA91bGEpVDiY9xRBKXKZRG2pa5Bbm3tQKCAZIZhKV-o1TiLfJMn9rWmeDuxLGQBreOZco8z-YgeQCwMaau8CDfZ_VZgJabwzJzH2GYsbXBmeiqJ_c-cjkw_C19DVPrWrOUGmhZ4S--T");
-       return new JsonResponse($firebaseMessage);
+        $firebaseMessage = $this->firebaseManager->sendMessage("clLJ6S7FRiyLWiLdgZi-nq:APA91bGEpVDiY9xRBKXKZRG2pa5Bbm3tQKCAZIZhKV-o1TiLfJMn9rWmeDuxLGQBreOZco8z-YgeQCwMaau8CDfZ_VZgJabwzJzH2GYsbXBmeiqJ_c-cjkw_C19DVPrWrOUGmhZ4S--T");
+        return new JsonResponse($firebaseMessage);
     }
 }
