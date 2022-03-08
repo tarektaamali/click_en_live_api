@@ -1004,6 +1004,86 @@ class entityManager
     }
 
 
+    public function checkDiponibiliteMenuResto($id,$idClient,$qte){
+        $test=false;
+
+        $dm = $this->documentManager;
+
+        if(is_null($idClient))
+        {
+            return false;
+        }
+
+        
+        $client = $dm->getRepository(Entities::class)->find($idClient);
+
+        if($client)
+        {
+
+            $dateLivraison=$client->getExtraPayload()['timeLivraison'];
+
+
+          
+
+            $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+
+            if($tempsLivraison=="Midi")
+            {
+                $tempsLivraison="midi";
+            }
+            elseif($tempsLivraison=="Soir")
+            {
+                $tempsLivraison="soir";
+            }
+            elseif($tempsLivraison=="Nuit")
+            {
+                $tempsLivraison="nuit";
+            }
+        }
+        else{
+            return false;
+        }
+
+
+
+      $temps=$tempsLivraison.$dateLivraison;
+
+//	var_dump($temps);
+
+      if(is_null($id))
+      {
+          return false;
+      }
+      $restaurant= $dm->getRepository(Entities::class)->find($id);
+
+
+      if($restaurant)
+      {
+        $tabNbreCurrentCommande=$restaurant->getExtraPayload()['nbreCurrentCommande'];
+      }
+      else{
+          return false;
+      }
+    
+//	var_dump($tabNbreCurrentCommande);
+      if(isset($tabNbreCurrentCommande[$temps]))
+      {
+
+       $val= $tabNbreCurrentCommande[$temps];
+      // var_dump($val);
+	 if($val<$qte)
+        {
+            $test=false;
+        }
+        else
+        {
+            $test=true;
+        }
+      }
+
+        return $test;
+    }
+
     public function checkDiponibiliteResto($id,$idClient)
     {
         $test=false;

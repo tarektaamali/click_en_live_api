@@ -1295,11 +1295,9 @@ class ClientController extends AbstractController
                                         'distance' => round($distance, 2),
                                         'temps' => round($estimation, 2)
                                     );
-                                    if($testDispoCamion&&$testDispoLivreur)
-                                    {
+                                    if ($testDispoCamion && $testDispoLivreur) {
                                         array_push($listeStationDisponibles, $data);
                                     }
-                                 
                                 }
                             }
                         }
@@ -1326,10 +1324,85 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+        //get Mon panier 
+        $monPanier = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('paniers')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
+            ->getQuery()
+            ->getSingleResult();
+
+        $tabListeProduits = $monPanier->getExtraPayload()['listeMenus'];
+
         //TODO CHECK VALIDATION PANIER ===> 
         //bocule ala liste des menus (qte ==> nombreCmd resto)
-        
+
+        $arrayQteMenuParResto=array();
+        foreach ($tabListeProduits as $pp) {
+
+            $menupanier = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menuspaniers')
+                ->field('extraPayload.Identifiant')->equals($pp)
+                ->getQuery()
+                ->getSingleResult();
+
+            $idMenu = $menupanier->getExtraPayload()['linkedMenu'];
+            $menu = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('menus')
+                ->field('extraPayload.Identifiant')->equals($idMenu)
+                ->getQuery()
+                ->getSingleResult();
+
+            //    $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ; 
+
+            if(isset($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]))
+            {
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']])+intval($menupanier->getExtraPayload()['linkedMenu']);
+
+            }
+            else{
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($menupanier->getExtraPayload()['linkedMenu']);
+
+            }
+          
+        }
+
+        $testValidationPanier=false;
+        if(sizeof($arrayQteMenuParResto))
+        {
+
+            foreach($arrayQteMenuParResto as $idResto=>$qte)
+            {
+
+
+               $testValidationPanier =$this->entityManager->checkDiponibiliteMenuResto($idResto,$extraPayload['client'],$qte);
+
+
+
+               if($testValidationPanier==false)
+               {
+
+                $restaurant = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('restaurants')
+                ->field('extraPayload.Identifiant')->equals($idMenu)
+                ->getQuery()
+                ->getSingleResult();
+
+                $message="Merci de vérifier la quantité des menus du restaurant ".$restaurant->getExtraPayload()['titre'].".";
+
+                return new JsonResponse(array("message" => $message), 400);
+
+               }
+            
+
+
+            }
+
+        }
+
+        //fin check validation panier
         $nbreCommandes = 0;
+
+
 
 
         $ym = date('Ym');
@@ -1355,14 +1428,7 @@ class ClientController extends AbstractController
         $commande = $this->entityManager->setResult('commandes', null, $extraPayload);
 
         $this->affectEtats($commande->getId());
-        //get Mon panier 
-        $monPanier = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('paniers')
-            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
-            ->getQuery()
-            ->getSingleResult();
 
-        $tabListeProduits = $monPanier->getExtraPayload()['listeMenus'];
 
         //créer produit commande
         $totalHT = 0;
