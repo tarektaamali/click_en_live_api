@@ -1356,17 +1356,18 @@ class ClientController extends AbstractController
 
             if(isset($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]))
             {
-                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']])+intval($menupanier->getExtraPayload()['linkedMenu']);
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']])+intval($menupanier->getExtraPayload()['quantite']);
 
             }
             else{
-                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($menupanier->getExtraPayload()['linkedMenu']);
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($menupanier->getExtraPayload()['quantite']);
 
             }
           
         }
 
         $testValidationPanier=false;
+//	dd($arrayQteMenuParResto);
         if(sizeof($arrayQteMenuParResto))
         {
 
