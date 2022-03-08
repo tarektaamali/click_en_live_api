@@ -1389,7 +1389,7 @@ class ClientController extends AbstractController
 
                 $message="Le nombre de commandes pour le restaurant ".$restaurant->getExtraPayload()['titre']." est épuisé.";
 
-                return new JsonResponse(array("message" => $message), 400);
+                return new JsonResponse(array("message" => $message), 402);
 
                }
             
