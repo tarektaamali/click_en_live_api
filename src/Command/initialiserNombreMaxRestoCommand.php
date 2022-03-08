@@ -73,13 +73,18 @@ class initialiserNombreMaxRestoCommand extends Command
           
            */
 
+          $nbreMaxCommande['midiNow']=30;
+          $nbreCurrentCommande['midiNow']=30;
+
+          $nbreCurrentCommande['midiTomorrow']=30;
+          $nbreMaxCommande['midiTomorrow']=30;
 
 
             $c = $this->dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('restaurants')
             ->field('extraPayload.Identifiant')->equals($resto->getId())
             ->findAndUpdate()
-            ->field('extraPayload.nbreMaxCommande')->set($nbreMaxCommande)
+            ->field('extraPayload.nbreCurrentCommande')->set($nbreMaxCommande)
             ->getQuery()
             ->execute();
         }
