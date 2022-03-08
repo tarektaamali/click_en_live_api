@@ -1577,9 +1577,9 @@ class ClientController extends AbstractController
          $etatCommande   = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('etatsCommandes')
             ->field('extraPayload.Identifiant')->equals($idCmd)
+            ->field('extraPayload.name')->equals('Demande de livraison reçu')
             ->findAndUpdate()
             ->field('extraPayload.statut')->set('inprogess')
-            ->field('extraPayload.name')->set('Demande de livraison reçu')
             ->getQuery()
             ->execute();
          
@@ -1592,9 +1592,9 @@ class ClientController extends AbstractController
               $etatCommande   = $dm->createQueryBuilder(Entities::class)
               ->field('name')->equals('etatsCommandes')
               ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->field('extraPayload.name')->equals('Demande de livraison reçu')
               ->findAndUpdate()
               ->field('extraPayload.statut')->set('done')
-              ->field('extraPayload.name')->set('Demande de livraison reçu')
               ->getQuery()
               ->execute();
            
@@ -1604,9 +1604,9 @@ class ClientController extends AbstractController
               $etatCommande   = $dm->createQueryBuilder(Entities::class)
               ->field('name')->equals('etatsCommandes')
               ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->field('extraPayload.name')->equals('commande récupéré')
               ->findAndUpdate()
               ->field('extraPayload.statut')->set('inprogess')
-              ->field('extraPayload.name')->set('commande récupéré')
               ->getQuery()
               ->execute();           
         }
