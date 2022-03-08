@@ -1552,4 +1552,65 @@ class ClientController extends AbstractController
 
         return true;
     }
+
+ /**
+     * @Route(/changerEtatCommande", methods={"POST"})
+     */
+
+    public function timeLineCommande(Request $request,DocumentManager $dm)
+    {
+
+
+        $idCmd=$request->get('idCmd');
+        $statut=$request->get('statut');
+
+
+
+
+        
+
+
+        if($statut=="inprogress")
+        {
+
+         $etatCommande   = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('etatsCommandes')
+            ->field('extraPayload.Identifiant')->equals($idCmd)
+            ->findAndUpdate()
+            ->field('extraPayload.statut')->set('inprogess')
+            ->field('extraPayload.name')->set('Demande de livraison reçu')
+            ->getQuery()
+            ->execute();
+         
+
+        }
+
+        if($statut=="recevied")
+        {
+              //"Demande de livraison reçu  ==>done
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('done')
+              ->field('extraPayload.name')->set('Demande de livraison reçu')
+              ->getQuery()
+              ->execute();
+           
+
+              //commande récupéré ===> inprogress
+
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('inprogess')
+              ->field('extraPayload.name')->set('commande récupéré')
+              ->getQuery()
+              ->execute();           
+        }
+
+
+        return new JsonResponse(array('message'=>'etat a été changé avec succès.'),200);
+    }
 }
