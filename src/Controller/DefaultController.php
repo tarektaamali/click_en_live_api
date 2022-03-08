@@ -302,7 +302,7 @@ class DefaultController extends AbstractController
                         $statutCmd=$commande['statut'];
                         $etatCommande   = $dm->createQueryBuilder(Entities::class)
                         ->field('name')->equals('etatsCommandes')
-                        ->field('extraPayload.Identifiant')->equals($commande['Identifiant'])
+                        ->field('extraPayload.commande')->equals($commande['Identifiant'])
                         ->field('extraPayload.name')->set('Demande de livraison reçu')
 
                         ->getQuery()
@@ -320,7 +320,7 @@ class DefaultController extends AbstractController
                             }
                             $etatCommande   = $dm->createQueryBuilder(Entities::class)
                             ->field('name')->equals('etatsCommandes')
-                            ->field('extraPayload.Identifiant')->equals($commande['Identifiant'])
+                            ->field('extraPayload.commande')->equals($commande['Identifiant'])
                             ->field('extraPayload.name')->set('commande récupéré')
                             ->getQuery()
                             ->getSingleResult();
