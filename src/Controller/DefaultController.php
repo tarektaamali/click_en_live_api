@@ -1136,7 +1136,7 @@ class DefaultController extends AbstractController
                     //		var_dump($test);
                     if (is_int($test)) {
 
-
+  
                         $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ;
                         $capaciteResto=   $this->entityManager->getCapaciteResto($resto['Identifiant'],$identifiantMongo) ;
                         if(isset($capaciteResto['max']))
