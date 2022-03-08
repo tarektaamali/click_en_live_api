@@ -1326,6 +1326,9 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+        //TODO CHECK VALIDATION PANIER ===> 
+        //bocule ala liste des menus (qte ==> nombreCmd resto)
+        
         $nbreCommandes = 0;
 
 

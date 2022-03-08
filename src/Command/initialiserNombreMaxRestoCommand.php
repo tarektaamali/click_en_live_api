@@ -54,7 +54,7 @@ class initialiserNombreMaxRestoCommand extends Command
 
             $nbreMaxCommande=$resto->getExtraPayload()['nbreMaxCommande'];
             $nbreCurrentCommande=$resto->getExtraPayload()['nbreCurrentCommande'];
-            
+            /*
 
             if(isset($nbreCurrentCommande['midiTomorrow']))
             {
@@ -71,16 +71,35 @@ class initialiserNombreMaxRestoCommand extends Command
                 $nbreMaxCommande['nuitNow']= $nbreCurrentCommande['nuitTomorrow'];
             }
           
-           
+           */
 
-        
+          if(isset($nbreMaxCommande['midiNow']))
+          {
+          $nbreMaxCommande['midiNow']=30;
+          }
+          if(isset($nbreCurrentCommande['midiNow']))
+          {
+          $nbreCurrentCommande['midiNow']=30;
+          }
+
+          
+          if(isset($nbreMaxCommande['midiNow']))
+          {
+          $nbreMaxCommande['midiNow']=30;
+          }
+       
+          if(isset($nbreCurrentCommande['midiTomorrow']))
+          {
+          $nbreCurrentCommande['midiTomorrow']=30;
+          }
 
 
             $c = $this->dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('restaurants')
             ->field('extraPayload.Identifiant')->equals($resto->getId())
             ->findAndUpdate()
-            ->field('extraPayload.nbreCurrentCommande')->set($nbreMaxCommande)
+            ->field('extraPayload.nbreMaxCommande')->set($nbreMaxCommande)
+            ->field('extraPayload.nbreCurrentCommande')->set($nbreCurrentCommande)
             ->getQuery()
             ->execute();
         }
