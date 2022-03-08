@@ -54,7 +54,7 @@ class initialiserNombreMaxRestoCommand extends Command
 
             $nbreMaxCommande=$resto->getExtraPayload()['nbreMaxCommande'];
             $nbreCurrentCommande=$resto->getExtraPayload()['nbreCurrentCommande'];
-            
+            /*
 
             if(isset($nbreCurrentCommande['midiTomorrow']))
             {
@@ -71,7 +71,7 @@ class initialiserNombreMaxRestoCommand extends Command
                 $nbreMaxCommande['nuitNow']= $nbreCurrentCommande['nuitTomorrow'];
             }
           
-           
+           */
 
 
 
