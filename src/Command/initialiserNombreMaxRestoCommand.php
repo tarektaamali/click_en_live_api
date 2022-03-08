@@ -56,9 +56,22 @@ class initialiserNombreMaxRestoCommand extends Command
             $nbreCurrentCommande=$resto->getExtraPayload()['nbreCurrentCommande'];
             
 
-            $nbreMaxCommande['midiNow']= $nbreCurrentCommande['midiTomorrow'];
-            $nbreMaxCommande['soirNow']= $nbreCurrentCommande['soirTomorrow'];
-            $nbreMaxCommande['nuitNow']= $nbreCurrentCommande['nuitTomorrow'];
+            if(isset($nbreCurrentCommande['midiTomorrow']))
+            {
+                $nbreMaxCommande['midiNow']= $nbreCurrentCommande['midiTomorrow'];
+            }
+         
+            if(isset($nbreCurrentCommande['soirTomorrow']))
+            {
+                $nbreMaxCommande['soirNow']= $nbreCurrentCommande['soirTomorrow'];
+            }
+
+            if(isset($nbreCurrentCommande['nuitTomorrow']))
+            {
+                $nbreMaxCommande['nuitNow']= $nbreCurrentCommande['nuitTomorrow'];
+            }
+          
+           
 
 
 
