@@ -322,15 +322,26 @@ class strutureVuesService
             if($nameEntity=="comptes")
             {
     
-                $data=$entity->getExtraPayload()['nom'].' '.$entity->getExtraPayload()['prenom'];
+                if(isset($entity->getExtraPayload()['nom'])&&isset($entity->getExtraPayload()['prenom']))
+                {
+                    $data=$entity->getExtraPayload()['nom'].' '.$entity->getExtraPayload()['prenom'];
+                }
+
+
             }
             elseif($nameEntity=="station")
             {
+                if(isset($entity->getExtraPayload()['name']))
+                {
                 $data=$entity->getExtraPayload()['name'];
+                }
             }
             elseif($nameEntity=="camions")
             {
+                if(isset($entity->getExtraPayload()['imatriculation']))
+                {
                 $data=$entity->getExtraPayload()['imatriculation'];
+                }
             }
             else{
                 if(isset($entity->getExtraPayload()['name']))
