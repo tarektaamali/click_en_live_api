@@ -1555,7 +1555,7 @@ class ClientController extends AbstractController
     }
 
  /**
-     * @Route(/changerEtatCommande", methods={"POST"})
+     * @Route("/changerEtatCommande", methods={"POST"})
      */
 
     public function timeLineCommande(Request $request,DocumentManager $dm)
