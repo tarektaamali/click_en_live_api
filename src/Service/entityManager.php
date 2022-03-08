@@ -1135,5 +1135,29 @@ class entityManager
 
 
 
+    public function checkFavoris($idResto,$idClient)
+    {
+        
+        $dm = $this->documentManager;
+        $nbreFavoris = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('favoris')
+        ->field('extraPayload.restaurant')->equals($idResto)
+        ->field('extraPayload.compte')->equals($idClient)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+        if($nbreFavoris==0)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
+
+
 
 }

@@ -534,6 +534,9 @@ class DefaultController extends AbstractController
                      else{
                         $resto['qteRestant']=0;
                      }
+
+
+                     $resto['like']=$this->entityManager->checkFavoris($resto['Identifiant'],$identifiantMongo) ;
                //    dd($resto);
   
 		        array_push($results[$test]['listeRestaurant'], $resto);
