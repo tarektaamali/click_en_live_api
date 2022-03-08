@@ -314,7 +314,7 @@ class strutureVuesService
         $idEntity=$param[1];
         $data="";
 
-        $entity = $this->dm->getRepository(Entities::class)->find($idEntity);
+        $entity = $this->documentManager->getRepository(Entities::class)->find($idEntity);
 
 
         if($entity)
