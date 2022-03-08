@@ -304,4 +304,47 @@ class strutureVuesService
         //	var_dump($listeTailles);
         return $listeTailles;
     }
+
+
+
+    public function getDetails($param)
+    {
+        $nameEntity=$param[0];
+
+        $idEntity=$param[1];
+        $data="";
+
+        $entity = $this->dm->getRepository(Entities::class)->find($idEntity);
+
+
+        if($entity)
+        {
+            if($nameEntity=="comptes")
+            {
+    
+                $data=$entity->getExtraPayload()['nom'].' '.$entity->getExtraPayload()['prenom'];
+            }
+            elseif($nameEntity=="station")
+            {
+                $data=$entity->getExtraPayload()['name'];
+            }
+            elseif($nameEntity=="camions")
+            {
+                $data=$entity->getExtraPayload()['imatriculation'];
+            }
+            else{
+                if(isset($entity->getExtraPayload()['name']))
+                {
+                    $data=$entity->getExtraPayload()['name'];
+                }
+                elseif(isset($entity->getExtraPayload()['libelle']))
+                {
+                    $data=$entity->getExtraPayload()['libelle'];
+                }
+                
+            }
+        }
+      
+        return $data;
+    }
 }
