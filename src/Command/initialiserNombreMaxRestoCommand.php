@@ -54,7 +54,7 @@ class initialiserNombreMaxRestoCommand extends Command
 
             $nbreMaxCommande=$resto->getExtraPayload()['nbreMaxCommande'];
             $nbreCurrentCommande=$resto->getExtraPayload()['nbreCurrentCommande'];
-            /*
+            
 
             if(isset($nbreCurrentCommande['midiTomorrow']))
             {
@@ -71,13 +71,9 @@ class initialiserNombreMaxRestoCommand extends Command
                 $nbreMaxCommande['nuitNow']= $nbreCurrentCommande['nuitTomorrow'];
             }
           
-           */
+           
 
-          $nbreMaxCommande['midiNow']=30;
-          $nbreCurrentCommande['midiNow']=30;
-
-          $nbreCurrentCommande['midiTomorrow']=30;
-          $nbreMaxCommande['midiTomorrow']=30;
+        
 
 
             $c = $this->dm->createQueryBuilder(Entities::class)
