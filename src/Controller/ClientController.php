@@ -1586,7 +1586,7 @@ class ClientController extends AbstractController
 
         }
 
-        if($statut=="recevied")
+        if($statut=="received")
         {
               //"Demande de livraison reçu  ==>done
               $etatCommande   = $dm->createQueryBuilder(Entities::class)
