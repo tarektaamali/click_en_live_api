@@ -521,6 +521,7 @@ class AdminController extends AbstractController
 
                 if($entity=="commandes")
                 {
+                    
                     foreach($structureVues as $key=>$commande)
                     {
                         $statutCmd=$commande['statut'];
@@ -550,6 +551,7 @@ class AdminController extends AbstractController
                             $structureVues[$key]['statut']="received";
                         }
                     }
+                
                 }
                 $structuresFinal['results'] = $structureVues;
                 return new JsonResponse($structuresFinal, '200');
