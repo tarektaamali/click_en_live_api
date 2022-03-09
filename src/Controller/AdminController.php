@@ -820,7 +820,7 @@ class AdminController extends AbstractController
 
             $latStation = $positionStation[0];
             $longStation = $positionStation[1];
-            $station=array('id'=>$st['idStation'],'name'=>$s->getExtraPayload()['nom'],'lat'=>floatval($latStation),'long'=>floatval($longStation),'heureA'=>$st['heureArrive'],'heureD'=>$st['heureDepart']);
+            $station=array('id'=>$st['idStation'],'name'=>$s->getExtraPayload()['name'],'lat'=>floatval($latStation),'long'=>floatval($longStation),'heureA'=>$st['heureArrive'],'heureD'=>$st['heureDepart']);
             array_push($listeStations,$station);
     
         }
