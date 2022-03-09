@@ -1585,7 +1585,7 @@ class ClientController extends AbstractController
             ->field('extraPayload.Identifiant')->equals($idCmd)
             ->field('extraPayload.name')->equals('Demande de livraison reçu')
             ->findAndUpdate()
-            ->field('extraPayload.statut')->set('inprogess')
+            ->field('extraPayload.statut')->set('inprogress')
             ->getQuery()
             ->execute();
          
@@ -1612,7 +1612,7 @@ class ClientController extends AbstractController
               ->field('extraPayload.Identifiant')->equals($idCmd)
               ->field('extraPayload.name')->equals('commande récupéré')
               ->findAndUpdate()
-              ->field('extraPayload.statut')->set('inprogess')
+              ->field('extraPayload.statut')->set('inprogress')
               ->getQuery()
               ->execute();           
         }
