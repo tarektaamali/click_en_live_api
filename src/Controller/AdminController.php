@@ -651,4 +651,73 @@ class AdminController extends AbstractController
     }
 
 
+    /**
+     * @Route("/getListeLivreurSansCamion", methods={"GET"})
+     */
+    public function getListeLivreurSansCamion()
+    {
+
+
+     
+        $livreurs= $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('comptes')
+        ->field('extraPayload.role')->equals('ROLE_LIVREUR')
+        ->getQuery()
+        ->execute();
+
+        foreach($livreurs as $livreur){
+            $count= $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('camions')
+            ->field('extraPayload.linkedLivreur')->equals($livreur->getId())
+            ->count()
+            ->getQuery()
+            ->execute();
+
+            if($count==0)
+            {
+                $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
+               $dataLivreur= array('id'=>$livreur->getId(),'nom'=>$nom);
+
+               array_push($tabLiv,$dataLivreur);
+            }
+
+        }
+
+
+        return new JsonResponse(array('livreurs'=>$tabLiv),200);
+    }
+    /**
+     * @Route("/getListeLivreurSansTrajet", methods={"GET"})
+     */
+    public function getListeLivreurSansTrajet()
+    {
+        $livreurs= $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('comptes')
+        ->field('extraPayload.role')->equals('ROLE_LIVREUR')
+        ->getQuery()
+        ->execute();
+
+        foreach($livreurs as $livreur){
+            $count= $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('trajetcamion')
+            ->field('extraPayload.livreur')->equals($livreur->getId())
+            ->count()
+            ->getQuery()
+            ->execute();
+
+            if($count==0)
+            {
+                $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
+               $dataLivreur= array('id'=>$livreur->getId(),'nom'=>$nom);
+
+               array_push($tabLiv,$dataLivreur);
+            }
+
+        }
+
+
+        return new JsonResponse(array('livreurs'=>$tabLiv),200);
+
+    }
+
 }
