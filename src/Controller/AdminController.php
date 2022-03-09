@@ -657,7 +657,7 @@ class AdminController extends AbstractController
     public function getListeLivreurSansCamion()
     {
 
-
+        $tabLiv=[];
      
         $livreurs= $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('comptes')
@@ -691,6 +691,7 @@ class AdminController extends AbstractController
      */
     public function getListeLivreurSansTrajet()
     {
+        $tabLiv=[];
         $livreurs= $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('comptes')
         ->field('extraPayload.role')->equals('ROLE_LIVREUR')
