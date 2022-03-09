@@ -307,7 +307,7 @@ class DefaultController extends AbstractController
                         if ($etatCommande) {
 
                             if (isset($etatCommande->getExtraPayload()['statut'])) {
-                                var_dump($etatCommande->getExtraPayload()['statut']);
+                            //    var_dump($etatCommande->getExtraPayload()['statut']);
                                 if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
                                     $structureVues[$key]['statut'] = "inprogress";
                                 }
@@ -319,7 +319,7 @@ class DefaultController extends AbstractController
                                 ->getQuery()
                                 ->getSingleResult();
                             if (isset($etatCommande->getExtraPayload()['statut'])) {
-                                var_dump($etatCommande->getExtraPayload()['statut']);
+                              //  var_dump($etatCommande->getExtraPayload()['statut']);
                                 if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
                                     $structureVues[$key]['statut'] = "received";
                                 }

@@ -610,6 +610,12 @@ class ClientController extends AbstractController
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
+
+               /* $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $livreur->getExtraPayload()['photoProfil'];*/
+                
+                $menupanier[0]['logoResto']="";
                 array_push($listeMenus, $menupanier[0]);
             }
         }
