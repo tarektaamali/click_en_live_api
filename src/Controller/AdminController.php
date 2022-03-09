@@ -743,7 +743,7 @@ class AdminController extends AbstractController
 
 
         /**
-     * @Route("/api/admin/createNouveauTrajet, methods={"POST"})
+     * @Route("/api/admin/createNouveauTrajet", methods={"POST"})
      */
     public function createNouveauTrajet(DocumentManager $dm,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
     {
