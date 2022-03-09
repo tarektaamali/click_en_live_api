@@ -764,7 +764,7 @@ class AdminController extends AbstractController
         $trajet = $this->entityManager->setResult("trajets", null,$extraPayload);
         $camion=$dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('camions')
-        ->field('extraPayload.linkedLivreur')->equals($livreur->getId())
+        ->field('extraPayload.linkedLivreur')->equals($livreur)
         ->getQuery()
         ->getSingleResult();
 
