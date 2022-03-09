@@ -400,6 +400,16 @@ class ClientController extends AbstractController
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
+
+                
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
         }
@@ -611,12 +621,15 @@ class ClientController extends AbstractController
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
 
-               /* $params[0] = 'uploads';
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
                 $params[1] = 'single';
-                $params[2] = $livreur->getExtraPayload()['photoProfil'];*/
-                
-                $menupanier[0]['logoResto']="";
-                array_push($listeMenus, $menupanier[0]);
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
+                array_push($listeMenus,$menupanier[0]);
             }
         }
         $monPanier[0]['listeMenus'] = $listeMenus;
@@ -820,6 +833,16 @@ class ClientController extends AbstractController
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
+
+                
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
         }
@@ -930,6 +953,17 @@ class ClientController extends AbstractController
                     $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                     $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                     $menupanier[0]['linkedMenu'] = $dataMenu;
+
+
+                    
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
                     array_push($listeMenus, $menupanier[0]);
                 }
             }
