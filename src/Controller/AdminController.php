@@ -651,6 +651,8 @@ class AdminController extends AbstractController
     }
 
 
+    //Api qui permet d'envoyer la liste des livreurs qui n'ont pas un camion
+
     /**
      * @Route("/getListeLivreurSansCamion", methods={"GET"})
      */
@@ -686,6 +688,9 @@ class AdminController extends AbstractController
 
         return new JsonResponse(array('livreurs'=>$tabLiv),200);
     }
+
+
+       //Api qui permet d'envoyer la liste des livreurs qui ont  un camion et n'ont pas un trajet
     /**
      * @Route("/getListeLivreurSansTrajet", methods={"GET"})
      */
@@ -708,10 +713,23 @@ class AdminController extends AbstractController
 
             if($count==0)
             {
-                $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
-               $dataLivreur= array('id'=>$livreur->getId(),'nom'=>$nom);
 
-               array_push($tabLiv,$dataLivreur);
+                $countCamion= $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('camions')
+            ->field('extraPayload.linkedLivreur')->equals($livreur->getId())
+            ->count()
+            ->getQuery()
+            ->execute();
+
+            if($countCamion)
+            {
+
+                $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
+                $dataLivreur= array('id'=>$livreur->getId(),'nom'=>$nom);
+                array_push($tabLiv,$dataLivreur);
+
+            }
+           
             }
 
         }
