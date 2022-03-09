@@ -786,4 +786,52 @@ class AdminController extends AbstractController
         return new JsonResponse($trajetcamion->getId());
     }
 
+
+
+    public function detailsTrajetCamion($id,DocumentManager $dm)
+    {
+
+        $trajetcamion=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajetcamion')
+        ->field('extraPayload.trajet')->equals($id)
+        ->getQuery()
+        ->getSingleResult();
+
+        $camion=$dm->getRepository(Entities::class)->find($trajetcamion->getExtraPayload()['camion']);
+        $dataCamion=array('id'=>$camion->getId(),'immatriculation'=>$camion->getExtraPayload()['imatriculation']);
+        $livreur=$dm->getRepository(Entities::class)->find($trajetcamion->getExtraPayload()['livreur']);
+        $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
+        $dataLivreur=array('id'=>$livreur->getId(),'nom'=>$nom);
+        $trajet=$dm->getRepository(Entities::class)->find($trajetcamion->getExtraPayload()['trajet']);
+        $datatrajet=array('id'=>$trajet->getId(),'name'=>$trajet->getExtraPayload()['name']);
+
+        $stations=$trajet->getExtraPayload()['stations'];
+
+
+        $listeStations=[];
+
+        foreach($stations as $st)
+        {
+
+            $s = $dm->getRepository(Entities::class)->find($st['idStation']);
+            $positionStation = $s->getExtraPayload()['position'];
+
+            $latStation = $positionStation[0];
+            $longStation = $positionStation[1];
+            $station=array('id'=>$st['idStation'],'nom'=>$s->getExtraPayload()['nom'],'lat'=>floatval($latStation),'long'=>floatval($longStation),'heureA'=>$st['heureArrive'],'heureD'=>$st['heureDepart']);
+            array_push($listeStations,$station);
+    
+        }
+
+        $data=array('idTrajetCamion'=>$id,
+        'livreur'=>$dataLivreur,
+        'camion'=>$dataCamion,
+        'trajet'=>$datatrajet,
+        'stations'=>$listeStations
+    
+          );
+
+          return new JsonResponse(array('data'=>$data),200);
+    }
+
 }
