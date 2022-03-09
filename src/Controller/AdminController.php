@@ -739,4 +739,51 @@ class AdminController extends AbstractController
 
     }
 
+
+
+
+        /**
+     * @Route("/api/admin/createNouveauTrajet, methods={"POST"})
+     */
+    public function createNouveauTrajet(DocumentManager $dm,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
+    {
+        $extraPayload = null;
+
+        $entity = null;
+
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+        $livreur=$extraPayload['livreur'];
+        unset($extraPayload['livreur']);
+
+        $trajet = $this->entityManager->setResult("trajets", null,$extraPayload);
+        $camion=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('camions')
+        ->field('extraPayload.linkedLivreur')->equals($livreur->getId())
+        ->getQuery()
+        ->getSingleResult();
+
+
+        $dataTrajetCamion['livreur']=$livreur;
+        $dataTrajetCamion['camion']=$camion->getId();
+        $dataTrajetCamion['trajet']=$trajet->getId();
+        $dataTrajetCamion['isActive']="1";
+        $dataTrajetCamion['statut']="created";
+
+
+
+    
+        $trajetcamion = $this->entityManager->setResult("trajetcamion", null, $dataTrajetCamion);
+
+
+        //ghorbel ==> vue
+
+        return new JsonResponse($trajetcamion->getId());
+    }
+
 }
