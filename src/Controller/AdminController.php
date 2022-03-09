@@ -787,7 +787,9 @@ class AdminController extends AbstractController
     }
 
 
-
+    /**
+     * @Route("/detailsTrajetCamion/{id}", methods={"GET"})
+     */
     public function detailsTrajetCamion($id,DocumentManager $dm)
     {
 
