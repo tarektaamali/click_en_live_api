@@ -767,7 +767,7 @@ class AdminController extends AbstractController
 
         //ghorbel ==> vue
 
-        return new JsonResponse($trajetcamion->getId());
+        return new JsonResponse($trajet->getId());
     }
 
 
