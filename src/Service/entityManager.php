@@ -1254,7 +1254,7 @@ class entityManager
         $trajetsCamions = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('trajetcamion')
         ->field('extraPayload.isActive')->equals("1")
-        ->count()
+    
         ->getQuery()
         ->execute();
 
