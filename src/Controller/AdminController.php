@@ -805,7 +805,7 @@ class AdminController extends AbstractController
         $nom=$livreur->getExtraPayload()['nom'].' '.$livreur->getExtraPayload()['prenom'];
         $dataLivreur=array('id'=>$livreur->getId(),'nom'=>$nom);
         $trajet=$dm->getRepository(Entities::class)->find($trajetcamion->getExtraPayload()['trajet']);
-        $datatrajet=array('id'=>$trajet->getId(),'name'=>$trajet->getExtraPayload()['name']);
+        $datatrajet=array('id'=>$trajet->getId(),'name'=>$trajet->getExtraPayload()['name'],'type'=>$trajet->getExtraPayload()['type']);
 
         $stations=$trajet->getExtraPayload()['stations'];
 
