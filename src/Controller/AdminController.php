@@ -417,23 +417,7 @@ class AdminController extends AbstractController
     }
 
 
-    
-    /**
-     * @Route("/api/admin/updateTrajet/{id}", methods={"POST"})
-     */
-    public function updateTrajet($id, $entity,Request $request)
-    {
-        $extraPayload = null;
 
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $content = json_decode($request->getContent(), true);
-            $extraPayload = $content['extraPayload'];
-        }
-
-
-        
-
-    }
 
     /**
      * @Route("/api/admin/readAll/{entity}", methods={"GET"})
@@ -834,6 +818,45 @@ class AdminController extends AbstractController
           );
 
           return new JsonResponse(array('data'=>$data),200);
+    }
+
+
+
+           /**
+     * @Route("/api/admin/updateTrajet/{id}", methods={"POST"})
+     */
+    public function updateTrajet($id,DocumentManager $dm,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer,  Request $request, HttpClientInterface $client)
+    {
+        $extraPayload = null;
+
+        $entity = null;
+
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+     /*   $livreur=$extraPayload['livreur'];
+        unset($extraPayload['livreur']);*/
+
+        $trajet=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajets')
+        ->field('extraPayload.Identifiant')->equals($id)
+        ->getQuery()
+        ->getSingleResult();
+
+        $stations=$trajet->getExtraPayload()['stations'];
+
+         array_push($stations,$extraPayload['stations']);   
+
+         $data['name']=$extraPayload['name'];
+         $data['type']=$extraPayload['type'];
+        $data['stations']=$stations;
+        $trajet =  $this->entityManager->updateResultV2($id, $data);
+
+        return new JsonResponse($trajet->getId());
     }
 
 }
