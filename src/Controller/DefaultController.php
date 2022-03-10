@@ -1223,7 +1223,9 @@ class DefaultController extends AbstractController
     }
 
 
-
+    /**
+     * @Route("/checkStations", methods={"POST"})
+     */
     public function checkStations(Request $request)
     {
 
