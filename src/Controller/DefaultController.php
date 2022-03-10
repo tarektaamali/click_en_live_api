@@ -297,6 +297,7 @@ class DefaultController extends AbstractController
 
                     foreach ($structureVues as $key => $commande) {
                         $statutCmd = $commande['statut'];
+			//var_dump($statutCmd);
                         $etatCommande   = $dm->createQueryBuilder(Entities::class)
                             ->field('name')->equals('etatsCommandes')
                             ->field('extraPayload.commande')->equals($commande['Identifiant'])
@@ -307,9 +308,11 @@ class DefaultController extends AbstractController
                         if ($etatCommande) {
 
                             if (isset($etatCommande->getExtraPayload()['statut'])) {
-                            //    var_dump($etatCommande->getExtraPayload()['statut']);
+				//var_dump($commande['Identifiant']);
+                             //  var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
                                 if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                                    $structureVues[$key]['statut'] = "inprogress";
+                             
+			        $structuresFinal['results'][$key]['statut'] = "inprogress";
                                 }
                             }
                             $etatCommande   = $dm->createQueryBuilder(Entities::class)
@@ -319,11 +322,12 @@ class DefaultController extends AbstractController
                                 ->getQuery()
                                 ->getSingleResult();
                             if (isset($etatCommande->getExtraPayload()['statut'])) {
-                              //  var_dump($etatCommande->getExtraPayload()['statut']);
+                             // var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
                                 if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                                    $structureVues[$key]['statut'] = "received";
+                                     $structuresFinal['results'][$key]['statut'] = "received";
                                 }
                             }
+				
                         }
                     }
                 }
