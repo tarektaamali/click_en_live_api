@@ -1270,7 +1270,7 @@ class entityManager
                 ->field('name')->equals('trajets')
                 ->field('extraPayload.Identifiant')->equals($tc->getExtraPayload()['trajet'])
                 ->getQuery()
-                ->execute();
+                ->getSingleResult();
 
                 if($trajet)
                 {
