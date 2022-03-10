@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Yaml\Yaml;
+use App\Service\distance;
 
 class entityManager
 {
@@ -19,12 +20,13 @@ class entityManager
     private $params;
     private $yaml;
 
-    public function __construct(DocumentManager $documentManager, ParameterBagInterface  $params, strutureVuesService $strutureVuesService)
+    public function __construct( distance $serviceDistance,DocumentManager $documentManager, ParameterBagInterface  $params, strutureVuesService $strutureVuesService)
     {
         $this->documentManager = $documentManager;
         $this->params = $params;
         $this->yaml = new Yaml();
         $this->strutureVuesService = $strutureVuesService;
+        $this->serviceDistance=$serviceDistance;
     }
 
     public function getSingleResult($id, $vue = 'none', $vueVersion = 'latest', $details = 'none')
@@ -1239,5 +1241,84 @@ class entityManager
 
 
 
+    public function checkIfexisteDesStations($lat,$long)
+    {
+ 
+        $dm = $this->documentManager;
+        $nbreTrajetCamion = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajetcamion')
+        ->field('extraPayload.isActive')->equals("1")
+        ->count()
+        ->getQuery()
+        ->execute();
+        $trajetsCamions = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('trajetcamion')
+        ->field('extraPayload.isActive')->equals("1")
+        ->count()
+        ->getQuery()
+        ->execute();
+
+
+        $stations=[];
+        if($nbreTrajetCamion)
+        {
+      
+            foreach($trajetsCamions as $tc)
+            {
+
+                $trajet = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('trajets')
+                ->field('extraPayload.Identifiant')->equals($tc->getExtraPayload()['trajet'])
+                ->count()
+                ->getQuery()
+                ->execute();
+
+                if($trajet)
+                {
+
+                    $listeStations=$trajet->getExtraPayload()['stations'];
+                    if(sizeof($listeStations))
+                    {
+                        foreach ($listeStations as $station) {
+
+                            ///           var_dump($station['idStation']);
+                            $s = $dm->getRepository(Entities::class)->find($station['idStation']);
+                            $positionStation = $s->getExtraPayload()['position'];
+                            //                    var_dump($positionStation);
+                            $latStation = $positionStation[0];
+                            $longStation = $positionStation[1];
+
+                            $distance = $this->serviceDistance->distance(floatval($lat), floatval($long), floatval($latStation), floatval($longStation));
+                            //        var_dump($distance);
+                            if (($distance < 20)) {
+
+                                array_push($stations,$s->getId());
+
+                            }
+
+                    }
+
+
+                }
+
+                }
+
+            }
+
+        }else{
+
+            return false;
+        }
+
+
+        if(sizeof($stations))
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+        
+    }
 
 }

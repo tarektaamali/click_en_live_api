@@ -1221,4 +1221,47 @@ class DefaultController extends AbstractController
         $firebaseMessage = $this->firebaseManager->sendMessage("clLJ6S7FRiyLWiLdgZi-nq:APA91bGEpVDiY9xRBKXKZRG2pa5Bbm3tQKCAZIZhKV-o1TiLfJMn9rWmeDuxLGQBreOZco8z-YgeQCwMaau8CDfZ_VZgJabwzJzH2GYsbXBmeiqJ_c-cjkw_C19DVPrWrOUGmhZ4S--T");
         return new JsonResponse($firebaseMessage);
     }
+
+
+
+    public function checkStations(Request $request)
+    {
+
+        $position=$request->get('position');
+        if(is_null($position))
+        {
+            return new JsonResponse(array('message'=>'merci de verifier votre position.'),400);   
+        }
+        if(isset($position[0]))
+        {
+            $lat=$position[0];
+        }
+        else{
+
+            return new JsonResponse(array('message'=>'merci de verifier votre position.'),400);
+        }
+    
+        if(isset($position[1]))
+        {
+            $long=$position[1];
+        }
+        else{
+
+            return new JsonResponse(array('message'=>'merci de verifier votre position.'),400);
+        }
+
+        $test=false;
+      $test=  $this->entityManager->checkIfexisteDesStations(floatval($lat),floatval($long));
+
+
+    
+
+        $statut=400;
+        if($test)
+        {
+            $statut=200;
+        }
+        return new JsonResponse(array('result'=>$test),$statut);
+
+    }
 }
