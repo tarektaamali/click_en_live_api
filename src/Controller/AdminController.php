@@ -849,7 +849,7 @@ class AdminController extends AbstractController
 
         $stations=$trajet->getExtraPayload()['stations'];
 
-         array_push($stations,$extraPayload['stations']);   
+         array_push($stations,$extraPayload['stations'][0]);   
 
          $data['name']=$extraPayload['name'];
          $data['type']=$extraPayload['type'];
