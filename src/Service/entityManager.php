@@ -1269,7 +1269,6 @@ class entityManager
                 $trajet = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('trajets')
                 ->field('extraPayload.Identifiant')->equals($tc->getExtraPayload()['trajet'])
-                ->count()
                 ->getQuery()
                 ->execute();
 
