@@ -900,6 +900,106 @@ class AdminController extends AbstractController
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, 'fr');
                 $menupanier[0]['linkedMenu'] = $dataMenu;
 
+
+                if (isset($dataMenu[0]['tailles'])) {
+                    $listeTailles = $dataMenu[0]['tailles'];
+                    if (is_array($listeTailles)) {
+    
+                        if (sizeof($listeTailles)) {
+                            foreach ($listeTailles as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['tailles'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        } else {
+                            $dataMenu[0]['tailles'] = [];
+                        }
+                    }
+                }
+    
+                if (isset($dataMenu[0]['sauces'])) {
+                    $listesauces = $dataMenu[0]['sauces'];
+                    if (isset($listesauces[0]['produits'])) {
+    
+                        $listeProduits = $listesauces[0]['produits'];
+                        if (sizeof($listeProduits)) {
+                            foreach ($listeProduits as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['sauces'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        }
+                    } else {
+                        $dataMenu[0]['sauces'] = [];
+                    }
+                }
+                if (isset($dataMenu[0]['viandes'])) {
+                    $listesauces = $dataMenu[0]['viandes'];
+                    if (isset($listesauces[0]['produits'])) {
+    
+                        $listeProduits = $listesauces[0]['produits'];
+                        if (sizeof($listeProduits)) {
+                            foreach ($listeProduits as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['viandes'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        }
+                    } else {
+                        $dataMenu[0]['viandes'] = [];
+                    }
+                }
+    
+    
+                if (isset($dataMenu[0]['garnitures'])) {
+                    $listesauces = $dataMenu[0]['garnitures'];
+                    if (isset($listesauces[0]['produits'])) {
+    
+                        $listeProduits = $listesauces[0]['produits'];
+                        if (sizeof($listeProduits)) {
+                            foreach ($listeProduits as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['garnitures'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        }
+                    } else {
+                        $dataMenu[0]['garnitures'] = [];
+                    }
+                }
+    
+    
+                if (isset($dataMenu[0]['boisons'])) {
+                    $listesauces = $dataMenu[0]['boisons'];
+                    if (isset($listesauces[0]['produits'])) {
+    
+                        $listeProduits = $listesauces[0]['produits'];
+                        if (sizeof($listeProduits)) {
+                            foreach ($listeProduits as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['boisons'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        }
+                    } else {
+                        $structureVues[0]['boisons'] = [];
+                    }
+                }
+    
+    
+    
+                if (isset($dataMenu[0]['autres'])) {
+                    $listesauces = $dataMenu[0]['autres'];
+                    if (isset($listesauces[0]['produits'])) {
+    
+                        $listeProduits = $listesauces[0]['produits'];
+                        if (sizeof($listeProduits)) {
+                            foreach ($listeProduits as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $dataMenu[0]['autres'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        }
+                    } else {
+                        $dataMenu[0]['autres'] = [];
+                    }
+                }
+
+
                 
                 //logo
                 $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
