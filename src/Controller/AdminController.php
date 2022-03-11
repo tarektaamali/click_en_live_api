@@ -859,4 +859,116 @@ class AdminController extends AbstractController
         return new JsonResponse($trajet->getId());
     }
 
+
+
+         /**
+     * @Route("/api/admin/detailsCommande/{id}", methods={"GET"})
+     */
+
+    public function detailsCommande($id,DocumentManager $dm,strutureVuesService $strutureVuesService)
+    {
+
+        $data = $this->entityManager->getSingleResult($id, null, null);
+
+        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
+        if($dataClient)
+        {
+            $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
+        }
+        else{
+
+            $client=array();
+        }
+
+
+        $dataLivreur=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if($dataLivreur)
+        {
+            $livreur=array('id'=>$dataLivreur->getExtraPayload()['Identifiant'],'nom'=>$dataLivreur->getExtraPayload()['nom'],'prenom'=>$dataLivreur->getExtraPayload()['prenom'],'email'=>$dataLivreur->getExtraPayload()['email'],'tel'=>$dataLivreur->getExtraPayload()['phone']);
+        }
+        else{
+
+            $livreur=array();
+        }
+   
+        $listeMenus = [];
+        if (sizeof($data[0]['listeMenus'])) {
+            foreach ($data[0]['listeMenus'] as $mp) {
+                $data = $this->entityManager->getSingleResult($mp, null, null);
+                $menupanier = $this->entityManager->serializeContent($data);
+                $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
+                $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, 'fr');
+                $menupanier[0]['linkedMenu'] = $dataMenu;
+
+                
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
+                array_push($listeMenus, $menupanier[0]);
+            }
+        }
+
+
+
+
+
+        $statutCmd = $data[0]['statut'];
+        //var_dump($statutCmd);
+                    $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                        ->field('name')->equals('etatsCommandes')
+                        ->field('extraPayload.commande')->equals($data[0]['Identifiant'])
+                        ->field('extraPayload.name')->equals('Demande de livraison reçu')
+
+                        ->getQuery()
+                        ->getSingleResult();
+                    if ($etatCommande) {
+
+                        if (isset($etatCommande->getExtraPayload()['statut'])) {
+                            if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
+                         
+                                $statutCmd = "inprogress";
+                            }
+                        }
+                        $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                            ->field('name')->equals('etatsCommandes')
+                            ->field('extraPayload.commande')->equals($data[0]['Identifiant'])
+                            ->field('extraPayload.name')->equals('commande récupéré')
+                            ->getQuery()
+                            ->getSingleResult();
+                        if (isset($etatCommande->getExtraPayload()['statut'])) {
+                         // var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
+                            if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
+                                $statutCmd = "received";
+                            }
+                        }
+            
+                    }
+
+      $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
+        'numeroCommande'=>$data[0]['numeroCommande'],
+        'numeroFacture'=>$data[0]['numeroFacture'],
+        'client'=>$client,
+        'livreur'=>$livreur,
+        'listeMenusCommande'=>$listeMenus,
+        'dateCreation'=>$data[0]['numeroFacture'],
+        'addresseLivraison'=>array(),
+        "modePayment"=> $data[0]['numeroFacture'],
+        "statut"=>  $statutCmd,
+        "quantite"=> $data[0]['quantite'],
+        "totalTTC"=> $data[0]['totalTTC'],
+        "idPaiement"=>  $data[0]['idPaiement'],
+        "modePaiement"=>$data[0]['modePaiement'],
+        "statutPaiement"=>$data[0]['statutPaiement'],
+
+    );
+
+    return new JsonResponse(array('detailsCommande'=>$detailsCommande),200);
+
+    }
+
 }
