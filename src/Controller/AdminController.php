@@ -892,8 +892,8 @@ class AdminController extends AbstractController
         }
    
         $listeMenus = [];
-        if (sizeof($data[0]['listeMenus'])) {
-            foreach ($data[0]['listeMenus'] as $mp) {
+        if (sizeof($data[0]['listeMenusCommande'])) {
+            foreach ($data[0]['listeMenusCommande'] as $mp) {
                 $data = $this->entityManager->getSingleResult($mp, null, null);
                 $menupanier = $this->entityManager->serializeContent($data);
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
