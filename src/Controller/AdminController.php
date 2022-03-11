@@ -870,7 +870,7 @@ class AdminController extends AbstractController
 
         $data = $this->entityManager->getSingleResult($id, null, null);
 
-        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
+        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
         if($dataClient)
         {
             $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
@@ -894,8 +894,8 @@ class AdminController extends AbstractController
         $listeMenus = [];
         if (sizeof($data[0]['listeMenusCommande'])) {
             foreach ($data[0]['listeMenusCommande'] as $mp) {
-                $data = $this->entityManager->getSingleResult($mp, null, null);
-                $menupanier = $this->entityManager->serializeContent($data);
+                $datam = $this->entityManager->getSingleResult($mp, null, null);
+                $menupanier = $this->entityManager->serializeContent($datam);
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, 'fr');
                 $menupanier[0]['linkedMenu'] = $dataMenu;
@@ -948,7 +948,7 @@ class AdminController extends AbstractController
                         }
             
                     }
-
+//dd($data);
       $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
         'numeroCommande'=>$data[0]['numeroCommande'],
         'numeroFacture'=>$data[0]['numeroFacture'],
