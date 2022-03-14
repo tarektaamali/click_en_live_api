@@ -891,6 +891,16 @@ class AdminController extends AbstractController
             $livreur=array();
         }
    
+
+        $dataStation=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if($dataStation)
+        {
+            $station=array('id'=>$dataStation->getExtraPayload()['Identifiant'],'name'=>$dataStation->getExtraPayload()['name']);
+        }
+        else{
+
+            $station=array();
+        }
         $listeMenus = [];
         if (sizeof($data[0]['listeMenusCommande'])) {
             foreach ($data[0]['listeMenusCommande'] as $keyM=>$mp) {
@@ -1050,10 +1060,9 @@ class AdminController extends AbstractController
         'numeroFacture'=>$data[0]['numeroFacture'],
         'client'=>$client,
         'livreur'=>$livreur,
+        'station'=>$station,
         'listeMenusCommande'=>$listeMenus,
         'dateCreation'=>$data[0]['numeroFacture'],
-        'addresseLivraison'=>array(),
-        "modePayment"=> $data[0]['numeroFacture'],
         "statut"=>  $statutCmd,
         "quantite"=> $data[0]['quantite'],
         "totalTTC"=> $data[0]['totalTTC'],
