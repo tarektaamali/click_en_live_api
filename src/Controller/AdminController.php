@@ -1024,36 +1024,7 @@ class AdminController extends AbstractController
 
 
         $statutCmd = $data[0]['statut'];
-        //var_dump($statutCmd);
-                    $etatCommande   = $dm->createQueryBuilder(Entities::class)
-                        ->field('name')->equals('etatsCommandes')
-                        ->field('extraPayload.commande')->equals($data[0]['Identifiant'])
-                        ->field('extraPayload.name')->equals('Demande de livraison reçu')
-
-                        ->getQuery()
-                        ->getSingleResult();
-                    if ($etatCommande) {
-
-                        if (isset($etatCommande->getExtraPayload()['statut'])) {
-                            if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                         
-                                $statutCmd = "inprogress";
-                            }
-                        }
-                        $etatCommande   = $dm->createQueryBuilder(Entities::class)
-                            ->field('name')->equals('etatsCommandes')
-                            ->field('extraPayload.commande')->equals($data[0]['Identifiant'])
-                            ->field('extraPayload.name')->equals('commande récupéré')
-                            ->getQuery()
-                            ->getSingleResult();
-                        if (isset($etatCommande->getExtraPayload()['statut'])) {
-                         // var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
-                            if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                                $statutCmd = "received";
-                            }
-                        }
-            
-                    }
+       
 //dd($data);
       $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
         'numeroCommande'=>$data[0]['numeroCommande'],
@@ -1062,8 +1033,9 @@ class AdminController extends AbstractController
         'livreur'=>$livreur,
         'station'=>$station,
         'listeMenusCommande'=>$listeMenus,
-        'dateCreation'=>$data[0]['numeroFacture'],
+        'dateCreation'=>$data[0]['dateCreation'],
         "statut"=>  $statutCmd,
+        "etatCommande"=>$data[0]['etatCommande'],
         "quantite"=> $data[0]['quantite'],
         "totalTTC"=> $data[0]['totalTTC'],
         "idPaiement"=>  $data[0]['idPaiement'],

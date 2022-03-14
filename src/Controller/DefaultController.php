@@ -293,44 +293,7 @@ class DefaultController extends AbstractController
                             }
                         }
                     }
-                } elseif ($entity == "commandes") {
-
-                    foreach ($structureVues as $key => $commande) {
-                        $statutCmd = $commande['statut'];
-			//var_dump($statutCmd);
-                        $etatCommande   = $dm->createQueryBuilder(Entities::class)
-                            ->field('name')->equals('etatsCommandes')
-                            ->field('extraPayload.commande')->equals($commande['Identifiant'])
-                            ->field('extraPayload.name')->equals('Demande de livraison reçu')
-
-                            ->getQuery()
-                            ->getSingleResult();
-                        if ($etatCommande) {
-
-                            if (isset($etatCommande->getExtraPayload()['statut'])) {
-				//var_dump($commande['Identifiant']);
-                             //  var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
-                                if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                             
-			        $structuresFinal['results'][$key]['statut'] = "inprogress";
-                                }
-                            }
-                            $etatCommande   = $dm->createQueryBuilder(Entities::class)
-                                ->field('name')->equals('etatsCommandes')
-                                ->field('extraPayload.commande')->equals($commande['Identifiant'])
-                                ->field('extraPayload.name')->equals('commande récupéré')
-                                ->getQuery()
-                                ->getSingleResult();
-                            if (isset($etatCommande->getExtraPayload()['statut'])) {
-                             // var_dump($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress");
-                                if ($statutCmd == "valide" && $etatCommande->getExtraPayload()['statut'] == "inprogress") {
-                                     $structuresFinal['results'][$key]['statut'] = "received";
-                                }
-                            }
-				
-                        }
-                    }
-                }
+                } 
 
 
                 return new JsonResponse($structuresFinal, '200');
