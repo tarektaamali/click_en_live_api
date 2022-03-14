@@ -822,6 +822,11 @@ class LivreurController extends AbstractController
                     $msg=   "Votre commande a été annulée";
                     $title="la commande  n° ".$numeroCommande;
                 }
+                elseif($statut=="abandoned")
+                {
+                    $msg=   "Votre commande a été abandonnée";
+                    $title="la commande  n° ".$numeroCommande;
+                }
                
 
                 if(sizeof($tabDeviceToken))
