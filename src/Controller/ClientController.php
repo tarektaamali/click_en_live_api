@@ -1821,8 +1821,7 @@ class ClientController extends AbstractController
             ->field('name')->equals('comptes')
             ->field('extraPayload.Identifiant')->equals($idMongo)
             ->getQuery()
-            ->execute();
-
+            ->getSingleResult();
             if($compte)
             {
                 $tabDeviceToken=$compte->getExtraPayload()['deviceToken'];
