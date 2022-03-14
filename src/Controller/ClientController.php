@@ -1628,7 +1628,7 @@ class ClientController extends AbstractController
             ->field('name')->equals('commandes')
             ->field('extraPayload.Identifiant')->equals($idCmd)
             ->findAndUpdate()
-            ->field('extraPayload.statut')->set('inprogress')
+            ->field('extraPayload.etatCommande')->set('inprogress')
             ->getQuery()
             ->execute();
          
@@ -1663,11 +1663,112 @@ class ClientController extends AbstractController
               ->field('name')->equals('commandes')
               ->field('extraPayload.Identifiant')->equals($idCmd)
               ->findAndUpdate()
-              ->field('extraPayload.statut')->set('received')
+              ->field('extraPayload.etatCommande')->set('received')
               ->getQuery()
               ->execute();
         }
 
+        //deliveryInTheTransit
+        if($statut=="deliveryInTheTransit")
+        {
+              //"Demande de livraison reçu  ==>done
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals('commande récupéré')
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('done')
+              ->getQuery()
+              ->execute();
+           
+
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('inprogress')
+              ->getQuery()
+              ->execute();         
+              
+              $commande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('commandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+              ->getQuery()
+              ->execute();
+        }
+
+
+
+        //atThePlace
+
+
+        if($statut=="atThePlace")
+        {
+              //"Demande de livraison reçu  ==>done
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('done')
+              ->getQuery()
+              ->execute();
+           
+
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('inprogress')
+              ->getQuery()
+              ->execute();         
+              
+              $commande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('commandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+              ->getQuery()
+              ->execute();
+        }
+
+
+        //isGone
+
+        if($statut=="isGone")
+        {
+              //"Demande de livraison reçu  ==>done
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('done')
+              ->getQuery()
+              ->execute();
+           
+
+              $etatCommande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('etatsCommandes')
+              ->field('extraPayload.commande')->equals($idCmd)
+              ->field('extraPayload.name')->equals("livreur parti")
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('done')
+              ->getQuery()
+              ->execute();         
+              
+              $commande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('commandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+              ->getQuery()
+              ->execute();
+        }
 
         return new JsonResponse(array('message'=>'etat a été changé avec succès.'),200);
     }
