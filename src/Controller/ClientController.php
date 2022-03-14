@@ -1460,7 +1460,7 @@ class ClientController extends AbstractController
         $extraPayload['numeroCommande'] = $num_cmd;
         $extraPayload['numeroFacture'] =  $num_fact;
         $extraPayload['statut'] = "created";
-
+        $extraPayload['etatCommande'] = "wait";
         $extraPayload['linkedPanier'] =  $extraPayload['panier'];
         $extraPayload['linkedCompte'] = $extraPayload['client'];
 
