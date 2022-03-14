@@ -1694,6 +1694,17 @@ class ClientController extends AbstractController
               ->field('extraPayload.etatCommande')->set('received')
               ->getQuery()
               ->execute();
+
+              if(sizeof($tabDeviceToken))
+              {
+                  foreach($tabDeviceToken as $token)
+                  {
+                      $msg=   "commande récupéré";
+                      $title="la commande  n° ".$numeroCommande;
+                      $firebaseMessage = $this->firebaseManager->sendMessage($token,$msg,$title);
+                  }
+                
+              }
         }
 
         //deliveryInTheTransit
@@ -1726,6 +1737,17 @@ class ClientController extends AbstractController
               ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
               ->getQuery()
               ->execute();
+
+              if(sizeof($tabDeviceToken))
+              {
+                  foreach($tabDeviceToken as $token)
+                  {
+                      $msg=   "livraison en cours d'acheminement";
+                      $title="la commande  n° ".$numeroCommande;
+                      $firebaseMessage = $this->firebaseManager->sendMessage($token,$msg,$title);
+                  }
+                
+              }
         }
 
 
@@ -1762,6 +1784,17 @@ class ClientController extends AbstractController
               ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
               ->getQuery()
               ->execute();
+
+              if(sizeof($tabDeviceToken))
+              {
+                  foreach($tabDeviceToken as $token)
+                  {
+                      $msg=   "livreur sur le lieu de livraison";
+                      $title="la commande  n° ".$numeroCommande;
+                      $firebaseMessage = $this->firebaseManager->sendMessage($token,$msg,$title);
+                  }
+                
+              }
         }
 
 
