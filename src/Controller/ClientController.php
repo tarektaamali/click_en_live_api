@@ -1615,7 +1615,7 @@ class ClientController extends AbstractController
         $commande=$dm->getRepository(Entities::class)->find($idCmd);
         if($commande)
         {
-            $client=$commande->getExtraPayload()['client'];
+            $client=$commande->getExtraPayload()['linkedCompte'];
             $numeroCommande=$commande->getExtraPayload()['numeroCommande'];
             $dataClient=$dm->getRepository(Entities::class)->find($client);
             if($dataClient)
