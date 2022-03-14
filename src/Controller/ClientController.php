@@ -13,6 +13,7 @@ use App\Entity\CodeActivation;
 use App\Service\distance;
 use App\Service\entityManager;
 use App\Service\eventsManager;
+use App\Service\firebaseManager;
 use App\Service\strutureVuesService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -1598,7 +1599,7 @@ class ClientController extends AbstractController
      * @Route("/changerEtatCommande", methods={"POST"})
      */
 
-    public function timeLineCommande(Request $request,DocumentManager $dm)
+    public function timeLineCommande(firebaseManager $firebaseManager,Request $request,DocumentManager $dm)
     {
 
 
@@ -1607,13 +1608,40 @@ class ClientController extends AbstractController
 
 
 
+        $tabDeviceToken=[];
+        
+        $numeroCommande="";
 
+        $commande=$dm->getRepository(Entities::class)->find($idCmd);
+        if($commande)
+        {
+            $client=$commande->getExtraPayload()['client'];
+            $numeroCommande=$commande->getExtraPayload()['numeroCommande'];
+            $dataClient=$dm->getRepository(Entities::class)->find($client);
+            if($dataClient)
+            {
+                $tabDeviceToken=$dataClient->getExtraPayload()['deviceToken'];
+            }
+        }
+      
         
 
 
         if($statut=="inprogress")
         {
 
+
+            if(sizeof($tabDeviceToken))
+            {
+                foreach($tabDeviceToken as $token)
+                {
+                    $msg=   "Demande de livraison reçu";
+                    $title="la commande  n° ".$numeroCommande;
+                    $firebaseMessage = $this->firebaseManager->sendMessage($token,$msg,$title);
+                }
+              
+            }
+          
          $etatCommande   = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('etatsCommandes')
             ->field('extraPayload.commande')->equals($idCmd)
@@ -1771,5 +1799,52 @@ class ClientController extends AbstractController
         }
 
         return new JsonResponse(array('message'=>'etat a été changé avec succès.'),200);
+    }
+
+
+     /**
+     * @Route("/api/client/setDeviceToken", methods={"POST"})
+     */
+
+
+
+     public function setDeviceToken(Request $request,DocumentManager $dm){
+
+        
+        $deviceToken=$request->get('deviceToken');
+        $user=$this->getUser();
+        if($user)
+        {
+            $idMongo=$user->getUserIdentifier();
+
+            $compte   = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('comptes')
+            ->field('extraPayload.Identifiant')->equals($idMongo)
+            ->getQuery()
+            ->execute();
+
+            if($compte)
+            {
+                $tabDeviceToken=$compte->getExtraPayload()['deviceToken'];
+                if(is_array($tabDeviceToken))
+                {
+
+                    array_push($tabDeviceToken,$deviceToken);
+                    $tabDeviceTokenUnique=array_values(array_unique($tabDeviceToken));  
+                    
+                    $client   = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('comptes')
+                    ->field('extraPayload.Identifiant')->equals($idMongo)
+                    ->findAndUpdate()
+                    ->field('extraPayload.deviceToken')->set(  $tabDeviceTokenUnique)
+                    ->getQuery()
+                    ->execute();
+                }
+            }
+           
+
+        }
+
+     return new JsonResponse(array('message'=>'save device token'),200);
     }
 }

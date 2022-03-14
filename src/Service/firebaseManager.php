@@ -27,10 +27,26 @@ class firebaseManager
     {
         $message = CloudMessage::withTarget('token', $token)
         ->withNotification(Notification::create('Title', 'Body'))
-        ->withData(['key' => 'value']);;
+        ->withData(['key' => 'value']);
         $response = $this->messaging->send($message);
         return $response;
     }
 
+
+    
+    public function notificationCommande($token,$msg,$title){
+
+        
+        $message = CloudMessage::withTarget('token', $token)
+        ->withNotification(Notification::create('FOODLINE '.$title , $msg));
+       // ->withData(['key' => 'value']);
+        $response = $this->messaging->send($message);
+        return $response;
+
+
+
+    }
+
+    
     
 }
