@@ -1793,7 +1793,7 @@ class ClientController extends AbstractController
               ->field('name')->equals('commandes')
               ->field('extraPayload.Identifiant')->equals($idCmd)
               ->findAndUpdate()
-              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+              ->field('extraPayload.etatCommande')->set('isGone')
               ->getQuery()
               ->execute();
         }
