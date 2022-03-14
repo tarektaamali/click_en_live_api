@@ -1622,6 +1622,15 @@ class ClientController extends AbstractController
             ->field('extraPayload.statut')->set('inprogress')
             ->getQuery()
             ->execute();
+
+
+            $commande   = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('commandes')
+            ->field('extraPayload.Identifiant')->equals($idCmd)
+            ->findAndUpdate()
+            ->field('extraPayload.statut')->set('inprogress')
+            ->getQuery()
+            ->execute();
          
 
         }
@@ -1648,7 +1657,15 @@ class ClientController extends AbstractController
               ->findAndUpdate()
               ->field('extraPayload.statut')->set('inprogress')
               ->getQuery()
-              ->execute();           
+              ->execute();         
+              
+              $commande   = $dm->createQueryBuilder(Entities::class)
+              ->field('name')->equals('commandes')
+              ->field('extraPayload.Identifiant')->equals($idCmd)
+              ->findAndUpdate()
+              ->field('extraPayload.statut')->set('received')
+              ->getQuery()
+              ->execute();
         }
 
 
