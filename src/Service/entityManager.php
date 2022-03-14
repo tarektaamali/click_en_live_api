@@ -986,7 +986,7 @@ class entityManager
 
            
 
-         $payload["isActive"]=[]; 
+         $payload["isActive"]="1"; 
 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
