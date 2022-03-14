@@ -940,7 +940,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('comptes')
+            ->field('name')->equals('restaurants')
             ->getQuery()
             ->execute();
 
@@ -986,7 +986,7 @@ class entityManager
 
            
 
-         $payload["deviceToken"]=[]; 
+         $payload["isActive"]=[]; 
 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
