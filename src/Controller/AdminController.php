@@ -916,26 +916,24 @@ class AdminController extends AbstractController
                     }
                 }
     
-                if (isset($dataMenu[0]['sauces'])) {
-                    $listesauces = $dataMenu[0]['sauces'];
-                    if (isset($listesauces[0]['produits'])) {
+            
+                    if (isset($dataMenu[0]['sauces'])) {
     
-                        $listeProduits = $listesauces[0]['produits'];
+                        $listeProduits = $dataMenu[0]['sauces'];
                         if (sizeof($listeProduits)) {
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                                $dataMenu[0]['sauces'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
+                                $dataMenu[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
                             }
                         }
                     } else {
                         $dataMenu[0]['sauces'] = [];
                     }
-                }
-                if (isset($dataMenu[0]['viandes'])) {
-                    $listesauces = $dataMenu[0]['viandes'];
-                    if (isset($listesauces[0]['produits'])) {
+                
+              
+                    if (isset($dataMenu[0]['viandes'])) {
     
-                        $listeProduits = $listesauces[0]['produits'];
+                        $listeProduits =$dataMenu[0]['viandes'];
                         if (sizeof($listeProduits)) {
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -945,14 +943,13 @@ class AdminController extends AbstractController
                     } else {
                         $dataMenu[0]['viandes'] = [];
                     }
-                }
+                
     
     
-                if (isset($dataMenu[0]['garnitures'])) {
-                    $listesauces = $dataMenu[0]['garnitures'];
-                    if (isset($listesauces[0]['produits'])) {
+             
+                    if (isset($dataMenu[0]['garnitures'])) {
     
-                        $listeProduits = $listesauces[0]['produits'];
+                        $listeProduits = $dataMenu[0]['garnitures'];
                         if (sizeof($listeProduits)) {
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -962,14 +959,12 @@ class AdminController extends AbstractController
                     } else {
                         $dataMenu[0]['garnitures'] = [];
                     }
-                }
+                
     
+  
+                    if (isset($dataMenu[0]['boisons'])) {
     
-                if (isset($dataMenu[0]['boisons'])) {
-                    $listesauces = $dataMenu[0]['boisons'];
-                    if (isset($listesauces[0]['produits'])) {
-    
-                        $listeProduits = $listesauces[0]['produits'];
+                        $listeProduits =$dataMenu[0]['boisons'];
                         if (sizeof($listeProduits)) {
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -979,15 +974,14 @@ class AdminController extends AbstractController
                     } else {
                         $structureVues[0]['boisons'] = [];
                     }
-                }
+                
     
     
     
-                if (isset($dataMenu[0]['autres'])) {
-                    $listesauces = $dataMenu[0]['autres'];
-                    if (isset($listesauces[0]['produits'])) {
+           
+                    if (isset($dataMenu[0]['autres'])) {
     
-                        $listeProduits = $listesauces[0]['produits'];
+                        $listeProduits = $dataMenu[0]['autres'];
                         if (sizeof($listeProduits)) {
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -997,7 +991,7 @@ class AdminController extends AbstractController
                     } else {
                         $dataMenu[0]['autres'] = [];
                     }
-                }
+                
 
 
                 
