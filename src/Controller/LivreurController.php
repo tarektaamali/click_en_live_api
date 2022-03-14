@@ -13,6 +13,7 @@ use App\Entity\CodeActivation;
 use App\Service\distance;
 use App\Service\entityManager;
 use App\Service\eventsManager;
+use App\Service\firebaseManager;
 use App\Service\strutureVuesService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -782,29 +783,71 @@ class LivreurController extends AbstractController
 
 
 
-           /**
-     * @Route("/api/livreur/changeStatutCommande/{id}", methods={"POST"})
-     */
-    public function changeStatutCommande($id,Request $request,DocumentManager $dm)
+    /**
+    * @Route("/api/livreur/changeStatutCommande/{id}", methods={"POST"})
+    */
+    public function changeStatutCommande(firebaseManager $firebaseManager,$id,Request $request,DocumentManager $dm)
     {
-
-
-        
         $extraPayload = null;
-
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
+
+        if(isset($extraPayload['statut']))
+        {
+            
+        $tabDeviceToken=[];
+        $statut=$extraPayload['statut'];
+        $numeroCommande="";
+
+        $commande=$dm->getRepository(Entities::class)->find($id);
+        if($commande)
+        {
+            $client=$commande->getExtraPayload()['linkedCompte'];
+            $numeroCommande=$commande->getExtraPayload()['numeroCommande'];
+            $dataClient=$dm->getRepository(Entities::class)->find($client);
+            if($dataClient)
+            {
+                $tabDeviceToken=$dataClient->getExtraPayload()['deviceToken'];
+                $msg=   "Body";
+                $title="Title";
+                if($statut=="delivered")
+                {
+                    $msg=   "Votre commande a été livrée";
+                    $title="la commande  n° ".$numeroCommande;
+                }
+                elseif($statut=="canceled")
+                {
+                    $msg=   "Votre commande a été annulée";
+                    $title="la commande  n° ".$numeroCommande;
+                }
+               
+
+                if(sizeof($tabDeviceToken))
+                {
+                    foreach($tabDeviceToken as $token)
+                    {
+                       
+                        $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
+                    }
+                  
+                }
+
+
+                
+            }
+        }
+        }
         $data = $this->entityManager->updateResultV2($id, $extraPayload);
 
+        
         $fireEvent = null;
         if ($request->get('fireEvent') != null) {
             $fireEvent = $request->get('fireEvent');
         }
 
         return new JsonResponse(array('message'=>'opération effectué'),200);
-
     }
 
 
