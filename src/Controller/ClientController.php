@@ -1637,7 +1637,7 @@ class ClientController extends AbstractController
                 {
                     $msg=   "Demande de livraison reçu";
                     $title="la commande  n° ".$numeroCommande;
-                    $firebaseMessage = $firebaseManager->sendMessage($token,$msg,$title);
+                    $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
                 }
               
             }
@@ -1701,7 +1701,7 @@ class ClientController extends AbstractController
                   {
                       $msg=   "commande récupéré";
                       $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->sendMessage($token,$msg,$title);
+                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
                   }
                 
               }
@@ -1744,7 +1744,7 @@ class ClientController extends AbstractController
                   {
                       $msg=   "livraison en cours d'acheminement";
                       $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->sendMessage($token,$msg,$title);
+                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
                   }
                 
               }
@@ -1791,7 +1791,7 @@ class ClientController extends AbstractController
                   {
                       $msg=   "livreur sur le lieu de livraison";
                       $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->sendMessage($token,$msg,$title);
+                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
                   }
                 
               }
