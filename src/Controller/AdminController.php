@@ -893,13 +893,13 @@ class AdminController extends AbstractController
    
         $listeMenus = [];
         if (sizeof($data[0]['listeMenusCommande'])) {
-            foreach ($data[0]['listeMenusCommande'] as $mp) {
+            foreach ($data[0]['listeMenusCommande'] as $keyM=>$mp) {
                 $datam = $this->entityManager->getSingleResult($mp, null, null);
                 $menupanier = $this->entityManager->serializeContent($datam);
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
-                $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, 'fr');
+                $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single", $menu, 'fr');
                 $menupanier[0]['linkedMenu'] = $dataMenu;
-
+//		dd($dataMenu);
 
                 if (isset($dataMenu[0]['tailles'])) {
                     $listeTailles = $dataMenu[0]['tailles'];
@@ -920,9 +920,14 @@ class AdminController extends AbstractController
                     if (isset($dataMenu[0]['sauces'])) {
     
                         $listeProduits = $dataMenu[0]['sauces'];
+		//	var_dump(sizeof($listeProduits));
                         if (sizeof($listeProduits)) {
+
+		
                             foreach ($listeProduits as $key => $po) {
+//			var_dump($po);
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
+				var_dump($produit->getExtrapayload()['name']);
                                 $dataMenu[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
                             }
                         }
@@ -935,6 +940,7 @@ class AdminController extends AbstractController
     
                         $listeProduits =$dataMenu[0]['viandes'];
                         if (sizeof($listeProduits)) {
+
                             foreach ($listeProduits as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
                                 $dataMenu[0]['viandes'][0]['produits'][$key]['name'] = $produit->getExtrapayload()['name'];
@@ -947,7 +953,7 @@ class AdminController extends AbstractController
     
     
              
-                    if (isset($dataMenu[0]['garnitures'])) {
+ /*                   if (isset($dataMenu[0]['garnitures'])) {
     
                         $listeProduits = $dataMenu[0]['garnitures'];
                         if (sizeof($listeProduits)) {
@@ -991,8 +997,9 @@ class AdminController extends AbstractController
                     } else {
                         $dataMenu[0]['autres'] = [];
                     }
-                
 
+                
+*/
 
                 
                 //logo
