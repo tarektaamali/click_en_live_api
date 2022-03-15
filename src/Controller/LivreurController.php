@@ -954,10 +954,56 @@ class LivreurController extends AbstractController
             }
         }
 
+
+        $typeBtn="go";
+
+        $countAtThePlace=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('valide')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('extraPayload.etatCommande')->equals('deliveryInTheTransit')
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+
+        $countIsGone=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statut')->equals('valide')
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('extraPayload.etatCommande')->equals('atThePlace')
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
+        if($countAtThePlace)
+        {
+            $typeBtn="jysuis";
+        }
+
+        if($countAtThePlace)
+        {
+            $typeBtn="parti";
+        }
+
+
+
+
         return new JsonResponse(array(
             'delivered' => $listeCmdDelivred,
             'enAttente' => $listeCmdEnAttente,
-            'annule' => $listeCmdAnnule
+            'annule' => $listeCmdAnnule,
+            'typeBtn'=> $typeBtn
         ), 200);
     }
 
