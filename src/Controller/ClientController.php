@@ -1205,25 +1205,17 @@ class ClientController extends AbstractController
 
         $adresseLivrasion = $request->get('adresseLivrasion');
 
-        $idCommande = $request->get('idCommande');
+        $idPanier = $request->get('idPanier');
 
-        if(is_null($idCommande))
-        {
-
-
-            return new JsonResponse(array('message' => 'Merci de vérifier votre commande'), 400);
-        }
+    
 
         $quantiteCommande=0;
-        $commande= $dm->getRepository(Entities::class)->find($idCommande);
-        if($commande)
+        $panier= $dm->getRepository(Entities::class)->find($idPanier);
+        if($panier)
         {
-            $quantiteCommande=$commande->getExtraPayload()['quantite'];
+            $quantiteCommande=$panier->getExtraPayload()['quantite'];
         }
-        else{
-
-            return new JsonResponse(array('message' => 'Merci de vérifier votre commande'), 400);
-        }
+       
 
         if (is_null($adresseLivrasion)) {
             return new JsonResponse(array('message' => 'Merci de vérifier adresse livraison'), 400);
@@ -1336,9 +1328,9 @@ class ClientController extends AbstractController
                                         //il faut que le camion n'atteint pas sa charge maximale,
 
                                         if ($camion->getExtraPayload()['reste'] >= $quantiteCommande) {
-                                            $testDispoCamion = false;
-                                        } else {
                                             $testDispoCamion = true;
+                                        } else {
+                                            $testDispoCamion = false;
                                         }
                                     }
 
