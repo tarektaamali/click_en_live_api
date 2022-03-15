@@ -1488,7 +1488,7 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->getSingleResult();
             $data['linkedCommande'] = $commande->getId();
-            $data['client'] = $extraPayload['client'];
+        //    $data['client'] = $extraPayload['linkedCompte'];
             $data['linkedMenu'] = $produitpanier->getExtraPayload()['linkedMenu'];
 
             $data['tailles'] = $produitpanier->getExtraPayload()['tailles'];
