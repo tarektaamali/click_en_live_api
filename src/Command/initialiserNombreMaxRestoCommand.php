@@ -76,13 +76,28 @@ class initialiserNombreMaxRestoCommand extends Command
      
 
 
-            $c = $this->dm->createQueryBuilder(Entities::class)
+           /* $c = $this->dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('restaurants')
             ->field('extraPayload.Identifiant')->equals($resto->getId())
             ->findAndUpdate()
             ->field('extraPayload.nbreCurrentCommande')->set($nbreMaxCommande)
             ->getQuery()
+            ->execute();*/
+
+
+
+
+            $c = $this->dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('restaurants')
+            ->field('extraPayload.Identifiant')->equals($resto->getId())
+            ->findAndUpdate()
+            ->field('extraPayload.nbreCurrentCommande')->set($resto->getExtraPayload()['nbreMaxCommande'])
+            ->getQuery()
             ->execute();
+
+
+            
+
         }
 
 
