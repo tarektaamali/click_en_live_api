@@ -1204,6 +1204,27 @@ class ClientController extends AbstractController
         }
 
         $adresseLivrasion = $request->get('adresseLivrasion');
+
+        $idCommande = $request->get('idCommande');
+
+        if(is_null($idCommande))
+        {
+
+
+            return new JsonResponse(array('message' => 'Merci de vérifier votre commande'), 400);
+        }
+
+        $quantiteCommande=0;
+        $commande= $dm->getRepository(Entities::class)->find($idCommande);
+        if($commande)
+        {
+            $quantiteCommande=$commande->getExtraPayload()['quantite'];
+        }
+        else{
+
+            return new JsonResponse(array('message' => 'Merci de vérifier votre commande'), 400);
+        }
+
         if (is_null($adresseLivrasion)) {
             return new JsonResponse(array('message' => 'Merci de vérifier adresse livraison'), 400);
         }
@@ -1220,6 +1241,7 @@ class ClientController extends AbstractController
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
+                unset($filter['idCommande']);
 
                 unset($filter['adresseLivrasion']);
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
@@ -1313,7 +1335,7 @@ class ClientController extends AbstractController
                                     if ($camion) {
                                         //il faut que le camion n'atteint pas sa charge maximale,
 
-                                        if ($camion->getExtraPayload()['reste'] == 0) {
+                                        if ($camion->getExtraPayload()['reste'] >= $quantiteCommande) {
                                             $testDispoCamion = false;
                                         } else {
                                             $testDispoCamion = true;
