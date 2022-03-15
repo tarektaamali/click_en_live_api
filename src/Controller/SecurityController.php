@@ -338,16 +338,32 @@ class SecurityController extends AbstractController
     /**
      * @Route("/api/logout",name="app_api_logout")
      */
-    public function logout_api(EntityManagerInterface $entityManager, Request $request)
+    public function logout_api(DocumentManager $dm,EntityManagerInterface $entityManager, Request $request)
     {
         $auth_user = $this->getUser();
+
+
+        if($auth_user)
+        {
+            $idenMongo=$auth_user->getUserIdentifier();
+
+            $user= $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('comptes')
+            ->field('extraPayload.Identifiant')->equals($idenMongo)
+            ->findAndUpdate()
+            ->field('extraPayload.deviceToken')->set([])
+            ->getQuery()
+            ->execute();
+
+
+        }
         $authorizationHeader = $request->headers->get('Authorization');
         // skip beyond "Bearer "
         $token = substr($authorizationHeader, 7);
         //var_dump($token);
         $apitoken = $entityManager->getRepository(ApiToken::class)->findOneBy(['token' => $token], array('id' => 'desc'));
         $entityManager->remove($apitoken);
-        return new Response("done");
+       // return new Response("done");
         return $this->redirectToRoute('app_logout');
     }
 
