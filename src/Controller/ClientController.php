@@ -1233,7 +1233,7 @@ class ClientController extends AbstractController
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
-                unset($filter['idCommande']);
+                unset($filter['idPanier']);
 
                 unset($filter['adresseLivrasion']);
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
@@ -1241,7 +1241,7 @@ class ClientController extends AbstractController
         }
 
         $data = $this->entityManager->serializeContent($data);
-
+		
 
         $listeStationDisponibles = [];
 
@@ -1279,7 +1279,7 @@ class ClientController extends AbstractController
                             $longStation = $positionStation[1];
 
                             $distance = $serviceDistance->distance(floatval($latClient), floatval($longClient), floatval($latStation), floatval($longStation));
-                            //        var_dump($distance);
+                                  // var_dump($distance);
                             if (($distance < 20)) {
 
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
@@ -1333,7 +1333,8 @@ class ClientController extends AbstractController
                                             $testDispoCamion = false;
                                         }
                                     }
-
+				//	var_dump($testDispoCamion);
+				//	var_dump($testDispoLivreur);
 
 
                                     $vitesse = 40;

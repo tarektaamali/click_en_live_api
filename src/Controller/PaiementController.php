@@ -239,7 +239,7 @@ class PaiementController extends AbstractController
 
                     $resteCamion = intval($nbreReste) - intval($quantiteCommande);
 
-                    $commande = $dm->createQueryBuilder(Entities::class)
+                     $dm->createQueryBuilder(Entities::class)
                         ->field('name')->equals('camions')
                         ->field('extraPayload.Identifiant')->equals($camion->getId())
                         ->findAndUpdate()
@@ -258,7 +258,7 @@ class PaiementController extends AbstractController
             ->getQuery()
             ->execute();
 
-        try {
+      try {
             if ($nbreCmd) {
 
 
@@ -350,7 +350,7 @@ class PaiementController extends AbstractController
             }
         } catch (\Throwable $th) {
             return new JsonResponse($th->getMessage(), 500);
-        }
+	}
     }
     /**
      * @Route("/api/client/get_statut_payment", methods={"GET"})
