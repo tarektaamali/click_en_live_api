@@ -1464,6 +1464,8 @@ class ClientController extends AbstractController
         $extraPayload['etatCommande'] = "wait";
         $extraPayload['linkedPanier'] =  $extraPayload['panier'];
         $extraPayload['linkedCompte'] = $extraPayload['client'];
+        unset($extraPayload['client']);
+        unset($extraPayload['panier']);
 
 
         //créer commande 
@@ -1495,6 +1497,8 @@ class ClientController extends AbstractController
             $data['garnitures'] = $produitpanier->getExtraPayload()['garnitures'];
             $data['boisons'] = $produitpanier->getExtraPayload()['boisons'];
             $data['autres'] = $produitpanier->getExtraPayload()['autres'];
+
+            $data['description'] = $produitpanier->getExtraPayload()['description'];
 
 
 
@@ -1533,7 +1537,7 @@ class ClientController extends AbstractController
 
         $panier = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('paniers')
-            ->field('extraPayload.Identifiant')->equals($extraPayload['panier'])
+            ->field('extraPayload.Identifiant')->equals($extraPayload['linkedPanier'])
             ->findAndUpdate()
             ->field('extraPayload.linkedCommande')->set($commande->getId())
             //  ->field('extraPayload.statut')->set("inactive")
@@ -1878,5 +1882,197 @@ class ClientController extends AbstractController
         }
 
      return new JsonResponse(array('message'=>'save device token'),200);
+    }
+
+
+
+
+
+
+         /**
+     * @Route("/api/client/detailsCommande/{id}", methods={"GET"})
+     */
+
+    public function detailsCommande($id,DocumentManager $dm,strutureVuesService $strutureVuesService)
+    {
+
+        $data = $this->entityManager->getSingleResult($id, null, null);
+
+        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
+        if($dataClient)
+        {
+            $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
+        }
+        else{
+
+            $client=array();
+        }
+
+
+        $dataLivreur=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if($dataLivreur)
+        {
+            $livreur=array('id'=>$dataLivreur->getExtraPayload()['Identifiant'],'nom'=>$dataLivreur->getExtraPayload()['nom'],'prenom'=>$dataLivreur->getExtraPayload()['prenom'],'email'=>$dataLivreur->getExtraPayload()['email'],'tel'=>$dataLivreur->getExtraPayload()['phone']);
+        }
+        else{
+
+            $livreur=array();
+        }
+   
+
+        $dataStation=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if($dataStation)
+        {
+            $station=array('id'=>$dataStation->getExtraPayload()['Identifiant'],'name'=>$dataStation->getExtraPayload()['name']);
+        }
+        else{
+
+            $station=array();
+        }
+        $listeMenus = [];
+        if (sizeof($data[0]['listeMenusCommande'])) {
+            foreach ($data[0]['listeMenusCommande'] as $keyM=>$mp) {
+                $datam = $this->entityManager->getSingleResult($mp, null, null);
+                $menupanier = $this->entityManager->serializeContent($datam);
+                $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
+                $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single", $menu, 'fr');
+                $menupanier[0]['linkedMenu'] = $dataMenu;
+		
+
+                if (isset($menupanier[0]['tailles'])) {
+                    $listeTailles = $menupanier[0]['tailles'];
+                    if (is_array($listeTailles)) {
+    
+                        if (sizeof($listeTailles)) {
+                            foreach ($listeTailles as $key => $po) {
+                                $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                                $menupanier[0]['tailles'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            }
+                        } else {
+                            $menupanier[0]['tailles'] = [];
+                        }
+                    }
+                }
+    
+            
+                    
+            
+                if (isset($menupanier[0]['sauces'])) {
+
+                    $listeProduits = $menupanier[0]['sauces'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $menupanier[0]['sauces'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                } else {
+                    $menupanier[0]['sauces'] = [];
+                }
+            
+                
+            
+                if (isset($menupanier[0]['viandes'])) {
+
+                    $listeProduits =  $menupanier[0]['viandes'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                       $menupanier[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                } else {
+                    $menupanier[0]['viandes'] = [];
+                }
+           
+
+
+            
+                if (isset($menupanier[0]['garnitures'])) {
+
+                    $listeProduits = $menupanier[0]['garnitures'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $menupanier[0]['garnitures'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                } else {
+                    $menupanier[0]['garnitures'] = [];
+                }
+            
+
+
+            
+                if (isset($menupanier[0]['boisons'])) {
+
+                    $listeProduits = $menupanier[0]['boisons'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $menupanier[0]['boisons'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                } else {
+                    $menupanier[0]['boisons'] = [];
+                }
+            
+
+
+
+            
+                if (isset($menupanier[0]['autres'])) {
+
+                    $listeProduits =  $menupanier[0]['autres'];
+                    if (sizeof($listeProduits)) {
+                        foreach ($listeProduits as $key => $po) {
+                            $produit = $dm->getRepository(Entities::class)->find($po['id']);
+                            $menupanier[0]['autres'][$key]['name'] = $produit->getExtrapayload()['name'];
+                        }
+                    }
+                } else {
+                    $menupanier[0]['autres'] = [];
+                }
+            
+                
+                //logo
+                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $restaurant->getExtraPayload()['logo'];
+                $logo=$strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto']=$logo;
+                //fin logo
+                array_push($listeMenus, $menupanier[0]);
+            }
+        }
+
+
+
+
+
+        $statutCmd = $data[0]['statut'];
+       
+//dd($data);
+      $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
+        'numeroCommande'=>$data[0]['numeroCommande'],
+        'numeroFacture'=>$data[0]['numeroFacture'],
+        'client'=>$client,
+        'livreur'=>$livreur,
+        'station'=>$station,
+        'listeMenusCommande'=>$listeMenus,
+        'dateCreation'=>$data[0]['dateCreation'],
+        "statut"=>  $statutCmd,
+        "etatCommande"=>$data[0]['etatCommande'],
+        "quantite"=> $data[0]['quantite'],
+        "totalTTC"=> $data[0]['totalTTC'],
+        "idPaiement"=>  $data[0]['idPaiement'],
+        "modePaiement"=>$data[0]['modePaiement'],
+        "statutPaiement"=>$data[0]['statutPaiement'],
+
+    );
+
+    return new JsonResponse(array('detailsCommande'=>$detailsCommande),200);
+
     }
 }

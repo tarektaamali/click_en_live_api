@@ -369,6 +369,8 @@ class DefaultController extends AbstractController
 
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
+                
+
                 return new JsonResponse($structureVues, '200');
             } else {
                 return new JsonResponse($data, '200');
