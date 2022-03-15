@@ -1898,7 +1898,14 @@ class ClientController extends AbstractController
 
         $data = $this->entityManager->getSingleResult($id, null, null);
 
-        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
+        if(isset($data[0]['client']))
+        {
+            $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
+        }
+        else{
+            $dataClient=$dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
+        }
+      
         if($dataClient)
         {
             $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
