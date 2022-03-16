@@ -402,14 +402,14 @@ class ClientController extends AbstractController
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
 
-                
+
                 //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
                 $params[0] = 'uploads';
                 $params[1] = 'single';
                 $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
+                $logo = $strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto'] = $logo;
                 //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
@@ -623,14 +623,14 @@ class ClientController extends AbstractController
                 $menupanier[0]['linkedMenu'] = $dataMenu;
 
                 //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
                 $params[0] = 'uploads';
                 $params[1] = 'single';
                 $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
+                $logo = $strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto'] = $logo;
                 //fin logo
-                array_push($listeMenus,$menupanier[0]);
+                array_push($listeMenus, $menupanier[0]);
             }
         }
         $monPanier[0]['listeMenus'] = $listeMenus;
@@ -835,14 +835,14 @@ class ClientController extends AbstractController
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single_panier", $menu, $lang);
                 $menupanier[0]['linkedMenu'] = $dataMenu;
 
-                
+
                 //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
                 $params[0] = 'uploads';
                 $params[1] = 'single';
                 $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
+                $logo = $strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto'] = $logo;
                 //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
@@ -956,15 +956,15 @@ class ClientController extends AbstractController
                     $menupanier[0]['linkedMenu'] = $dataMenu;
 
 
-                    
-                //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
-                $params[0] = 'uploads';
-                $params[1] = 'single';
-                $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
-                //fin logo
+
+                    //logo
+                    $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                    $params[0] = 'uploads';
+                    $params[1] = 'single';
+                    $params[2] = $restaurant->getExtraPayload()['logo'];
+                    $logo = $strutureVuesService->getUrl($params);
+                    $menupanier[0]['logoResto'] = $logo;
+                    //fin logo
                     array_push($listeMenus, $menupanier[0]);
                 }
             }
@@ -1205,17 +1205,18 @@ class ClientController extends AbstractController
 
         $adresseLivrasion = $request->get('adresseLivrasion');
 
+        $type = $request->get('type');
+        $tempsLivraison=$request->get('tempsLivraison');
         $idPanier = $request->get('idPanier');
 
-    
 
-        $quantiteCommande=0;
-        $panier= $dm->getRepository(Entities::class)->find($idPanier);
-        if($panier)
-        {
-            $quantiteCommande=$panier->getExtraPayload()['quantite'];
+
+        $quantiteCommande = 0;
+        $panier = $dm->getRepository(Entities::class)->find($idPanier);
+        if ($panier) {
+            $quantiteCommande = $panier->getExtraPayload()['quantite'];
         }
-       
+
 
         if (is_null($adresseLivrasion)) {
             return new JsonResponse(array('message' => 'Merci de vérifier adresse livraison'), 400);
@@ -1234,6 +1235,7 @@ class ClientController extends AbstractController
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
                 unset($filter['idPanier']);
+                unset($filter['tempsLivraison']);
 
                 unset($filter['adresseLivrasion']);
                 $data = $this->entityManager->getResultFromArray($entity, $filter);
@@ -1241,7 +1243,7 @@ class ClientController extends AbstractController
         }
 
         $data = $this->entityManager->serializeContent($data);
-		
+
 
         $listeStationDisponibles = [];
 
@@ -1279,7 +1281,7 @@ class ClientController extends AbstractController
                             $longStation = $positionStation[1];
 
                             $distance = $serviceDistance->distance(floatval($latClient), floatval($longClient), floatval($latStation), floatval($longStation));
-                                  // var_dump($distance);
+                            // var_dump($distance);
                             if (($distance < 20)) {
 
                                 $trajetCamion = $dm->createQueryBuilder(Entities::class)
@@ -1327,14 +1329,14 @@ class ClientController extends AbstractController
                                     if ($camion) {
                                         //il faut que le camion n'atteint pas sa charge maximale,
 
-                                        if ($camion->getExtraPayload()['reste'] >= $quantiteCommande) {
+                                        if ($camion->getExtraPayload()['reste'][$type.$tempsLivraison] >= $quantiteCommande) {
                                             $testDispoCamion = true;
                                         } else {
                                             $testDispoCamion = false;
                                         }
                                     }
-				//	var_dump($testDispoCamion);
-				//	var_dump($testDispoLivreur);
+                                    //	var_dump($testDispoCamion);
+                                    //	var_dump($testDispoLivreur);
 
 
                                     $vitesse = 40;
@@ -1392,7 +1394,7 @@ class ClientController extends AbstractController
         //TODO CHECK VALIDATION PANIER ===> 
         //bocule ala liste des menus (qte ==> nombreCmd resto)
 
-        $arrayQteMenuParResto=array();
+        $arrayQteMenuParResto = array();
         foreach ($tabListeProduits as $pp) {
 
             $menupanier = $dm->createQueryBuilder(Entities::class)
@@ -1410,50 +1412,37 @@ class ClientController extends AbstractController
 
             //    $resto['disponible']=$this->entityManager->checkDiponibiliteResto($resto['Identifiant'],$identifiantMongo) ; 
 
-            if(isset($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]))
-            {
-                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']])+intval($menupanier->getExtraPayload()['quantite']);
-
+            if (isset($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']])) {
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']] = intval($arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]) + intval($menupanier->getExtraPayload()['quantite']);
+            } else {
+                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']] = intval($menupanier->getExtraPayload()['quantite']);
             }
-            else{
-                $arrayQteMenuParResto[$menu->getExtraPayload()['linkedRestaurant']]=intval($menupanier->getExtraPayload()['quantite']);
-
-            }
-          
         }
 
-        $testValidationPanier=false;
-//	dd($arrayQteMenuParResto);
-        if(sizeof($arrayQteMenuParResto))
-        {
+        $testValidationPanier = false;
+        //	dd($arrayQteMenuParResto);
+        if (sizeof($arrayQteMenuParResto)) {
 
-            foreach($arrayQteMenuParResto as $idResto=>$qte)
-            {
+            foreach ($arrayQteMenuParResto as $idResto => $qte) {
 
 
-               $testValidationPanier =$this->entityManager->checkDiponibiliteMenuResto($idResto,$extraPayload['client'],$qte);
+                $testValidationPanier = $this->entityManager->checkDiponibiliteMenuResto($idResto, $extraPayload['client'], $qte);
 
 
 
-               if($testValidationPanier==false)
-               {
+                if ($testValidationPanier == false) {
 
-                $restaurant = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('restaurants')
-                ->field('extraPayload.Identifiant')->equals($idResto)
-                ->getQuery()
-                ->getSingleResult();
+                    $restaurant = $dm->createQueryBuilder(Entities::class)
+                        ->field('name')->equals('restaurants')
+                        ->field('extraPayload.Identifiant')->equals($idResto)
+                        ->getQuery()
+                        ->getSingleResult();
 
-                $message="Le nombre de commandes pour le restaurant ".$restaurant->getExtraPayload()['titre']." est épuisé.";
+                    $message = "Le nombre de commandes pour le restaurant " . $restaurant->getExtraPayload()['titre'] . " est épuisé.";
 
-                return new JsonResponse(array("message" => $message), 402);
-
-               }
-            
-
-
+                    return new JsonResponse(array("message" => $message), 402);
+                }
             }
-
         }
 
         //fin check validation panier
@@ -1503,7 +1492,7 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->getSingleResult();
             $data['linkedCommande'] = $commande->getId();
-        //    $data['client'] = $extraPayload['linkedCompte'];
+            //    $data['client'] = $extraPayload['linkedCompte'];
             $data['linkedMenu'] = $produitpanier->getExtraPayload()['linkedMenu'];
 
             $data['tailles'] = $produitpanier->getExtraPayload()['tailles'];
@@ -1614,159 +1603,143 @@ class ClientController extends AbstractController
         return true;
     }
 
- /**
+    /**
      * @Route("/changerEtatCommande", methods={"POST"})
      */
 
-    public function timeLineCommande(firebaseManager $firebaseManager,Request $request,DocumentManager $dm)
+    public function timeLineCommande(firebaseManager $firebaseManager, Request $request, DocumentManager $dm)
     {
 
 
-        $idCmd=$request->get('idCmd');
-        $statut=$request->get('statut');
+        $idCmd = $request->get('idCmd');
+        $statut = $request->get('statut');
 
 
 
-        $tabDeviceToken=[];
-        
-        $numeroCommande="";
+        $tabDeviceToken = [];
 
-        $commande=$dm->getRepository(Entities::class)->find($idCmd);
-        if($commande)
-        {
-            $client=$commande->getExtraPayload()['linkedCompte'];
-            $numeroCommande=$commande->getExtraPayload()['numeroCommande'];
-            $dataClient=$dm->getRepository(Entities::class)->find($client);
-            if($dataClient)
-            {
-                $tabDeviceToken=$dataClient->getExtraPayload()['deviceToken'];
+        $numeroCommande = "";
+
+        $commande = $dm->getRepository(Entities::class)->find($idCmd);
+        if ($commande) {
+            $client = $commande->getExtraPayload()['linkedCompte'];
+            $numeroCommande = $commande->getExtraPayload()['numeroCommande'];
+            $dataClient = $dm->getRepository(Entities::class)->find($client);
+            if ($dataClient) {
+                $tabDeviceToken = $dataClient->getExtraPayload()['deviceToken'];
             }
         }
-      
-        
 
 
-        if($statut=="inprogress")
-        {
 
 
-            if(sizeof($tabDeviceToken))
-            {
-                foreach($tabDeviceToken as $token)
-                {
-                    $msg=   "Demande de livraison reçu";
-                    $title="la commande  n° ".$numeroCommande;
-                    $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
+        if ($statut == "inprogress") {
+
+
+            if (sizeof($tabDeviceToken)) {
+                foreach ($tabDeviceToken as $token) {
+                    $msg =   "Demande de livraison reçu";
+                    $title = "la commande  n° " . $numeroCommande;
+                    $firebaseMessage = $firebaseManager->notificationCommande($token, $msg, $title);
                 }
-              
             }
-          
-         $etatCommande   = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('etatsCommandes')
-            ->field('extraPayload.commande')->equals($idCmd)
-            ->field('extraPayload.name')->equals('Demande de livraison reçu')
-            ->findAndUpdate()
-            ->field('extraPayload.statut')->set('inprogress')
-            ->getQuery()
-            ->execute();
+
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals('Demande de livraison reçu')
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('inprogress')
+                ->getQuery()
+                ->execute();
 
 
             $commande   = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('commandes')
-            ->field('extraPayload.Identifiant')->equals($idCmd)
-            ->findAndUpdate()
-            ->field('extraPayload.etatCommande')->set('inprogress')
-            ->getQuery()
-            ->execute();
-         
-
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.Identifiant')->equals($idCmd)
+                ->findAndUpdate()
+                ->field('extraPayload.etatCommande')->set('inprogress')
+                ->getQuery()
+                ->execute();
         }
 
-        if($statut=="received")
-        {
-              //"Demande de livraison reçu  ==>done
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals('Demande de livraison reçu')
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('done')
-              ->getQuery()
-              ->execute();
-           
+        if ($statut == "received") {
+            //"Demande de livraison reçu  ==>done
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals('Demande de livraison reçu')
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('done')
+                ->getQuery()
+                ->execute();
 
-              //commande récupéré ===> inprogress
 
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals('commande récupéré')
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('inprogress')
-              ->getQuery()
-              ->execute();         
-              
-              $commande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('commandes')
-              ->field('extraPayload.Identifiant')->equals($idCmd)
-              ->findAndUpdate()
-              ->field('extraPayload.etatCommande')->set('received')
-              ->getQuery()
-              ->execute();
+            //commande récupéré ===> inprogress
 
-              if(sizeof($tabDeviceToken))
-              {
-                  foreach($tabDeviceToken as $token)
-                  {
-                      $msg=   "commande récupéré";
-                      $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
-                  }
-                
-              }
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals('commande récupéré')
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('inprogress')
+                ->getQuery()
+                ->execute();
+
+            $commande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.Identifiant')->equals($idCmd)
+                ->findAndUpdate()
+                ->field('extraPayload.etatCommande')->set('received')
+                ->getQuery()
+                ->execute();
+
+            if (sizeof($tabDeviceToken)) {
+                foreach ($tabDeviceToken as $token) {
+                    $msg =   "commande récupéré";
+                    $title = "la commande  n° " . $numeroCommande;
+                    $firebaseMessage = $firebaseManager->notificationCommande($token, $msg, $title);
+                }
+            }
         }
 
         //deliveryInTheTransit
-        if($statut=="deliveryInTheTransit")
-        {
-              //"Demande de livraison reçu  ==>done
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals('commande récupéré')
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('done')
-              ->getQuery()
-              ->execute();
-           
+        if ($statut == "deliveryInTheTransit") {
+            //"Demande de livraison reçu  ==>done
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals('commande récupéré')
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('done')
+                ->getQuery()
+                ->execute();
 
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('inprogress')
-              ->getQuery()
-              ->execute();         
-              
-              $commande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('commandes')
-              ->field('extraPayload.Identifiant')->equals($idCmd)
-              ->findAndUpdate()
-              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
-              ->getQuery()
-              ->execute();
 
-              if(sizeof($tabDeviceToken))
-              {
-                  foreach($tabDeviceToken as $token)
-                  {
-                      $msg=   "livraison en cours d'acheminement";
-                      $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
-                  }
-                
-              }
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('inprogress')
+                ->getQuery()
+                ->execute();
+
+            $commande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.Identifiant')->equals($idCmd)
+                ->findAndUpdate()
+                ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+                ->getQuery()
+                ->execute();
+
+            if (sizeof($tabDeviceToken)) {
+                foreach ($tabDeviceToken as $token) {
+                    $msg =   "livraison en cours d'acheminement";
+                    $title = "la commande  n° " . $numeroCommande;
+                    $firebaseMessage = $firebaseManager->notificationCommande($token, $msg, $title);
+                }
+            }
         }
 
 
@@ -1774,129 +1747,120 @@ class ClientController extends AbstractController
         //atThePlace
 
 
-        if($statut=="atThePlace")
-        {
-              //"Demande de livraison reçu  ==>done
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('done')
-              ->getQuery()
-              ->execute();
-           
+        if ($statut == "atThePlace") {
+            //"Demande de livraison reçu  ==>done
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals("livraison en cours d'acheminement")
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('done')
+                ->getQuery()
+                ->execute();
 
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('inprogress')
-              ->getQuery()
-              ->execute();         
-              
-              $commande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('commandes')
-              ->field('extraPayload.Identifiant')->equals($idCmd)
-              ->findAndUpdate()
-              ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
-              ->getQuery()
-              ->execute();
 
-              if(sizeof($tabDeviceToken))
-              {
-                  foreach($tabDeviceToken as $token)
-                  {
-                      $msg=   "livreur sur le lieu de livraison";
-                      $title="la commande  n° ".$numeroCommande;
-                      $firebaseMessage = $firebaseManager->notificationCommande($token,$msg,$title);
-                  }
-                
-              }
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('inprogress')
+                ->getQuery()
+                ->execute();
+
+            $commande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.Identifiant')->equals($idCmd)
+                ->findAndUpdate()
+                ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+                ->getQuery()
+                ->execute();
+
+            if (sizeof($tabDeviceToken)) {
+                foreach ($tabDeviceToken as $token) {
+                    $msg =   "livreur sur le lieu de livraison";
+                    $title = "la commande  n° " . $numeroCommande;
+                    $firebaseMessage = $firebaseManager->notificationCommande($token, $msg, $title);
+                }
+            }
         }
 
 
         //isGone
 
-        if($statut=="isGone")
-        {
-              //"Demande de livraison reçu  ==>done
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('done')
-              ->getQuery()
-              ->execute();
-           
+        if ($statut == "isGone") {
+            //"Demande de livraison reçu  ==>done
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals("livreur sur le lieu de livraison")
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('done')
+                ->getQuery()
+                ->execute();
 
-              $etatCommande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('etatsCommandes')
-              ->field('extraPayload.commande')->equals($idCmd)
-              ->field('extraPayload.name')->equals("livreur parti")
-              ->findAndUpdate()
-              ->field('extraPayload.statut')->set('done')
-              ->getQuery()
-              ->execute();         
-              
-              $commande   = $dm->createQueryBuilder(Entities::class)
-              ->field('name')->equals('commandes')
-              ->field('extraPayload.Identifiant')->equals($idCmd)
-              ->findAndUpdate()
-              ->field('extraPayload.etatCommande')->set('isGone')
-              ->getQuery()
-              ->execute();
+
+            $etatCommande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('etatsCommandes')
+                ->field('extraPayload.commande')->equals($idCmd)
+                ->field('extraPayload.name')->equals("livreur parti")
+                ->findAndUpdate()
+                ->field('extraPayload.statut')->set('done')
+                ->getQuery()
+                ->execute();
+
+            $commande   = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('commandes')
+                ->field('extraPayload.Identifiant')->equals($idCmd)
+                ->findAndUpdate()
+                ->field('extraPayload.etatCommande')->set('isGone')
+                ->getQuery()
+                ->execute();
         }
 
-        return new JsonResponse(array('message'=>'etat a été changé avec succès.'),200);
+        return new JsonResponse(array('message' => 'etat a été changé avec succès.'), 200);
     }
 
 
-     /**
+    /**
      * @Route("/api/client/setDeviceToken", methods={"POST"})
      */
 
 
 
-     public function setDeviceToken(Request $request,DocumentManager $dm){
+    public function setDeviceToken(Request $request, DocumentManager $dm)
+    {
 
-        
-        $deviceToken=$request->get('deviceToken');
-        $user=$this->getUser();
-        if($user)
-        {
-            $idMongo=$user->getUserIdentifier();
+
+        $deviceToken = $request->get('deviceToken');
+        $user = $this->getUser();
+        if ($user) {
+            $idMongo = $user->getUserIdentifier();
 
             $compte   = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('comptes')
-            ->field('extraPayload.Identifiant')->equals($idMongo)
-            ->getQuery()
-            ->getSingleResult();
-            if($compte)
-            {
-                $tabDeviceToken=$compte->getExtraPayload()['deviceToken'];
-                if(is_array($tabDeviceToken))
-                {
+                ->field('name')->equals('comptes')
+                ->field('extraPayload.Identifiant')->equals($idMongo)
+                ->getQuery()
+                ->getSingleResult();
+            if ($compte) {
+                $tabDeviceToken = $compte->getExtraPayload()['deviceToken'];
+                if (is_array($tabDeviceToken)) {
 
-                    array_push($tabDeviceToken,$deviceToken);
-                    $tabDeviceTokenUnique=array_values(array_unique($tabDeviceToken));  
-                    
+                    array_push($tabDeviceToken, $deviceToken);
+                    $tabDeviceTokenUnique = array_values(array_unique($tabDeviceToken));
+
                     $client   = $dm->createQueryBuilder(Entities::class)
-                    ->field('name')->equals('comptes')
-                    ->field('extraPayload.Identifiant')->equals($idMongo)
-                    ->findAndUpdate()
-                    ->field('extraPayload.deviceToken')->set(  $tabDeviceTokenUnique)
-                    ->getQuery()
-                    ->execute();
+                        ->field('name')->equals('comptes')
+                        ->field('extraPayload.Identifiant')->equals($idMongo)
+                        ->findAndUpdate()
+                        ->field('extraPayload.deviceToken')->set($tabDeviceTokenUnique)
+                        ->getQuery()
+                        ->execute();
                 }
             }
-           
-
         }
 
-     return new JsonResponse(array('message'=>'save device token'),200);
+        return new JsonResponse(array('message' => 'save device token'), 200);
     }
 
 
@@ -1904,67 +1868,59 @@ class ClientController extends AbstractController
 
 
 
-         /**
+    /**
      * @Route("/api/client/detailsCommande/{id}", methods={"GET"})
      */
 
-    public function detailsCommande($id,DocumentManager $dm,strutureVuesService $strutureVuesService)
+    public function detailsCommande($id, DocumentManager $dm, strutureVuesService $strutureVuesService)
     {
 
         $data = $this->entityManager->getSingleResult($id, null, null);
 
-        if(isset($data[0]['client']))
-        {
-            $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
+        if (isset($data[0]['client'])) {
+            $dataClient = $dm->getRepository(Entities::class)->find($data[0]['client']);
+        } else {
+            $dataClient = $dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
         }
-        else{
-            $dataClient=$dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
-        }
-      
-        if($dataClient)
-        {
-            $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
-        }
-        else{
 
-            $client=array();
+        if ($dataClient) {
+            $client = array('id' => $dataClient->getExtraPayload()['Identifiant'], 'nom' => $dataClient->getExtraPayload()['nom'], 'prenom' => $dataClient->getExtraPayload()['prenom'], 'email' => $dataClient->getExtraPayload()['email'], 'tel' => $dataClient->getExtraPayload()['phone']);
+        } else {
+
+            $client = array();
         }
 
 
-        $dataLivreur=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
-        if($dataLivreur)
-        {
-            $livreur=array('id'=>$dataLivreur->getExtraPayload()['Identifiant'],'nom'=>$dataLivreur->getExtraPayload()['nom'],'prenom'=>$dataLivreur->getExtraPayload()['prenom'],'email'=>$dataLivreur->getExtraPayload()['email'],'tel'=>$dataLivreur->getExtraPayload()['phone']);
-        }
-        else{
+        $dataLivreur = $dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if ($dataLivreur) {
+            $livreur = array('id' => $dataLivreur->getExtraPayload()['Identifiant'], 'nom' => $dataLivreur->getExtraPayload()['nom'], 'prenom' => $dataLivreur->getExtraPayload()['prenom'], 'email' => $dataLivreur->getExtraPayload()['email'], 'tel' => $dataLivreur->getExtraPayload()['phone']);
+        } else {
 
-            $livreur=array();
+            $livreur = array();
         }
-   
 
-        $dataStation=$dm->getRepository(Entities::class)->find($data[0]['station']);
-        if($dataStation)
-        {
-            $station=array('id'=>$dataStation->getExtraPayload()['Identifiant'],'name'=>$dataStation->getExtraPayload()['name']);
-        }
-        else{
 
-            $station=array();
+        $dataStation = $dm->getRepository(Entities::class)->find($data[0]['station']);
+        if ($dataStation) {
+            $station = array('id' => $dataStation->getExtraPayload()['Identifiant'], 'name' => $dataStation->getExtraPayload()['name']);
+        } else {
+
+            $station = array();
         }
         $listeMenus = [];
         if (sizeof($data[0]['listeMenusCommande'])) {
-            foreach ($data[0]['listeMenusCommande'] as $keyM=>$mp) {
+            foreach ($data[0]['listeMenusCommande'] as $keyM => $mp) {
                 $datam = $this->entityManager->getSingleResult($mp, null, null);
                 $menupanier = $this->entityManager->serializeContent($datam);
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single", $menu, 'fr');
                 $menupanier[0]['linkedMenu'] = $dataMenu;
-		
+
 
                 if (isset($menupanier[0]['tailles'])) {
                     $listeTailles = $menupanier[0]['tailles'];
                     if (is_array($listeTailles)) {
-    
+
                         if (sizeof($listeTailles)) {
                             foreach ($listeTailles as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -1975,10 +1931,10 @@ class ClientController extends AbstractController
                         }
                     }
                 }
-    
-            
-                    
-            
+
+
+
+
                 if (isset($menupanier[0]['sauces'])) {
 
                     $listeProduits = $menupanier[0]['sauces'];
@@ -1991,25 +1947,25 @@ class ClientController extends AbstractController
                 } else {
                     $menupanier[0]['sauces'] = [];
                 }
-            
-                
-            
+
+
+
                 if (isset($menupanier[0]['viandes'])) {
 
                     $listeProduits =  $menupanier[0]['viandes'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                       $menupanier[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $menupanier[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
                 } else {
                     $menupanier[0]['viandes'] = [];
                 }
-           
 
 
-            
+
+
                 if (isset($menupanier[0]['garnitures'])) {
 
                     $listeProduits = $menupanier[0]['garnitures'];
@@ -2022,10 +1978,10 @@ class ClientController extends AbstractController
                 } else {
                     $menupanier[0]['garnitures'] = [];
                 }
-            
 
 
-            
+
+
                 if (isset($menupanier[0]['boisons'])) {
 
                     $listeProduits = $menupanier[0]['boisons'];
@@ -2038,11 +1994,11 @@ class ClientController extends AbstractController
                 } else {
                     $menupanier[0]['boisons'] = [];
                 }
-            
 
 
 
-            
+
+
                 if (isset($menupanier[0]['autres'])) {
 
                     $listeProduits =  $menupanier[0]['autres'];
@@ -2055,15 +2011,15 @@ class ClientController extends AbstractController
                 } else {
                     $menupanier[0]['autres'] = [];
                 }
-            
-                
+
+
                 //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
                 $params[0] = 'uploads';
                 $params[1] = 'single';
                 $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
+                $logo = $strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto'] = $logo;
                 //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
@@ -2074,27 +2030,27 @@ class ClientController extends AbstractController
 
 
         $statutCmd = $data[0]['statut'];
-       
-//dd($data);
-      $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
-        'numeroCommande'=>$data[0]['numeroCommande'],
-        'numeroFacture'=>$data[0]['numeroFacture'],
-        'client'=>$client,
-        'livreur'=>$livreur,
-        'station'=>$station,
-        'listeMenusCommande'=>$listeMenus,
-        'dateCreation'=>$data[0]['dateCreation'],
-        "statut"=>  $statutCmd,
-        "etatCommande"=>$data[0]['etatCommande'],
-        "quantite"=> $data[0]['quantite'],
-        "totalTTC"=> $data[0]['totalTTC'],
-        "idPaiement"=>  $data[0]['idPaiement'],
-        "modePaiement"=>$data[0]['modePaiement'],
-        "statutPaiement"=>$data[0]['statutPaiement'],
 
-    );
+        //dd($data);
+        $detailsCommande =  array(
+            'Identifiant' => $data[0]['Identifiant'],
+            'numeroCommande' => $data[0]['numeroCommande'],
+            'numeroFacture' => $data[0]['numeroFacture'],
+            'client' => $client,
+            'livreur' => $livreur,
+            'station' => $station,
+            'listeMenusCommande' => $listeMenus,
+            'dateCreation' => $data[0]['dateCreation'],
+            "statut" =>  $statutCmd,
+            "etatCommande" => $data[0]['etatCommande'],
+            "quantite" => $data[0]['quantite'],
+            "totalTTC" => $data[0]['totalTTC'],
+            "idPaiement" =>  $data[0]['idPaiement'],
+            "modePaiement" => $data[0]['modePaiement'],
+            "statutPaiement" => $data[0]['statutPaiement'],
 
-    return new JsonResponse(array('detailsCommande'=>$detailsCommande),200);
+        );
 
+        return new JsonResponse(array('detailsCommande' => $detailsCommande), 200);
     }
 }
