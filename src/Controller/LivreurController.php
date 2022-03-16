@@ -1024,7 +1024,7 @@ class LivreurController extends AbstractController
             $typeBtn="jysuis";
         }
 
-        if($countAtThePlace)
+        if($countIsGone)
         {
             $typeBtn="parti";
         }
