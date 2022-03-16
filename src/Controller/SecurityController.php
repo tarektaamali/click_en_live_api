@@ -341,19 +341,35 @@ class SecurityController extends AbstractController
     public function logout_api(DocumentManager $dm,EntityManagerInterface $entityManager, Request $request)
     {
         $auth_user = $this->getUser();
+        $deviceToken=$request->get('deviceToken');
 
 
         if($auth_user)
         {
             $idenMongo=$auth_user->getUserIdentifier();
 
-            $user= $dm->createQueryBuilder(Entities::class)
+            $compte = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('comptes')
             ->field('extraPayload.Identifiant')->equals($idenMongo)
-            ->findAndUpdate()
-            ->field('extraPayload.deviceToken')->set([])
             ->getQuery()
-            ->execute();
+            ->getSingleResult();
+            if($compte)
+            {
+
+                $tabDeviceToken=$compte->getExtraPayload()['deviceToken'];
+
+                if (($key = array_search($deviceToken, $tabDeviceToken)) !== false) {
+                    unset($tabDeviceToken[$key]);
+                }
+                $user= $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('comptes')
+                ->field('extraPayload.Identifiant')->equals($idenMongo)
+                ->findAndUpdate()
+                ->field('extraPayload.deviceToken')->set(array_values($tabDeviceToken))
+                ->getQuery()
+                ->execute();
+            }
+      
 
 
         }
