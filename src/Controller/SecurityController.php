@@ -336,7 +336,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/api/logout",name="app_api_logout")
+     * @Route("/api/logout", methods={"POST"})
      */
     public function logout_api(DocumentManager $dm,EntityManagerInterface $entityManager, Request $request)
     {
@@ -379,8 +379,8 @@ class SecurityController extends AbstractController
         //var_dump($token);
         $apitoken = $entityManager->getRepository(ApiToken::class)->findOneBy(['token' => $token], array('id' => 'desc'));
         $entityManager->remove($apitoken);
-       // return new Response("done");
-        return $this->redirectToRoute('app_logout');
+       return new Response("done");
+        //return $this->redirectToRoute('app_logout');
     }
 
 
