@@ -233,17 +233,26 @@ class PaiementController extends AbstractController
 
 
                 if ($camion) {
-                    $nbreReste = $camion->getExtraPayload()['reste'];
+                    $tabReste = $camion->getExtraPayload()['reste'];
                     $quantiteCommande = $commande->getExtraPayload()['quantite'];
 
+                    $client = $dm->getRepository(Entities::class)->find($commande->getExtraPayload()['linkedCompte']);
 
-                    $resteCamion = intval($nbreReste) - intval($quantiteCommande);
+            
+                        $dateLivraison=$client->getExtraPayload()['timeLivraison'];
+                        $tempsLivraison=$client->getExtraPayload()['tempsLivraison'];
+            
+                       
+                        $temps=$tempsLivraison.$dateLivraison;
+
+
+                    $tabReste[$temps] = intval($tabReste[$temps]) - intval($quantiteCommande);
 
                      $dm->createQueryBuilder(Entities::class)
                         ->field('name')->equals('camions')
                         ->field('extraPayload.Identifiant')->equals($camion->getId())
                         ->findAndUpdate()
-                        ->field('extraPayload.reste')->set($resteCamion)
+                        ->field('extraPayload.reste')->set($tabReste)
                         ->getQuery()
                         ->execute();
                 }
