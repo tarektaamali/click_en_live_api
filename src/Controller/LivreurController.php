@@ -683,7 +683,7 @@ class LivreurController extends AbstractController
                 ->field('dateCreation')->gt($fd)
                 ->field('dateCreation')->lt($ld)
                 ->findAndUpdate()
-               ->field('extraPayload.etatCommande')->set('atThePlace')
+                ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
                 ->getQuery()
                 ->execute();
 
@@ -744,6 +744,8 @@ class LivreurController extends AbstractController
         }
         elseif($statut=="isGone")
         {
+
+            //commandes en attente ===> annulées + etat is Gone
             $cmds = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('commandes')
                 ->field('extraPayload.livreur')->equals($livreur)
@@ -755,15 +757,32 @@ class LivreurController extends AbstractController
                 ->field('dateCreation')->lt($ld)
                 ->findAndUpdate()
                 ->field('extraPayload.etatCommande')->set('isGone')
+                ->field('extraPayload.statut')->set('canceled')
+                
                 ->getQuery()
                 ->execute();
+
+            //commandes livrées ===> etat isGone    
+            $cmds = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('commandes')
+            ->field('extraPayload.livreur')->equals($livreur)
+            ->field('extraPayload.station')->equals($idStation)
+            ->field('extraPayload.statut')->equals('delivered')
+            ->field('extraPayload.statutPaiement')->equals('payed')
+            ->field('extraPayload.trajetCamion')->equals($tc)
+            ->field('dateCreation')->gt($fd)
+            ->field('dateCreation')->lt($ld)
+            ->findAndUpdate()
+            ->field('extraPayload.etatCommande')->set('isGone')
+            ->getQuery()
+            ->execute();
 
 
             $commandes = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('commandes')
                 ->field('extraPayload.livreur')->equals($livreur)
                 ->field('extraPayload.station')->equals($idStation)
-                ->field('extraPayload.statut')->equals('valide')
+                //->field('extraPayload.statut')->equals('valide')
                 ->field('extraPayload.statutPaiement')->equals('payed')
                 ->field('extraPayload.trajetCamion')->equals($tc)
                 ->field('dateCreation')->gt($fd)
@@ -991,7 +1010,7 @@ class LivreurController extends AbstractController
             $typeBtn="jysuis";
         }
 
-        if($countIsGone)
+        if($countAtThePlace)
         {
             $typeBtn="parti";
         }
