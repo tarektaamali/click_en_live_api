@@ -683,7 +683,7 @@ class LivreurController extends AbstractController
                 ->field('dateCreation')->gt($fd)
                 ->field('dateCreation')->lt($ld)
                 ->findAndUpdate()
-                ->field('extraPayload.etatCommande')->set('deliveryInTheTransit')
+                ->field('extraPayload.etatCommande')->set('atThePlace')
                 ->getQuery()
                 ->execute();
 
