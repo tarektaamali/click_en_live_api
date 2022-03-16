@@ -1005,6 +1005,20 @@ class LivreurController extends AbstractController
         ->getQuery()
         ->execute();
 
+
+        $countParti=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('commandes')
+        ->field('extraPayload.livreur')->equals($livreur)
+        ->field('extraPayload.station')->equals($idStation)
+        ->field('extraPayload.statutPaiement')->equals('payed')
+        ->field('extraPayload.trajetCamion')->equals($tc)
+        ->field('extraPayload.etatCommande')->equals('isGone')
+        ->field('dateCreation')->gt($fd)
+        ->field('dateCreation')->lt($ld)
+        ->count()
+        ->getQuery()
+        ->execute();
+
         if($countAtThePlace)
         {
             $typeBtn="jysuis";
@@ -1013,6 +1027,11 @@ class LivreurController extends AbstractController
         if($countAtThePlace)
         {
             $typeBtn="parti";
+        }
+
+        if($countParti)
+        {
+            $typeBtn="isGone";
         }
 
 
