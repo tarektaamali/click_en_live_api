@@ -973,6 +973,19 @@ class AdminController extends AbstractController
 
 
 
+                if(isset($menupanier[0]['linkedRestaurant']))
+                {
+
+                    $restaurant=$dm->getRepository(Entities::class)->find($menupanier[0]['linkedRestaurant']);
+                    $params[0] = 'uploads';
+                    $params[1] = 'single';
+                    $params[2] = $restaurant->getExtraPayload()['logo'];
+                    $logo = $strutureVuesService->getUrl($params);
+                    $menupanier[0]['linkedRestaurant']=array('id'=>$restaurant->getId(),'titre'=>$restaurant->getExtraPayload()['titre'],'logo'=>$logo);
+                    
+                }
+
+
                 if (isset($menupanier[0]['boisons'])) {
 
                     $listeProduits = $menupanier[0]['boisons'];
