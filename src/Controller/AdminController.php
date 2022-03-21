@@ -870,9 +870,7 @@ class AdminController extends AbstractController
 
         $data = $this->entityManager->getSingleResult($id, null, null);
 
-        if (isset($data[0]['client'])) {
-            $dataClient = $dm->getRepository(Entities::class)->find($data[0]['client']);
-        } else {
+        if (isset($data[0]['linkedCompte'])) {
             $dataClient = $dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
         }
 
