@@ -870,51 +870,50 @@ class AdminController extends AbstractController
 
         $data = $this->entityManager->getSingleResult($id, null, null);
 
-        $dataClient=$dm->getRepository(Entities::class)->find($data[0]['client']);
-        if($dataClient)
-        {
-            $client=array('id'=>$dataClient->getExtraPayload()['Identifiant'],'nom'=>$dataClient->getExtraPayload()['nom'],'prenom'=>$dataClient->getExtraPayload()['prenom'],'email'=>$dataClient->getExtraPayload()['email'],'tel'=>$dataClient->getExtraPayload()['phone']);
-        }
-        else{
-
-            $client=array();
+        if (isset($data[0]['client'])) {
+            $dataClient = $dm->getRepository(Entities::class)->find($data[0]['client']);
+        } else {
+            $dataClient = $dm->getRepository(Entities::class)->find($data[0]['linkedCompte']);
         }
 
+        if ($dataClient) {
+            $client = array('id' => $dataClient->getExtraPayload()['Identifiant'], 'nom' => $dataClient->getExtraPayload()['nom'], 'prenom' => $dataClient->getExtraPayload()['prenom'], 'email' => $dataClient->getExtraPayload()['email'], 'tel' => $dataClient->getExtraPayload()['phone']);
+        } else {
 
-        $dataLivreur=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
-        if($dataLivreur)
-        {
-            $livreur=array('id'=>$dataLivreur->getExtraPayload()['Identifiant'],'nom'=>$dataLivreur->getExtraPayload()['nom'],'prenom'=>$dataLivreur->getExtraPayload()['prenom'],'email'=>$dataLivreur->getExtraPayload()['email'],'tel'=>$dataLivreur->getExtraPayload()['phone']);
+            $client = array();
         }
-        else{
 
-            $livreur=array();
+
+        $dataLivreur = $dm->getRepository(Entities::class)->find($data[0]['livreur']);
+        if ($dataLivreur) {
+            $livreur = array('id' => $dataLivreur->getExtraPayload()['Identifiant'], 'nom' => $dataLivreur->getExtraPayload()['nom'], 'prenom' => $dataLivreur->getExtraPayload()['prenom'], 'email' => $dataLivreur->getExtraPayload()['email'], 'tel' => $dataLivreur->getExtraPayload()['phone']);
+        } else {
+
+            $livreur = array();
         }
-   
 
-        $dataStation=$dm->getRepository(Entities::class)->find($data[0]['livreur']);
-        if($dataStation)
-        {
-            $station=array('id'=>$dataStation->getExtraPayload()['Identifiant'],'name'=>$dataStation->getExtraPayload()['name']);
-        }
-        else{
 
-            $station=array();
+        $dataStation = $dm->getRepository(Entities::class)->find($data[0]['station']);
+        if ($dataStation) {
+            $station = array('id' => $dataStation->getExtraPayload()['Identifiant'], 'name' => $dataStation->getExtraPayload()['name']);
+        } else {
+
+            $station = array();
         }
         $listeMenus = [];
         if (sizeof($data[0]['listeMenusCommande'])) {
-            foreach ($data[0]['listeMenusCommande'] as $keyM=>$mp) {
+            foreach ($data[0]['listeMenusCommande'] as $keyM => $mp) {
                 $datam = $this->entityManager->getSingleResult($mp, null, null);
                 $menupanier = $this->entityManager->serializeContent($datam);
                 $menu = $this->entityManager->getSingleResult($menupanier[0]['linkedMenu'], null, null);
                 $dataMenu = $strutureVuesService->getDetailsEntitySerializer("CLIENT", "menus_single", $menu, 'fr');
                 $menupanier[0]['linkedMenu'] = $dataMenu;
-		
+
 
                 if (isset($menupanier[0]['tailles'])) {
                     $listeTailles = $menupanier[0]['tailles'];
                     if (is_array($listeTailles)) {
-    
+
                         if (sizeof($listeTailles)) {
                             foreach ($listeTailles as $key => $po) {
                                 $produit = $dm->getRepository(Entities::class)->find($po['id']);
@@ -925,10 +924,10 @@ class AdminController extends AbstractController
                         }
                     }
                 }
-    
-            
-                    
-            
+
+
+
+
                 if (isset($menupanier[0]['sauces'])) {
 
                     $listeProduits = $menupanier[0]['sauces'];
@@ -941,25 +940,25 @@ class AdminController extends AbstractController
                 } else {
                     $menupanier[0]['sauces'] = [];
                 }
-            
-                
-            
+
+
+
                 if (isset($menupanier[0]['viandes'])) {
 
                     $listeProduits =  $menupanier[0]['viandes'];
                     if (sizeof($listeProduits)) {
                         foreach ($listeProduits as $key => $po) {
                             $produit = $dm->getRepository(Entities::class)->find($po['id']);
-                       $menupanier[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
+                            $menupanier[0]['viandes'][$key]['name'] = $produit->getExtrapayload()['name'];
                         }
                     }
                 } else {
                     $menupanier[0]['viandes'] = [];
                 }
-           
 
 
-            
+
+
                 if (isset($menupanier[0]['garnitures'])) {
 
                     $listeProduits = $menupanier[0]['garnitures'];
@@ -972,10 +971,10 @@ class AdminController extends AbstractController
                 } else {
                     $menupanier[0]['garnitures'] = [];
                 }
-            
 
 
-            
+
+
                 if (isset($menupanier[0]['boisons'])) {
 
                     $listeProduits = $menupanier[0]['boisons'];
@@ -988,11 +987,11 @@ class AdminController extends AbstractController
                 } else {
                     $menupanier[0]['boisons'] = [];
                 }
-            
 
 
 
-            
+
+
                 if (isset($menupanier[0]['autres'])) {
 
                     $listeProduits =  $menupanier[0]['autres'];
@@ -1005,15 +1004,15 @@ class AdminController extends AbstractController
                 } else {
                     $menupanier[0]['autres'] = [];
                 }
-            
-                
+
+
                 //logo
-                $restaurant=$dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
+                $restaurant = $dm->getRepository(Entities::class)->find($menu[0]['linkedRestaurant']);
                 $params[0] = 'uploads';
                 $params[1] = 'single';
                 $params[2] = $restaurant->getExtraPayload()['logo'];
-                $logo=$strutureVuesService->getUrl($params);
-                $menupanier[0]['logoResto']=$logo;
+                $logo = $strutureVuesService->getUrl($params);
+                $menupanier[0]['logoResto'] = $logo;
                 //fin logo
                 array_push($listeMenus, $menupanier[0]);
             }
@@ -1024,28 +1023,28 @@ class AdminController extends AbstractController
 
 
         $statutCmd = $data[0]['statut'];
-       
-//dd($data);
-      $detailsCommande=  array('Identifiant'=>$data[0]['Identifiant'],
-        'numeroCommande'=>$data[0]['numeroCommande'],
-        'numeroFacture'=>$data[0]['numeroFacture'],
-        'client'=>$client,
-        'livreur'=>$livreur,
-        'station'=>$station,
-        'listeMenusCommande'=>$listeMenus,
-        'dateCreation'=>$data[0]['dateCreation'],
-        "statut"=>  $statutCmd,
-        "etatCommande"=>$data[0]['etatCommande'],
-        "quantite"=> $data[0]['quantite'],
-        "totalTTC"=> $data[0]['totalTTC'],
-        "idPaiement"=>  $data[0]['idPaiement'],
-        "modePaiement"=>$data[0]['modePaiement'],
-        "statutPaiement"=>$data[0]['statutPaiement'],
 
-    );
+        //dd($data);
+        $detailsCommande =  array(
+            'Identifiant' => $data[0]['Identifiant'],
+            'numeroCommande' => $data[0]['numeroCommande'],
+            'numeroFacture' => $data[0]['numeroFacture'],
+            'client' => $client,
+            'livreur' => $livreur,
+            'station' => $station,
+            'listeMenusCommande' => $listeMenus,
+            'dateCreation' => $data[0]['dateCreation'],
+            "statut" =>  $statutCmd,
+            "etatCommande" => $data[0]['etatCommande'],
+            "quantite" => $data[0]['quantite'],
+            "totalTTC" => $data[0]['totalTTC'],
+            "idPaiement" =>  $data[0]['idPaiement'],
+            "modePaiement" => $data[0]['modePaiement'],
+            "statutPaiement" => $data[0]['statutPaiement'],
 
-    return new JsonResponse(array('detailsCommande'=>$detailsCommande),200);
+        );
 
+        return new JsonResponse(array('detailsCommande' => $detailsCommande), 200);
     }
 
 }
