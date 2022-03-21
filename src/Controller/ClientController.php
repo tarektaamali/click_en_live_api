@@ -1140,6 +1140,28 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->execute();
 
+             $anonymous=   $dm->createQueryBuilder(Entities::class)
+             ->field('name')->equals('comptes')
+             ->field('extraPayload.Identifiant')->equals($idAnonyme)
+             ->getQuery()
+             ->getSingleResult();
+
+
+             if($anonymous)
+             {
+                $client = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('comptes')
+                ->field('extraPayload.Identifiant')->equals($idClient)
+                ->findAndUpdate()
+                ->field('extraPayload.timeLivraison')->set($anonymous->getExtraPayload()["timeLivraison"])
+                ->field('extraPayload.tempsLivraison')->set($anonymous->getExtraPayload()["tempsLivraison"])
+                ->getQuery()
+                ->execute();
+             }
+         
+
+
+
 
             return new JsonResponse(array('message' => 'done'), 200);
         }
