@@ -95,6 +95,7 @@ class SecurityController extends AbstractController
             }
 
 
+            $extraPayload['deviceToken']=[];
             $data = $this->entityManager->setResult($form, $entity, $extraPayload);
 
             $extraPayload['Identifiant'] = $data->getId();
@@ -204,6 +205,7 @@ class SecurityController extends AbstractController
                 if (!isset($extraPayload['role'])) {
                     $extraPayload['role'] = "ROLE_CLIENT";
                 }
+                $extraPayload['deviceToken']=[];
                 $extraPayload["password"] = $extraPayload["idUser"];
                 $data = $this->entityManager->setResult($form, null, $extraPayload);
 
@@ -715,6 +717,7 @@ class SecurityController extends AbstractController
             $user = $userService->creationCompte($extraPayload);
 
 
+            $extraPayload['deviceToken']=[];
             $subject = "Bienvenue chez FoodLine";
 
             $email = (new TemplatedEmail())
