@@ -940,7 +940,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('camions')
+            ->field('name')->equals('comptes')
             ->getQuery()
             ->execute();
 
@@ -985,15 +985,15 @@ class entityManager
            
 
            
-        $payload["capcite"]=100; 
-         $payload["reste"]=[
+        $payload["deviceToken"]=[]; 
+      /*   $payload["reste"]=[
             "MidiNow"=> 100,
             "MidiTomorrow"=>100,
             "SoirNow"=> 100,
             "SoirTomorrow"=>100,
             "NuitNow"=>100,
             "NuitTomorrow"=>100
-         ]; 
+         ];*/ 
 
             //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
