@@ -1153,6 +1153,7 @@ class ClientController extends AbstractController
                 ->field('name')->equals('comptes')
                 ->field('extraPayload.Identifiant')->equals($idClient)
                 ->findAndUpdate()
+                ->field('extraPayload.addresse')->set($anonymous->getExtraPayload()["addresse"])
                 ->field('extraPayload.timeLivraison')->set($anonymous->getExtraPayload()["timeLivraison"])
                 ->field('extraPayload.tempsLivraison')->set($anonymous->getExtraPayload()["tempsLivraison"])
                 ->getQuery()
