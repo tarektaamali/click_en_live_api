@@ -1,0 +1,71 @@
+tags_multi:
+  title: Les tags
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+
+    libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no   
+
+       
+
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no 
+    linkedTags:
+      name: tags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - tags 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

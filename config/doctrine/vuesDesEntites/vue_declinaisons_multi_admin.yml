@@ -1,0 +1,133 @@
+vue_declinaisons_multi_admin:
+  title: Les Déclinaisons
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+  
+    value:
+      name: Code couleur
+      type: couleur
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no  
+    parent:
+      name: Couleur de base
+      type: select
+      options:
+        - Blanc
+        - Noir
+        - Rouge
+        - Bleu
+        - Vert     
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no
+    name:
+      name: Intitulé
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no    
+    
+    taille:
+      name: Taille
+      type: select
+      options:
+        - XXS
+        - XS
+        - S
+        - M
+        - L
+        - XL
+        - XXL     
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no
+    
+    quantite:
+      name: Quantité
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison 
+        grid: col-2
+      rule: no
+      required: no
+    seuil:
+      name: seuil
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no                        
+    listePhotos:
+      name: Liste des photos
+      type: photo
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      modificateur: getUrlImages 
+      arguments: 
+        - uploads
+        - multi    
+      required: no
+      placeholder: Liste des photos
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison  
+        grid: col-2 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

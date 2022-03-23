@@ -1,0 +1,76 @@
+tags:
+  icon: tags
+  title: Les tags
+  titleAdd: Ajouter un tag
+  titleDet: Détails tag
+  titleUpdate: Modifier tag
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une désignation
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no
+
+    description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une description
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter une statut
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un etat
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no            

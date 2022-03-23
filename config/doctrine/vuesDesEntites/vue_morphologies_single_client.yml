@@ -1,0 +1,48 @@
+vue_morphologies_single_client:
+  title: Les tags
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    titre:
+        name: titre
+        type: text
+        modificateur: traductionChamps  
+        arguments: 
+          - lang          
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    description:
+        name: value
+        type: text
+        modificateur: traductionChamps  
+        arguments: 
+          - lang              
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value            
+    image:
+        name: image
+        type: text
+        modificateur: getUrl 
+        arguments: 
+          - uploads
+          - single          
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut       
+    couleur:
+        name: couleur
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut                     

@@ -1,0 +1,118 @@
+promotions_single:
+  title: Les promotions
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory   
+    name:
+        name: name
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant        
+    linkedRestaurant:
+      name: link resto
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    type:
+      name: type
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    dateDebut:
+      name: date début
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    dateFin:
+      name: date fin
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un date fin          
+    value:
+      name: value
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    link:
+      name: link
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    photoCouverture:
+      name: photoCouverture
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un link                 
+    isActive:
+      name: isActive
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory  
+
+    statut:
+      name: etat
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory           

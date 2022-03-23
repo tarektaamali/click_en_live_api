@@ -1,0 +1,77 @@
+vue_commandes_multi_admin:
+  title: Les Commandes
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    dateCreation:
+      name: Libellé
+      display:
+        - show_table
+        - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+    numeroCommande:
+      name: numero_Commande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+      rule: no
+    numeroFacture:
+      name: numero_Facture
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+      rule: no
+    linkedFacture:
+      name: Prix_Ht
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+      rule: no
+    modePayment:
+      name: mode_Payment
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter modePayment  
+      rule: no
+    statut:
+      name: statut
+      type: date
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouterstatut
+      rule: no
+    
+
+    linkedCompte:
+      name: link compte
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - comptes    
+      display:
+        - hidden_table
+        - hidden_form
+      
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button          

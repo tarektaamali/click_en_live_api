@@ -1,0 +1,151 @@
+restaurants:
+  title: Les restaurants
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    titre:
+      name: titre
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    isActive:
+      name: Désignation
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no     
+    phone:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+    email:
+      name: email
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                 
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                
+    photoCouverture:
+      name: photoCouverture
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+    adresse:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no            
+    ville:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no         
+    pays:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no        
+    codePostal:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no          
+    position:
+      name: position
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                   
+    responsable:
+      name: responsable
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter reponsable
+      rule: no                  
+    logo:
+      name: logo
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter logo
+      rule: no                
+    specialiteRestos:
+      name: specialiteRestos
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter logo
+      rule: no         
+    horaireTravails:
+      name: horaireTravails
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter logo
+      rule: no              
+    tags:
+      name: liste Tags
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                 

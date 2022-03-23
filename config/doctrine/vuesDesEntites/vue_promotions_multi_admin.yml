@@ -1,0 +1,86 @@
+vue_promotions_multi_admin:
+  icon: in cart
+  title: Les promotions
+  titleAdd: Ajouter un promotion
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    priority:
+        name: Priorité
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un priority
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    code:
+        name: Code
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un code
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    name:
+        name: Intitulé
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un name
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    coupons:
+        name: Coupons
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un coupons
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    usage:
+        name: Usage
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un usage
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button             
+              
+
+

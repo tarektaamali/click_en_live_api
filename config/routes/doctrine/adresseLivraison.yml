@@ -1,0 +1,107 @@
+adresseLivraison:
+  icon: cube
+  title: Les clients
+  titleAdd: Ajouter un client
+  titleDet: Détails un client
+  titleUpdate: Modifier un client
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un id 
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory
+          rule: no 
+    linkedCompte:
+      name: Nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+     
+    addresse:
+      name: Adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    ville:
+      name: Ville
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    pays:
+      name: Pays
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory    
+
+    codePostal:
+      name: Code postal
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory  
+    position:
+      name: Position
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory

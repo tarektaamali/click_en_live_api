@@ -1,0 +1,98 @@
+categories:
+  icon: sitemap
+  title: Les catégories
+  titleAdd: Ajouter une catégorie
+  titleDet: Détails une catégorie
+  titleUpdate: Modifier une catégorie
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        
+    description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    image:
+      name: Photo
+      type: photo
+      display:
+        - show_table
+        - show_form
+      disposition: col-3
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    linkedRestaurant:
+      name: linkedRestaurant
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un linkedRestaurant
+      rule: no  
+      required: yes      
+      format:
+        type: tab
+        name: nocategory => nocategory                

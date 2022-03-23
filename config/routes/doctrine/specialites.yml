@@ -1,0 +1,84 @@
+specialites:
+  icon: speakap
+  title: Les specialites
+  titleAdd: Ajouter une specialite
+  titleDet: Détails une specialite
+  titleUpdate: Modifier une specialite
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - Show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    description:
+      name: Description
+      type: text
+      display:
+        - show_table
+        - Show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory  
+
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    image:
+      name: Photo
+      type: text
+      display:
+        - show_table
+        - Show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory

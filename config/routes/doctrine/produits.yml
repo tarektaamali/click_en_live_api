@@ -1,0 +1,142 @@
+produits:
+  icon: cube
+  title: Les produits
+  titleAdd: Ajouter un produit
+  titleDet: Détails produit
+  titleUpdate: Modifier Produit
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    name:
+      name: Name
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory     
+
+    type:
+      name: Type
+      type: select
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - option 4 
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un type 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    prix:
+      name: Prix
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un prix 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    quantite:
+      name: Quantité
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une quantité 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter une quantité 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    linkedRestaurant:
+      name: linkedRestaurant
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter une quantité 
+      rule: no
+      required: no
+      format:
+        type: tab
+        name: nocategory => nocategory
+        
+    childrens:
+      name: childrens
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un childrens
+      rule: no
+      required: no
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    dateCreation:
+      name: Libellé
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter une quantité 
+      rule: no
+      required: no
+      format:
+        type: tab
+        name: nocategory => nocategory
+      
+    dateLastModif:
+      name: Libellé
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre 
+      rule: no
+      required: no
+      format:
+        type: tab
+        name: nocategory => nocategory

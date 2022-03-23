@@ -1,0 +1,44 @@
+couleurs:
+  title: liste couleurs
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    value:
+        name: value
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value  
+    name:
+        name: name
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter  name                   
+    listeImages:
+        name: liste des images 
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter image         
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory 

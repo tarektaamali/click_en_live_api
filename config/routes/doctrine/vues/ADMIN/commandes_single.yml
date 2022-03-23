@@ -1,0 +1,139 @@
+commandes_single:
+  title: Les commandes
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory       
+    linkedPanier:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    linkedCompte:
+      name: link compte
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    listeProduits:
+      name: liste produits
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter liste produits      
+    totalHT:
+      name: totalHT
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    totalTTC:
+      name: totalTTC
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    numeroCommande:
+      name: numeroCommande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    numeroFacture:
+      name: numeroFacture
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    linkedFacture:
+      name: PrixHt
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    codePromo:
+      name: codePromo
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter code promo
+    modePayment:
+      name: modePayment
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    statut:
+      name: Statut
+      type: date
+      display:
+          - show_table
+          - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory      
+

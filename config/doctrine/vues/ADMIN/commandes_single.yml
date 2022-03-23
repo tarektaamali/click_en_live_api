@@ -1,0 +1,208 @@
+commandes_single:
+  icon: cart
+  title: Les commandes
+  titleAdd: Ajouter une commande
+  titleDet: Détails une commande
+  titleUpdate: Modifier une commande
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un id 
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory
+          rule: no 
+
+
+
+    livreur:
+      name: livreur
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - comptes       
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte    
+  
+    station:
+      name: station
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - stations       
+      
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte   
+
+
+    trajetCamion:
+      name: station
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte
+
+    listeMenusCommande:
+      name: liste menu commande
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - menuscommandes       
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte    
+      
+    totalHT:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+           
+    totalTTC:
+      name: Total TTC
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    numeroCommande:
+      name: Numéro de commande
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    numeroFacture:
+      name: Numéro de facture
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    
+    linkedCompte:
+      name: client
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - comptes       
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte    
+
+
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - adresseLivraison 
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant 
+
+
+    remise:
+      name: fraisLivraison
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+
+
+    tva:
+      name: tva
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+
+    etatCommande:
+      name: etat
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    statutPaiement:
+      name: statut Paiement
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+

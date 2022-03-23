@@ -1,0 +1,143 @@
+menuscommandes:
+  title: Les produits dans panier
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedCommande:
+      name: link commande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un link commande
+    linkedMenu:
+      name: link produit
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link produit
+    tailles:
+      name: tailles
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    sauces:
+      name: sauces
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory                 
+    viandes:
+      name: viandes
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory           
+    garnitures:
+      name: garniture
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory           
+    boisons:
+      name: boisons
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory          
+    autres:
+      name: boisons
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory          
+    quantite:
+      name: quantite
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un quantite
+     
+    prixHT:
+      name: prixHT
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter prixHT
+    prixTTC:
+      name: prixTTC
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un prixTTC
+    remise:
+      name: remise
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un remise
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no           
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no   
+
+

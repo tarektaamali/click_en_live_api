@@ -1,0 +1,103 @@
+camions:
+  icon: truck
+  title: Les camions
+  titleAdd: Ajouter un camion
+  titleDet: Détails camion
+  titleUpdate: Modifier camion
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no       
+    imatriculation:
+      name: Immatriculation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une immatriculation 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    position:
+      name: Position
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une position
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    type:
+      name: Type
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un type
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no
+
+    capcite:
+      name: Capacité
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une capacité
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    reste:
+      name: reste
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter reste
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    totalCommandes:
+      name: totalCommandes
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+
+    statut:
+      name: statut
+      type: date
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouterstatut                         

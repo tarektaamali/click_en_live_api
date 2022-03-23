@@ -1,0 +1,65 @@
+stations_multi:
+  title: Les stations
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no      
+
+    name:
+      name: name
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    
+    heureD:
+      name: Heure de départ
+      type: time
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    heureA:
+      name: Heure d'arrivée
+      type: time
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    
+  
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

@@ -1,0 +1,56 @@
+vue_morphologies_multi_client:
+  title: Les tags
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    fr_titre:
+        name: titre
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    fr_description:
+        name: value
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value    
+    en_titre:
+        name: titre
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    en_description:
+        name: value
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value            
+    image:
+        name: image
+        type: text
+        modificateur: getUrl 
+        arguments: 
+          - uploads
+          - single          
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut       
+    couleur:
+        name: couleur
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut                     

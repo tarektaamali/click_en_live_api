@@ -1,0 +1,94 @@
+vue_attributs_multi_admin:
+  title: Les attributs
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+
+    code:
+      name: Code
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+
+    fr_nom:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Désignation
+     
+    fr_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Slug
+     
+    
+    # fr_description:
+    #   name: Description
+    #   type: textarea
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   rule: no
+    #   required: no
+    #   placeholder: Description
+      
+
+    # en_nom:
+    #   name: Désignation
+    #   type: text
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   rule: no
+    #   required: no
+    #   placeholder: Désignation
+
+    # en_slug:
+    #   name: Slug
+    #   type: text
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   rule: no
+    #   required: no
+    #   placeholder: Slug
+    
+    
+    # en_description:
+    #   name: Description
+    #   type: textarea
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   rule: no
+    #   required: no
+    #   placeholder: Description
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button   
+
+
+
+  

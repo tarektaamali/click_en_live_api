@@ -1,0 +1,285 @@
+commandes:
+  icon: cart
+  title: Les commandes
+  titleAdd: Ajouter une commande
+  titleDet: Détails une commande
+  titleUpdate: Modifier une commande
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un id 
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory
+          rule: no 
+    linkedPanier:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+      format:
+        type: tab
+        name: nocategory => nocategory
+    linkedCompte:
+      name: link compte
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter link compte
+      format:
+        type: tab
+        name: nocategory => nocategory
+    listeProduits:
+      name: liste produits
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter liste produits   
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    totalHT:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+           
+    totalTTC:
+      name: Total TTC
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    numeroCommande:
+      name: Numéro de commande
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    numeroFacture:
+      name: Numéro de facture
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    linkedFacture:
+      name: PrixHt
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    codePromo:
+      name: Code promo
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    modePayment:
+      name: Mode de paiement
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    etatCommande:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    isActive:
+      name: Statut
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    listeMenusCommande:
+      name: listeMenusCommande
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+        
+    quantite:
+      name: quantite
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory         
+    livreur:
+      name: livreur
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory                
+    station:
+      name: station
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+    trajetCamion:
+      name: trajetCamion
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory           
+    
+    idPaiement:
+      name: idPaiement
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory       
+    modePaiement:
+      name: modePaiement
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory           
+    statutPaiement:
+      name: statutPaiement
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory                               

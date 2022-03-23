@@ -1,0 +1,428 @@
+vue_produits_single_admin:
+  title: vue produits multi admin
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      required: no
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no              
+    reference:
+      name: Code
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Réference
+      format:
+        type: tab
+        name: Détails => Détails 
+    marque:
+      name: Marque
+      type: select
+      options:
+        - ZARA
+        - HM
+        - PULLBEAR
+        - Autre      
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Marque
+      format:
+        type: tab
+        name: Détails => Détails
+    fr_designation:
+      name: Intitulé
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Désignation
+      format:
+        type: tab
+        name: Détails => français (France)
+    fr_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Slug
+      format:
+        type: tab
+        name: Détails => français (France)
+    fr_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Description
+      format:
+        type: tab
+        name: Détails => français (France)
+    en_designation:
+      name: Intitulé
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Désignation
+      format:
+        type: tab
+        name: Détails => anglais (États-Unis)
+    en_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Slug
+      format:
+        type: tab
+        name: Détails => anglais (États-Unis)
+    en_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Description
+      format:
+        type: tab
+        name: Détails => anglais (États-Unis)  
+    prixHT:
+      name: Prix_HT
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix hors taxes
+      format:
+        type: tab
+        name: Détails =>  Tarification
+    prixTTC:
+      name: Prix_TTC
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix TTC
+      format:
+        type: tab
+        name: Détails =>  Tarification
+    active:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    expeditionReq:
+      name: Expédition requise ?
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    categorieLivraison:
+      name: Catégorie de livraison
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      options:
+        - option1
+        - option2
+      placeholder: Expédition
+      format:
+        type: tab
+        name: Détails => Expédition
+    largeur:
+      name: Largueur
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Largueur
+      format:
+        type: tab
+        name: Détails => Expédition
+    hauteur:
+      name: Hauteur
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Hauteur
+      format:
+        type: tab
+        name: Détails => Expédition
+    profondeur:
+      name: Profondeur
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Profondeur
+      format:
+        type: tab
+        name: Détails => Expédition    
+    poids:
+      name: Poids
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Poids
+      format:
+        type: tab
+        name: Détails => Expédition
+
+    taxes:
+      name: Taxes
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Taxes
+      format:
+        type: tab
+        name: Détails => Taxes
+#taxonomie liste des catégories
+    attributs:
+      name: attributs
+      type: select++
+      options:
+        - option1
+        - option2
+        - option3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Catégorie du produit
+      format:
+        type: tab
+        name: Attributs => Attributs   
+
+    listePhotos:
+      name: Liste des photos
+      type: photo
+#      modificateur: getUrlImages 
+ #     arguments: 
+  #      - uploads
+   #     - multi      
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Liste des photos
+      format:
+        type: tab
+        name: Détails => Détails
+
+    photoCouverture:
+      name: Photo de couverture
+      type: photo
+    #  modificateur: getUrl 
+     # arguments: 
+      #  - uploads
+       # - single      
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Photo de couverture
+      format:
+        type: tab
+        name: Détails => Détails
+        
+    photo3D:
+      name: Photo 3D
+      type: photo
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Photo 3D
+      format:
+        type: tab
+        name: Détails => Détails
+
+    listeTags:
+      name: Liste des tags
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - tags 
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Liste des tags
+      format:
+        type: tab
+        name: Détails => Détails
+
+
+    listeDeclinaisons:
+      name: Declinaisons
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - declinaisons       
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations
+
+    listeTailles:
+      name: listeTailles
+      type: select
+      modificateur: getListeTailles 
+      arguments: 
+        - referteniel
+        - declinaisons     
+        - listeDeclinaisons  
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations
+
+    listeCouleurs:
+      name: listeCouleurs
+      type: select
+      modificateur: getListeCouleurs 
+      arguments: 
+        - referteniel
+        - declinaisons     
+        - listeDeclinaisons         
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations        
+    taxon:
+      name: Catégorie du produit
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - taxons       
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Catégorie du produit
+      format:
+        type: tab
+        name: Taxon => Catégorie
+    listeProduitsSimilaires:
+      name: Produit similaires
+      type: select++
+      options:
+        - option1
+        - option2
+        - option3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: produitS
+      format:
+        type: tab
+        name: Associations => Associations
+           
+    

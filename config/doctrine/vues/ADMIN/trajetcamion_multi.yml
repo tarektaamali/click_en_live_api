@@ -1,0 +1,105 @@
+trajetcamion_multi:
+  icon: truck
+  title: Les trajets camions
+  titleAdd: Ajouter un trajet camion
+  titleDet: Détails trajet camion
+  titleUpdate: Modifier trajet camion
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no         
+    # camion:
+    #   name: camion
+    #   type: text
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   placeholder: Ajouter une name 
+    #   rule: no
+    #   required: yes 
+    #   format:
+    #     type: tab
+    #     name: nocategory => nocategory
+    #     rule: no 
+    #   modificateur: getInfoLinkedOrList 
+    #   arguments: 
+    #     - camions    
+
+
+
+    # livreur:
+    #   name: livreur
+    #   type: text
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   placeholder: Ajouter une stations
+    #   rule: no
+    #   required: yes 
+    #   format:
+    #     type: tab
+    #     name: nocategory => nocategory
+    #     rule: no 
+    #   modificateur: getInfoLinkedOrList 
+    #   arguments: 
+    #     - comptes     
+
+    # trajet:
+    #   name: trajet
+    #   type: text
+    #   display:
+    #     - show_table
+    #     - show_form
+    #   placeholder: Ajouter une stations
+    #   rule: no
+    #   required: yes 
+    #   format:
+    #     type: tab
+    #     name: nocategory => nocategory
+    #     rule: no 
+    #   modificateur: getInfoLinkedOrList 
+    #   arguments: 
+    #     - trajets     
+    statut:
+      name: Statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter statut
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no    
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter isActive
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no     
+
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

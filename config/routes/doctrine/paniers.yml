@@ -1,0 +1,66 @@
+paniers:
+  title: Les paniers
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedCompte:
+      name: link compte
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedCommande:
+      name: link commande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un link commande
+    listeMenus:
+      name: link menu
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link produit
+    quantite:
+      name: quantite
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un quantite    
+    prixHT:
+      name: prixHT
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter prixHT
+    prixTTC:
+      name: prixTTC
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un prixTTC
+    remise:
+      name: remise
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un remise
+    statut:
+      name: etat
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un etat      

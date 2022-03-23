@@ -1,0 +1,37 @@
+taille:
+  title: liste taille
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    value:
+        name: titre
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value  
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory        
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

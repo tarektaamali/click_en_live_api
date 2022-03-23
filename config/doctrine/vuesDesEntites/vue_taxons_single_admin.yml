@@ -1,0 +1,122 @@
+vue_taxons_single_admin:
+  title: Les taxons
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: no
+      placeholder: désignation
+      format:
+        type: simple
+        name: nocategory => nocategory
+    code:
+      name: Code
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: simple
+        name: nocategory => nocategory
+
+    parent:
+      name: Parent
+      type: text
+      display:
+        - show_table
+        - show_form
+      modificateur: arborescence 
+      arguments: 
+        - taxons
+        - fr_nomLang        
+      rule: no
+      required: no
+      placeholder: Parent
+      format:
+        type: simple
+        name: nocategory => nocategory
+
+    fr_nomLang:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => français (France)
+    
+    fr_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Slug
+      format:
+        type: simple
+        name: nocategory => français (France)
+    
+    fr_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => français (France)
+
+    en_nomLang:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis)
+    
+    en_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Slug
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis)
+    
+    en_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis) 

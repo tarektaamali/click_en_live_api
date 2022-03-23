@@ -1,0 +1,98 @@
+catalog:
+  title: catalogue
+  fields:
+    # produits:
+    #   title: Produits
+    #   role: admin
+    #   icon: cube
+      
+    # restaurants:
+    #   title: Restaurants
+    #   role: admin, client
+    #   icon: building outline
+    # camions:
+    #   title: Camions
+    #   role: admin
+    #   icon: truck
+    
+    # logs:
+    #   title: Logs
+    #   role: admin, client
+    #   icon: cubes
+    tags:
+      title: Tags
+      role: admin, client
+      icon: tags
+
+    categories:
+      title: Catégories
+      role: admin
+      icon: sitemap
+
+
+    specialites:
+      title: Spécialités
+      role: admin
+      icon: speakap
+
+
+    
+    # menus:
+    #   title: Menus
+    #   role: admin, client
+    #   icon: book
+
+    
+      
+
+
+ventes:
+  title: ventes
+  fields:
+    commandes:
+      title: Commandes
+      role: admin, client
+      icon: cart
+
+client:
+  title: client
+  fields:
+    clients:
+      title: Clients
+      role: admin, client
+      icon: users
+
+Marketing:
+  title: Marketing
+  fields:
+    promotions:
+      title: Promotions
+      role: admin
+      icon: in cart
+
+Trajets :
+  title: Trajets 
+  fields:
+    livreurs:
+      title: Livreurs
+      role: admin
+      icon: id badge
+    camions:
+      title: Camions 
+      role: admin
+      icon: truck
+    stations :
+      title: Stations  
+      role: admin
+      icon: building
+
+
+
+
+# configuration:
+#   title: Configuration
+#   fields:
+#     paiments:
+#       title: Modes de paiements
+#       role: admin
+#       icon: payment 

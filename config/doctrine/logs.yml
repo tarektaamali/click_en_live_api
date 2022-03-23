@@ -1,0 +1,36 @@
+logs:
+  title: Les logs
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    source:
+      name: source
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    message:
+      name: message
+      type: textArea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un prenom
+      rule: no
+    statut:
+      name: statut
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un code
+      rule: no
+ 

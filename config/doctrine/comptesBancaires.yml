@@ -1,0 +1,66 @@
+comptesBancaires:
+  icon: truck
+  title: Les comptesBancaires
+  titleAdd: Ajouter un comptesBancaires
+  titleDet: Détails comptesBancaires
+  titleUpdate: Modifier comptesBancaires
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no       
+    source:
+      name: source
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une source 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    customerId:
+      name: customerId
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une customerId
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    compte:
+      name: Type
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un type
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no
+    statut:
+      name: statut
+      type: date
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouterstatut                         

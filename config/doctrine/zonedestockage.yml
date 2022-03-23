@@ -1,0 +1,38 @@
+zonedestockage:
+  title: zonedestockage
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    reference:
+        name: refence
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter reference  
+    adresse:
+        name: adresse
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter adresse        
+    description:
+        name: description
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter description           
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

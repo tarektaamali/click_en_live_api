@@ -1,0 +1,91 @@
+produits_single:
+  title: Les produits
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    name:
+      name: Nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    type:
+      name: Type
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    quantite:
+      name: Quantité
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    prix:
+      name: Prix
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+        
+    linkedRestaurant:
+      name: linkedRestaurant
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+      modificateur: getInfoLinkedOrList
+      arguments:
+        - restaurants     
+
+         
+      
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   

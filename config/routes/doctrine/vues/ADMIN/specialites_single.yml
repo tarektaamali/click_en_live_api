@@ -1,0 +1,76 @@
+specialites_single:
+  title: Les specialites
+  fields:  
+    Identifiant:
+      name: show
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory    
+    libelle:
+      name: titre
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory      
+        
+    isActive:
+      name: is active
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    image:
+      name: Image
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory    
+      modificateur: getUrl
+      arguments:
+        - uploads
+        - single 
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   

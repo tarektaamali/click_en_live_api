@@ -1,0 +1,128 @@
+camions:
+  icon: truck
+  title: Les camions
+  titleAdd: Ajouter un camion
+  titleDet: Détails camion
+  titleUpdate: Modifier camion
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    imatriculation:
+      name: Immatriculation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une immatriculation 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    position:
+      name: Position
+      type: number
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter une position
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+    
+    linkedLivreur:
+      name: Livreur
+      type: select
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - option 4 
+      display:
+        - show_table
+        - show_form 
+      placeholder: Ajouter une quantité 
+      rule: no
+      required: no
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    type:
+      name: Marque
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un type
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    capcite:
+      name: Capacité
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une capacité
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    reste:
+      name: reste
+      type: number
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter reste
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    totalCommandes:
+      name: totalCommandes
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory 
+
+    statut:
+      name: statut
+      type: date
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouterstatut    
+      rule: no
+      required: yes          
+      format:
+        type: tab
+        name: nocategory => nocategory             

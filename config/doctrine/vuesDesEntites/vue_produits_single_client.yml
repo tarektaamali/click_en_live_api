@@ -1,0 +1,279 @@
+vue_produits_single_client:
+  title: vue produits multi client
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+    reference:
+      name: code
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: tab
+        name: Détails => Détails 
+    designation:
+      name: Intitulé
+      type: text
+      modificateur: traductionChamps  
+      arguments: 
+        - lang  
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: nom
+      format:
+        type: tab
+        name: Détails => Détails        
+
+    description:
+      name: Description
+      type: textarea
+      modificateur: traductionChamps  
+      arguments: 
+        - lang        
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Description
+      format:
+        type: tab
+        name: Détails => Détails
+
+    marque:
+      name: Marque
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Marque
+      format:
+        type: tab
+        name: Détails => Détails
+
+    slug:
+      name: slug
+      type: text
+      modificateur: traductionChamps  
+      arguments: 
+        - lang        
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: slug
+      format:
+        type: tab
+        name: Détails => Détails     
+  
+    prixHT:
+      name: Prix hors taxes
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix hors taxes
+      format:
+        type: tab
+        name: Détails => Détails
+
+    prixTTC:
+      name: Prix TTC
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix TTC
+      format:
+        type: tab
+        name: Détails => Détails
+
+    listePhotos:
+      name: Liste des photos
+      type: photo
+      modificateur: getUrlImages 
+      arguments: 
+        - uploads
+        - multi      
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Liste des photos
+      format:
+        type: tab
+        name: Détails => Détails
+
+    photoCouverture:
+      name: Photo de couverture
+      type: photo
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single      
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Photo de couverture
+      format:
+        type: tab
+        name: Détails => Détails
+        
+    photo3D:
+      name: Photo 3D
+      type: photo
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Photo 3D
+      format:
+        type: tab
+        name: Détails => Détails
+
+    listeTags:
+      name: Liste des tags
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - tags 
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Liste des tags
+      format:
+        type: tab
+        name: Détails => Détails
+
+    active:
+      name: Publié
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+
+    listeDeclinaisons:
+      name: Declinaisons
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - declinaisons       
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations
+
+    listeTailles:
+      name: listeTailles
+      type: select
+      modificateur: getListeTailles 
+      arguments: 
+        - referteniel
+        - declinaisons     
+        - listeDeclinaisons  
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations
+
+    listeCouleurs:
+      name: listeCouleurs
+      type: select
+      modificateur: getListeCouleurs 
+      arguments: 
+        - referteniel
+        - declinaisons     
+        - listeDeclinaisons         
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Declinaisons
+      format:
+        type: tab
+        name: Associations => Associations        
+
+
+
+    taxon:
+      name: Catégorie du produit
+      type: select
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - taxons       
+      options:
+        - option 1
+        - option 2
+        - option 3
+        - Autre
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Catégorie du produit
+      format:
+        type: tab
+        name: Taxon => Catégorie

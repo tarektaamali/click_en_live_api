@@ -1,0 +1,126 @@
+vue_produits_multi_admin:
+  title: Les Comptes
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+      
+    photoCouverture:
+      name: Image
+      type: photo
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Photo de couverture
+      format:
+        type: tab
+        name: Détails => Détails    
+
+    designation:
+      name: Intitulé
+      type: text
+      modificateur: traductionChamps  
+      arguments: 
+        - lang  
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: nom
+      format:
+        type: tab
+        name: Détails => Détails
+
+    reference:
+      name: code
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: tab
+        name: Détails => Détails 
+
+
+    marque:
+      name: Marque
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Marque
+      format:
+        type: tab
+        name: Détails => Détails
+
+
+
+    prixTTC:
+      name: Prix_TTC
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix TTC
+      format:
+        type: tab
+        name: Détails => Détails
+
+      
+    active:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    taxon:
+      name: Taxon
+      type: text
+      modificateur: arborescence 
+      arguments: 
+        - taxons
+        - fr_nomLang 
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Catégorie du produit
+      format:
+        type: tab
+        name: Taxon => Catégorie 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

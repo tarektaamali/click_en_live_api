@@ -1,0 +1,83 @@
+vue_paiments_multi_admin:
+  icon: payment
+  title: Modes de paiements
+  titleAdd: Ajouter une mode de paiement
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    # position:
+    #     name: Position
+    #     type: text
+    #     display:
+    #       - show_table
+    #       - hidden_form
+    #     placeholder: Ajouter un priority
+    #     rule: no
+    #     required: no
+    #     format:
+    #       type: tab
+    #       name: Tags => Tags
+    code:
+        name: Code
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un code
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    name:
+        name: Intitulé
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nom
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    portail:
+        name: portail
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un coupons
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut
+        rule: no
+        required: no
+        format:
+          type: tab
+          name: Tags => Tags
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

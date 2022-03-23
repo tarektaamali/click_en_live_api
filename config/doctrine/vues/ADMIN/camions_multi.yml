@@ -1,0 +1,86 @@
+camions_multi:
+  title: Les camions
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no 
+    imatriculation: 
+      name: Immatriculation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: tab
+        name: Détails => Détails
+    type:
+      name: Marque
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: tab
+        name: Détails => Détails 
+
+
+    capcite:
+      name: Capacité
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Marque
+      format:
+        type: tab
+        name: Détails => Détails 
+    
+    linkedLivreur:
+      name: Livreur
+      type: text
+      modificateur: getDetails 
+      arguments: 
+        - comptes      
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link livreur 
+
+      
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails 
+        
+   
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

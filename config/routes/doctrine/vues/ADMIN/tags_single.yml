@@ -1,0 +1,65 @@
+tags_single:
+  title: Les tags
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+
+    libelle:
+      name: titre
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+       
+
+    isActive:
+      name: is active
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+     

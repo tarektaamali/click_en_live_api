@@ -1,0 +1,131 @@
+restaurants_multi:
+  title: Les restaurants
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    titre:
+      name: titre
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no     
+    phone:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+    email:
+      name: email
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                 
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                
+    photoCouverture:
+      name: photoCouverture
+      type: text
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single   
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+    adresse:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no            
+    ville:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no         
+    pays:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no        
+    codePostal:
+      name: adresse
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no          
+    position:
+      name: position
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                   
+    responsable:
+      name: responsable
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter reponsable
+      rule: no                  
+    logo:
+      name: logo
+      type: text
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single        
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter logo
+      rule: no                         
+    tags:
+      name: liste Tags
+      type: text   
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                 

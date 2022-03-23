@@ -1,0 +1,93 @@
+vue_declinaisons_single_client:
+  title: declinaisons
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison 
+        grid: col-2
+      rule: no
+      required: no
+    value:
+      name: Code couleur
+      type: couleur
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no  
+    parent:
+      name: Couleur de base
+      type: select
+      options:
+        - Blanc
+        - Noir
+        - Rouge
+        - Bleu
+        - Vert     
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no
+    name:
+      name: Intitulé
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison
+        grid: col-2
+      rule: no
+      required: no    
+  
+    
+    quantite:
+      name: Quantité
+      type: number
+      display:
+        - show_table
+        - show_form
+      placeholder: id
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison 
+        grid: col-2
+      rule: no
+      required: no             
+    listePhotos:
+      name: Liste des photos
+      type: photo
+      modificateur: getUrlImages 
+      arguments: 
+        - uploads
+        - multi            
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Liste des photos
+      format:
+        type: tab
+        name: Déclinaison => Déclinaison  
+        grid: col-2 

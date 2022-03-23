@@ -1,0 +1,55 @@
+vue_abonnements_single_client:
+  title: Les abonnements
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedOptionAbonnements:
+        name: titre
+        type: text
+        modificateur: getInfoLinkedOrList 
+        arguments: 
+          - optionsAbonnements               
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter titre
+    dateCreation:
+        name: type
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter type   
+    dateExpidation:
+        name: dateExpidation
+        type: date
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter ville   
+    statut:
+        name: periode
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter periode         
+    prixTTC:
+        name: prixTTC
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter link prixTTC             
+    linkedCompte:
+        name: link compte
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter link compte               

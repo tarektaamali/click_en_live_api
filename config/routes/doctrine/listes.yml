@@ -1,0 +1,77 @@
+catalog:
+  title: catalogue
+  fields:
+    produits:
+      title: Produits
+      role: admin
+      icon: cube
+
+    # camions:
+    #   title: Camions
+    #   role: admin
+    #   icon: truck
+    
+    # logs:
+    #   title: Logs
+    #   role: admin, client
+    #   icon: cubes
+    tags:
+      title: Tags
+      role: admin, client
+      icon: cubes
+
+    categories:
+      title: Catégories
+      role: admin
+      icon: cube
+
+    specialites:
+      title: Spécialités
+      role: admin
+      icon: cube
+
+    
+    menus:
+      title: Menus
+      role: admin, client
+      icon: cubes
+
+    restaurants:
+      title: Restaurants
+      role: admin, client
+      icon: cubes
+      
+
+
+ventes:
+  title: ventes
+  fields:
+    commandes:
+      title: Commandes
+      role: admin, client
+      icon: cart
+
+client:
+  title: client
+  fields:
+    comptes:
+      title: Clients
+      role: admin, client
+      icon: users
+
+Marketing:
+  title: Marketing
+  fields:
+    promotions:
+      title: Promotions
+      role: admin
+      icon: in cart
+
+
+# configuration:
+#   title: Configuration
+#   fields:
+#     paiments:
+#       title: Modes de paiements
+#       role: admin
+#       icon: payment 

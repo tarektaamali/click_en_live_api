@@ -1,0 +1,62 @@
+promotions_multi:
+  title: Les promotions
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    name:
+        name: name
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant        
+    
+    dateDebut:
+      name: date début
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un resto    
+    dateFin:
+      name: date fin
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un date fin          
+                
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+        
+         
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

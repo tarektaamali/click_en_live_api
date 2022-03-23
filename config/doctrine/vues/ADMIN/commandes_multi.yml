@@ -1,0 +1,107 @@
+commandes_multi:
+  title: Les commandes
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+
+    numeroCommande:
+      name: Numero Commande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numero commande
+
+    linkedCompte:
+      name: Client
+      type: text
+      modificateur: getDetails 
+      arguments: 
+        - comptes
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link client
+
+
+    livreur:
+      name: Livreur
+      type: text
+      modificateur: getDetails 
+      arguments: 
+        - comptes      
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link livreur  
+  
+
+    station:
+      name: Station
+      modificateur: getDetails 
+      arguments: 
+        - stations      
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link station  
+ 
+ 
+   
+    totalTTC:
+      name: Prix
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter total TTC
+
+
+    
+    etatCommande: 
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter statut
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no   
+
+    statut:
+      name: Statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter statut
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no   
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    
+
+    linkedPanier:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant

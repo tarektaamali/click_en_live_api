@@ -1,0 +1,112 @@
+vue_commandes_dashboard:
+  icon: cart
+  title: Les commandes
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedPanier:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedCompte:
+      name: link compte
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - comptes
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link compte
+    listeProduits:
+      name: liste produits
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter liste produits      
+    totalHT:
+      name: totalHT
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un totalHT
+    totalTTC:
+      name: totalTTC
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter totalTTC
+    numeroCommande:
+      name: numeroCommande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+    quantite:
+      name: Quantité
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter quantité
+    numeroFacture:
+      name: numeroFacture
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedFacture:
+      name: PrixHt
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant 
+    codePromo:
+      name: codePromo
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter code promo
+    modePayment:
+      name: modePayment
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter modePayment  
+    statut:
+      name: statut
+      type: date
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouterstatut                         
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

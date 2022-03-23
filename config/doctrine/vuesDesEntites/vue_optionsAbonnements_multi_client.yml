@@ -1,0 +1,45 @@
+vue_optionsAbonnements_multi_client:
+  title: Les optionsAbonnements
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    titre:
+        name: titre
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter titre
+    type:
+        name: type
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter type   
+    prixMensuelTTC:
+        name: prixTTC
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter prixTTC   
+    prixAnnuelTTC:
+        name: prixTTC
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter prixTTC        
+    etat:
+        name: etat
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter etat

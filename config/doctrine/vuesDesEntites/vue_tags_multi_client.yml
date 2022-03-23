@@ -1,0 +1,44 @@
+vue_tags_multi_client:
+  title: Les tags
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    libelle:
+        name: nature
+        type: text
+        modificateur: traductionChamps  
+        arguments: 
+          - lang           
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    description:
+        name: value
+        type: text
+        modificateur: traductionChamps  
+        arguments: 
+          - lang           
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value       
+    typeTag:
+        name: typeTag
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter type tag   
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut                  

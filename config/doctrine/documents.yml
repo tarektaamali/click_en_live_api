@@ -1,0 +1,73 @@
+documents:
+  title: Les documents
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedDoc:
+      name: link document
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedEntity:
+      name: link document
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    prenom:
+      name: Prénom
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un identifiant
+    nom:
+      name: Nom
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un identifiant
+    nomDoc:
+      name: Nom document
+      type: text
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    signedId:
+      name: Signataire
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    status:
+      name: Statut
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    action:
+      name: Actions
+      type: button
+      display:
+          - show_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

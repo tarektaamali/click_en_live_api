@@ -1,0 +1,56 @@
+categories_multi:
+  title: Les categories
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    image:
+      name: Image
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single
+
+    libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no        
+ 
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no       
+
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

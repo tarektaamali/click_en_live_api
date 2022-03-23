@@ -1,0 +1,103 @@
+logRecherche:
+  icon: cube
+  title: Les produits
+  titleAdd: Ajouter un produit
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      required: no
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no               
+    dateCreation:
+      name: Libellé
+      display:
+        - show_table
+        - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+      format:
+        type: tab
+        name: Détails => Détails
+    dateLastModif:
+      name: Libellé
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+      format:
+        type: tab
+        name: Détails => Détails
+
+    listeTags:
+      name: listeTags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+    listeCouleurs:
+      name: listeTags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no          
+    listeTailles:
+      name: listeTags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+    prix:
+      name: listeTags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+    word:
+      name: listeTags
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no
+    linkedCompte:
+      name: linkedCompte
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      placeholder: Ajouter un titre
+      required: no      
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory 
+
+

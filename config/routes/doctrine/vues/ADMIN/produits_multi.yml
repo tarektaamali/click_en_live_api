@@ -1,0 +1,107 @@
+produits_multi:
+  title: Les produits
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+
+    name:
+      name: Nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: nom
+      format:
+        type: tab
+        name: Détails => Détails
+
+    type:
+      name: Type
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: tab
+        name: Détails => Détails 
+
+
+    quantite:
+      name: Quantité
+      type: select
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Marque
+      format:
+        type: tab
+        name: Détails => Détails
+
+
+
+    prix:
+      name: Prix
+      type: number
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Prix TTC
+      format:
+        type: tab
+        name: Détails => Détails
+
+      
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no 
+    linkedProduit:
+      name: produit
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - produits 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

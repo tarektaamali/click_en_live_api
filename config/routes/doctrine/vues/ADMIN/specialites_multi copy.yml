@@ -1,0 +1,60 @@
+specialites_multi:
+  title: Les specialites
+  fields:  
+
+    libelle:
+      name: titre
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    description:
+      name: description
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no     
+        
+    isActive:
+      name: is active
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no        
+    image:
+      name: Image
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    statut:
+      name: statut
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no   
+    linkedSpecialites:
+      name: Specialites
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - specialites             
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

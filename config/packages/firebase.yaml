@@ -1,0 +1,6 @@
+# app/config/config.yml (Symfony without Flex)
+# config/packages/firebase.yaml (Symfony with Flex)
+kreait_firebase:
+    projects:
+        foodline:
+            credentials: '%kernel.project_dir%/config/doctrine/firebase/foodline-30462-firebase-adminsdk-89j38-19fa3e0499.json'

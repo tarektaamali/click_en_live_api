@@ -1,0 +1,38 @@
+stock:
+  title: stock
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedCompte:
+        name: compte
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter compte  
+    linkedProduit:
+        name: id produits
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter id produit        
+                          
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory 

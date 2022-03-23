@@ -1,0 +1,72 @@
+vue_tags_single_admin:
+  title: Les tags
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    typeTag:
+        name: typeTag
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter type tag          
+    fr_libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => français (France)
+    
+    
+    
+    fr_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => français (France)
+
+    en_libelle:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis)
+    
+    
+    
+    en_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis) 

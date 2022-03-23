@@ -1,0 +1,141 @@
+attributs:
+  icon: cubes
+  title: Les attributs
+  titleAdd: Ajouter un attribut
+  titleUpdate: Modifier attribut
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      rule: no
+      required: no
+      placeholder: désignation
+      format:
+        type: simple
+        name: nocategory => nocategory
+    code:
+      name: Code
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: code
+      format:
+        type: simple
+        name: nocategory => nocategory
+
+    # position:
+    #   name: Position
+    #   type: text
+    #   display:
+    #     - hidden_table
+    #     - show_form
+    #   rule: no
+    #   required: no
+    #   placeholder: Position
+    #   format:
+    #     type: simple
+    #     name: nocategory => nocategory
+
+    fr_nom:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => français (France)
+    
+    fr_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Slug
+      format:
+        type: simple
+        name: nocategory => français (France)
+    
+    fr_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => français (France)
+
+    en_nom:
+      name: Désignation
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Désignation
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis)
+    
+    en_slug:
+      name: Slug
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Slug
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis)
+    
+    en_description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Description
+      format:
+        type: simple
+        name: nocategory => anglais (États-Unis) 
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory         
+      
+  action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button

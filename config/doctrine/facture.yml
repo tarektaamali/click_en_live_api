@@ -1,0 +1,100 @@
+facture:
+  title: les factures
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedCommande:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    numeroFacture:
+      name: numeroFacutre
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link compte
+    totalHT:
+      name: totalHT
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un totalHT
+    totalTTC:
+      name: totalTTC
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter totalTTC
+    numeroCommande:
+      name: numeroCommande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+    numeroFacture:
+      name: numeroFacture
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedFacture:
+      name: PrixHt
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant 
+    codePromo:
+      name: codePromo
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter code promo
+    modePayment:
+      name: modePayment
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter modePayment  
+    statut:
+      name: statut
+      type: date
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouterstatut                         
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory 

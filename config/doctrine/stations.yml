@@ -1,0 +1,100 @@
+stations:
+  icon: map marker alternate
+  title: Les stations
+  titleAdd: Ajouter une station
+  titleDet: Détails station
+  titleUpdate: Modifier station
+  fields:
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no         
+    name:
+      name: name
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    
+    heureD:
+      name: Heure de départ
+      type: time
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+
+    heureA:
+      name: Heure de départ
+      type: time
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    position:
+      name: name
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter une name 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no         
+    isActive:
+      name: isActive
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter isActive
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no 
+    statut:
+      name: Type
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter statut
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        rule: no

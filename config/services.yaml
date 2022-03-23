@@ -6,7 +6,9 @@
 parameters:
     env(MONGODB_URL): ''
     env(MONGODB_DB): ''
-
+    id_name: 'Identifiant'
+    fields: 'fields'
+    Hostapi: 'http://51.83.99.222:8077'         
 services:
     # default configuration for services in *this* file
     _defaults:

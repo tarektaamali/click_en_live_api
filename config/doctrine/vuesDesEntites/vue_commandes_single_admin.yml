@@ -1,0 +1,59 @@
+vue_commandes_single_admin:
+  title: Les Comptes
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - show_table
+        placeholder: Ajouter un identifiant
+        rule: no
+    nom:
+      name: nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    prenom:
+      name: prenom
+      type: textArea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un prenom
+      rule: no
+    email:
+      name: email
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un email
+      rule: no
+    phone:
+      name: phone
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un phone
+      rule: no                             
+    isActive:
+      name: Statut
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter etat
+      rule: no        
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button   
+
+

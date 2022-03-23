@@ -1,0 +1,63 @@
+logs_multi:
+  title: Les logs
+  fields:   
+    Identifiant:
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no     
+
+    source:
+      name: source
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+      
+    message:
+      name: message
+      type: textArea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un prenom
+      rule: no
+  
+ 
+      
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    linkedLogs:
+      name: logs
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - logs 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

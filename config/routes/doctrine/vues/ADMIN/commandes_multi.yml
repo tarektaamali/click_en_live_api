@@ -1,0 +1,122 @@
+commandes_multi:
+  title: Les commandes
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedPanier:
+      name: link card
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedCompte:
+      name: link compte
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link compte
+    listeProduits:
+      name: liste produits
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter liste produits      
+    totalHT:
+      name: totalHT
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un totalHT
+    totalTTC:
+      name: totalTTC
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter totalTTC
+    numeroCommande:
+      name: numeroCommande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter numeroCommande
+    numeroFacture:
+      name: numeroFacture
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedFacture:
+      name: PrixHt
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    linkedAdresseLivraison:
+      name: linkedAdresseLivraison
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant 
+    codePromo:
+      name: codePromo
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter code promo
+    modePayment:
+      name: modePayment
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter modePayment  
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails
+    isActive:
+      name: Etat
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no                          
+    linkedCommande:
+      name: commande
+      display:
+            - hidden_table
+            - hidden_form
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - commandes 
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button    

@@ -1,0 +1,52 @@
+produitsEssai:
+  title: Les paniers
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedCompte:
+      name: link compte
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un identifiant
+    listeProduits:
+      name: link produit
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link produit
+  
+    linkedCouleur:
+      name: couleur
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter couleur
+    linkedTaille:
+      name: taille
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter taille 
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory       

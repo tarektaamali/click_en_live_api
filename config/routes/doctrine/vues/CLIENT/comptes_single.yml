@@ -1,0 +1,132 @@
+comptes_single:
+  title: Les Comptes
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+        rule: no
+    nom:
+      name: nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+    prenom:
+      name: prenom
+      type: textArea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un prenom
+      rule: no
+    email:
+      name: email
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un code
+      rule: no
+    phone:
+      name: phone
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un telephone
+      rule: no         
+    aPropos:
+      name: aPropos
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter à propos
+      rule: no         
+    photoProfil:
+      name: photoProfil 
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single  
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter photo profil
+      rule: no 
+    addresse:
+      name: addresse
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter adresse
+      rule: no      
+    ville:
+      name: ville
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une ville
+      rule: no       
+    pays:
+      name: pays
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une pays
+      rule: no            
+
+    codePostal:
+      name: code postale
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une code postale
+      rule: no 
+
+    position:
+      name: position
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une code postale
+      rule: no 
+
+
+    tempsLivraison:
+      name: temps livraison
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une code postale
+      rule: no       
+
+    isActive:
+      name: etat
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une code postale
+      rule: no  
+    role:
+      name: role
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une code postale
+      rule: no        

@@ -1,0 +1,40 @@
+vue_tags_multi_admin:
+  title: Les tags
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    libelle:
+        name: Intitulé
+        type: text
+        modificateur: traductionChamps  
+        arguments: 
+          - lang           
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    typeTag:
+        name: type_Tag
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter type tag          
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut   
+    action:
+      name: Actions
+      display:
+        - show_table
+        - hidden_form
+      type: button                   

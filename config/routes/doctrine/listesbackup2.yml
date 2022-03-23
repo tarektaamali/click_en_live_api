@@ -1,0 +1,79 @@
+catalog:
+  title: catalogue
+  fields:
+    produits:
+      title: Produits
+      role: admin
+      icon: cube
+
+    tags:
+      title: Taxons
+      role: admin
+      icon: folder
+    
+    attributs:
+      title: Attributs
+      role: admin, client
+      icon: cubes
+      
+    associations:
+      title: Associations
+      role: admin, client
+      icon: tasks
+
+
+ventes:
+  title: ventes
+  fields:
+    commandes:
+      title: Commandes
+      role: admin, client
+      icon: cart
+    paiement:
+      title: Paiements
+      role: admin, client
+      icon: payment
+    expedition:
+      title: Expéditions
+      role: admin, client
+      icon: truck
+
+client:
+  title: client
+  fields:
+    expeditions:
+      title: Clients
+      role: admin, client
+      icon: users
+    groupe:
+      title: Groupes
+      role: admin, client
+      icon: archive
+
+marketing:
+  title: marketing
+  fields:
+    promotions:
+      title: Promotions
+      role: admin, client
+      icon: in cart
+    avis:
+      title: Avis produit
+      role: admin, client
+      icon: newspaper
+
+configuration:
+  title: configuration
+  fields:
+    moyenp:
+      title: Moyens de paiement
+      role: admin, client
+      icon: payment
+    taxe:
+      title: Taux de taxe
+      role: admin, client
+      icon: money
+    administrateurs:
+      title: Administrateurs
+      role: admin, client
+      icon: lock

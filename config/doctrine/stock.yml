@@ -1,0 +1,72 @@
+stock:
+  title: stock
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedZoneStock:
+        name: zone stock
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter zone de stock  
+    linkedProduit:
+        name: id produits
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter id produit        
+    linkedTaille:
+        name: taille
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter taille  
+    linkedCouleur:
+        name: couleur
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter couleur   
+    quantite:
+        name: description
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter description 
+    seuil:
+        name: seuil
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter seuil       
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory                              
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

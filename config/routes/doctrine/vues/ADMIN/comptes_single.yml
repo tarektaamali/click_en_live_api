@@ -1,0 +1,169 @@
+comptes_single:
+  title: Les Comptes
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory   
+    nom:
+      name: nom
+      type: text
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    prenom:
+      name: prenom
+      type: textArea
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    email:
+      name: email
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    phone:
+      name: phone
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter un telephone
+      rule: no         
+    aPropos:
+      name: aPropos
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    photoProfil:
+      name: photoProfil 
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single  
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    addresse:
+      name: addresse
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    ville:
+      name: ville
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    pays:
+      name: pays
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      placeholder: Ajouter une pays
+      rule: no            
+
+    codePostal:
+      name: code postale
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    position:
+      name: position
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
+    tempsLivraison:
+      name: temps livraison
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    isActive:
+      name: etat
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+    role:
+      name: role
+      type: text
+      display:
+        - hidden_table
+        - show_form
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   

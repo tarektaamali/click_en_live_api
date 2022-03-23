@@ -1,0 +1,87 @@
+produitpanier:
+  title: Les produits dans panier
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    linkedPanier:
+      name: link commande
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un link commande
+    linkedProduit:
+      name: link produit
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link produit
+    quantite:
+      name: quantite
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un quantite
+    linkedCouleur:
+      name: couleur
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter couleur
+    linkedTaille:
+      name: taille
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter taille      
+    prixHT:
+      name: prixHT
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter prixHT
+    prixTTC:
+      name: prixTTC
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un prixTTC
+    remise:
+      name: remise
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un remise
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory       
+                      
+  popupAdd:
+    titre: Ajouter un document
+  popupDelete:
+    titre: Supprimer document
+    contenu: Êtes-vous sûr de vouloir supprimer ce document
+  popupUpdate:
+    titre: Modifier document

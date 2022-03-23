@@ -1,0 +1,44 @@
+caracteristiques:
+  title: Les caracteristiques
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    nature:
+        name: nature
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un nature
+    value:
+        name: value
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un value           
+    listeImages:
+        name: liste des images 
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter image             
+    statut:
+        name: statut
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un statut  
+        rule: no
+        required: no
+
+        format:
+          type: tab
+          name: nocategory => nocategory 

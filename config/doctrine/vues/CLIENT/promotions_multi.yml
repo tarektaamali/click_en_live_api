@@ -1,0 +1,86 @@
+promotions_multi:
+  title: Les promotions
+  fields:
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant
+    name:
+        name: name
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un identifiant        
+    linkedRestaurant:
+      name: link resto
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un resto
+    type:
+      name: type
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un resto
+
+    dateDebut:
+      name: date début
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un resto    
+    dateFin:
+      name: date fin
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un date fin          
+    value:
+      name: value
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un resto   
+    link:
+      name: link
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un link          
+    photoCouverture:
+      name: photoCouverture
+      type: text
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single         
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un link                 
+    isActive:
+      name: isActive
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un resto      
+
+    statut:
+      name: etat
+      type: text
+      display:
+          - hidden_table
+          - hidden_form
+      placeholder: Ajouter un etat      
