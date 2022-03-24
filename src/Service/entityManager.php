@@ -940,7 +940,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('comptes')
+            ->field('name')->equals('categories')
             ->getQuery()
             ->execute();
 
@@ -985,7 +985,7 @@ class entityManager
            
 
            
-        $payload["deviceToken"]=[]; 
+        $payload["couleur"]="#FCF0F8"; 
       /*   $payload["reste"]=[
             "MidiNow"=> 100,
             "MidiTomorrow"=>100,

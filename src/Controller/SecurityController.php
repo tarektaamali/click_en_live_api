@@ -692,7 +692,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("api/account/createAccount", methods={"POST"})
+     * @Route("/account/createAccount", methods={"POST"})
      */
 
     public function createAccount(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
