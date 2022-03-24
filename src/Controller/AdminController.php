@@ -357,7 +357,7 @@ class AdminController extends AbstractController
     public function createCollection(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
-        $from="collections"
+        $from="collections";
 
         $entity = null;
 
