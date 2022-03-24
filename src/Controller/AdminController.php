@@ -354,9 +354,10 @@ class AdminController extends AbstractController
         /**
      * @Route("/api/admin/createCollection", methods={"POST"})
      */
-    public function createCollection(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form,  Request $request, HttpClientInterface $client)
+    public function createCollection(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer,  Request $request, HttpClientInterface $client)
     {
         $extraPayload = null;
+        $from="collections"
 
         $entity = null;
 
