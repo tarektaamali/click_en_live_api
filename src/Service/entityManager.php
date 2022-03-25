@@ -940,7 +940,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('categories')
+            ->field('name')->equals('tags')
             ->getQuery()
             ->execute();
 
