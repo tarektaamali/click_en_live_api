@@ -37,5 +37,5 @@ security:
         - { path: '^/login', roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: '^/api/admin', roles: ROLE_ADMIN }
         - { path: '^/api/client', roles: ROLE_CLIENT }
-        - { path: '^/api/livreur', roles: ROLE_LIVREUR }
-        - { path: '^/api/restaurateur', roles: ROLE_RESTAURATEUR }        
+        - { path: '^/api/agent', roles: ROLE_AGENT }
+              

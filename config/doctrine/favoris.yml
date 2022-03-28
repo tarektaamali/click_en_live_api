@@ -29,7 +29,7 @@ favoris:
       format:
         type: tab
         name: nocategory => nocategory
-    restaurant:
+    item:
       name: id
       type: text
       display:

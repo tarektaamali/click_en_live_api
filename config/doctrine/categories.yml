@@ -30,6 +30,18 @@ categories:
       format:
         type: tab
         name: nocategory => nocategory
+    couleur:
+      name: couleur
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
         
     description:
       name: Description
@@ -82,17 +94,4 @@ categories:
       required: yes 
       format:
         type: tab
-        name: nocategory => nocategory
-
-    linkedRestaurant:
-      name: linkedRestaurant
-      type: text
-      display:
-        - hidden_table
-        - hidden_form
-      placeholder: Ajouter un linkedRestaurant
-      rule: no  
-      required: yes      
-      format:
-        type: tab
-        name: nocategory => nocategory                
+        name: nocategory => nocategory         

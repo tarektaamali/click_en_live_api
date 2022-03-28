@@ -1,0 +1,155 @@
+collections_single:
+  title: Les collections
+  fields:   
+    Identifiant:
+        name: id
+        type: text
+        display:
+          - show_table
+          - hidden_form
+        placeholder: Ajouter un id 
+        rule: no
+        required: yes 
+        format:
+          type: tab
+          name: Détails => Détails
+          rule: no 
+    titre:
+      name: Intitulé
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails
+
+    description:
+      name: Description
+      type: textarea
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails
+        
+    linkedCompte:
+      name: By
+      type: text
+      modificateur: getInfoLinkedOrList
+      arguments:
+        - comptes
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails
+    categories:
+      name: categories
+      type: select++
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      modificateur: getInfoLinkedOrList
+      arguments:
+        - categories
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Catégories => Catégories   
+
+    tags:
+      name: Tags
+      type: select++
+      modificateur: getInfoLinkedOrList
+      arguments:
+        - tags
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Tags => Tags
+
+    photoCouverture:
+      name: photoCouverture
+      type: photo
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Media => Media
+    logo:
+      name: logo
+      type: photo
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Media => Media
+    isActive:
+      name: isActive
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails
+    
+    #items
+    items:
+      name: Articles
+      type: select++
+      modificateur: getInfoLinkedOrList
+      arguments:
+        - items
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Articles => Articles
+
+    statut:
+      name: statut
+      type: text
+      display:
+        - hidden_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: Détails => Détails

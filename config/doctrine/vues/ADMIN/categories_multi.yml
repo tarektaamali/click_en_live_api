@@ -1,56 +1,66 @@
 categories_multi:
-  title: Les categories
+  title: Les catégories
   fields:   
     Identifiant:
-        name: id
-        type: text
-        display:
-          - show_table
-          - hidden_form
-        placeholder: Ajouter un identifiant
-    image:
-      name: Image
+      name: id
       type: text
       display:
         - show_table
-        - show_form
-      placeholder: Ajouter un nom
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
       rule: no
-      modificateur: getUrl 
-      arguments: 
-        - uploads
-        - single
-
+      required: no  
     libelle:
-      name: Désignation
+      name: Intitulé
       type: text
       display:
         - show_table
         - show_form
       placeholder: Ajouter un nom
-      rule: no
+      rule: no  
+    couleur:
+      name: Couleur
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no  
 
     isActive:
       name: Etat
-      type: text
+      type: checkbox
       display:
         - show_table
         - show_form
-      placeholder: Ajouter un nom
-      rule: no        
- 
-    statut:
-      name: statut
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un nom
-      rule: no       
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails 
 
+    statut:
+      name: Statut
+      type: checkbox
+      display:
+        - show_table
+        - show_form
+      rule: no
+      required: no
+      placeholder: Activée
+      format:
+        type: tab
+        name: Détails => Détails 
+        
+   
     action:
       name: Actions
       display:
         - show_table
         - hidden_form
       type: button    
+    

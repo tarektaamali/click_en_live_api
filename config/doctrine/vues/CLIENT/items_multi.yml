@@ -1,9 +1,9 @@
-comptes:
+items_multi:
   icon: cube
-  title: Les clients
-  titleAdd: Ajouter un client
-  titleDet: Détails un client
-  titleUpdate: Modifier un client
+  title: Les collections
+  titleAdd: Ajouter un collection
+  titleDet: Détails un collection
+  titleUpdate: Modifier un collection
   fields:
     Identifiant:
         name: id
@@ -18,8 +18,8 @@ comptes:
           type: tab
           name: nocategory => nocategory
           rule: no 
-    nom:
-      name: Nom
+    titre:
+      name: titre
       type: text
       display:
         - show_table
@@ -31,8 +31,8 @@ comptes:
         type: tab
         name: nocategory => nocategory
 
-    prenom:
-      name: Prénom
+    description:
+      name: description
       type: text
       display:
         - show_table
@@ -44,9 +44,12 @@ comptes:
         type: tab
         name: nocategory => nocategory
         
-    email:
-      name: Email
+    linkedCompte:
+      name: By
       type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - comptes       
       display:
         - show_table
         - show_form
@@ -56,9 +59,27 @@ comptes:
       format:
         type: tab
         name: nocategory => nocategory
-    phone:
-      name: Téléphone
+    linkedCollection:
+      name: collection
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - collections       
       type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory        
+    categories:
+      name: categories
+      type: text
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - categories        
       display:
         - show_table
         - show_form
@@ -69,12 +90,15 @@ comptes:
         type: tab
         name: nocategory => nocategory   
 
-    aPropos:
-      name: A propos
-      type: textarea
+    tags:
+      name: Tags
+      type: text
       display:
         - show_table
         - show_form
+      modificateur: getInfoLinkedOrList 
+      arguments: 
+        - tags        
       placeholder: Ajouter un id 
       rule: no
       required: yes 
@@ -82,9 +106,13 @@ comptes:
         type: tab
         name: nocategory => nocategory
 
-    photoProfil:
-      name: Photo de profil
+    photo:
+      name: photoCouverture
       type: photo
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single        
       display:
         - show_table
         - show_form
@@ -94,20 +122,8 @@ comptes:
       format:
         type: tab
         name: nocategory => nocategory
-    photoCouverture:
-      name: Photo de profil
-      type: photo
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory
-    addresse:
-      name: Adresse
+    prix:
+      name: prix
       type: text
       display:
         - show_table
@@ -118,61 +134,8 @@ comptes:
       format:
         type: tab
         name: nocategory => nocategory
-
-    ville:
-      name: Ville
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory
-    pays:
-      name: Pays
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory    
-
-    codePostal:
-      name: Code postal
-      type: number
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory
-
-      
-    position:
-      name: Position
-      type: number
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory
-
     isActive:
-      name: Etat
+      name: isActive
       type: text
       display:
         - show_table
@@ -184,22 +147,8 @@ comptes:
         type: tab
         name: nocategory => nocategory
 
-    role:
-      name: Role
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un id 
-      rule: no
-      required: yes 
-      format:
-        type: tab
-        name: nocategory => nocategory
-
-
-    deviceToken:
-      name: deviceToken
+    statut:
+      name: statut
       type: text
       display:
         - show_table

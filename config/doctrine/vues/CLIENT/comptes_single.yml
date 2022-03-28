@@ -1,5 +1,9 @@
 comptes_single:
-  title: Les Comptes
+  icon: cube
+  title: Les clients
+  titleAdd: Ajouter un client
+  titleDet: Détails un client
+  titleUpdate: Modifier un client
   fields:
     Identifiant:
         name: id
@@ -7,135 +11,210 @@ comptes_single:
         display:
           - show_table
           - hidden_form
-        placeholder: Ajouter un identifiant
+        placeholder: Ajouter un id 
         rule: no
+        required: yes 
+        format:
+          type: tab
+          name: nocategory => nocategory
+          rule: no 
     nom:
-      name: nom
+      name: Nom
       type: text
       display:
         - show_table
         - show_form
-      placeholder: Ajouter un nom
+      placeholder: Ajouter un id 
       rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
     prenom:
-      name: prenom
-      type: textArea
+      name: Prénom
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+        
+    email:
+      name: Email
+      type: text
       display:
         - show_table
         - show_form
-      placeholder: Ajouter un prenom
+      placeholder: Ajouter un id 
       rule: no
-    email:
-      name: email
-      type: text
-      display:
-        - hidden_table
-        - show_form
-      placeholder: Ajouter un code
-      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
     phone:
-      name: phone
+      name: Téléphone
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter un telephone
-      rule: no         
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory   
+
     aPropos:
-      name: aPropos
-      type: text
+      name: A propos
+      type: textarea
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter à propos
-      rule: no         
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
     photoProfil:
-      name: photoProfil 
+      name: Photo de profil
+      type: photo
       modificateur: getUrl 
       arguments: 
         - uploads
-        - single  
-      type: text
+        - single           
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter photo profil
-      rule: no 
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+    photoCouverture:
+      name: Photo de profil
+      type: photo
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single           
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
     addresse:
-      name: addresse
+      name: Adresse
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter adresse
-      rule: no      
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
     ville:
-      name: ville
+      name: Ville
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une ville
-      rule: no       
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
     pays:
-      name: pays
+      name: Pays
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une pays
-      rule: no            
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory    
 
     codePostal:
-      name: code postale
-      type: text
+      name: Code postal
+      type: number
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une code postale
-      rule: no 
-
-    position:
-      name: position
-      type: text
-      display:
-        - hidden_table
-        - show_form
-      placeholder: Ajouter une code postale
-      rule: no 
-
-
-    tempsLivraison:
-      name: temps livraison
-      type: text
-      display:
-        - hidden_table
-        - show_form
-      placeholder: Ajouter une code postale
+      placeholder: Ajouter un id 
       rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
 
-    timeLivraison:
-      name: temps livraison
-      type: text
+      
+    position:
+      name: Position
+      type: number
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une code postale
-      rule: no     
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
 
     isActive:
-      name: etat
+      name: Etat
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une code postale
-      rule: no  
-    role:
-      name: role
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+    role: 
+      name: Role
       type: text
       display:
-        - hidden_table
+        - show_table
         - show_form
-      placeholder: Ajouter une code postale
-      rule: no        
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory
+
+
+    deviceToken:
+      name: deviceToken
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un id 
+      rule: no
+      required: yes 
+      format:
+        type: tab
+        name: nocategory => nocategory

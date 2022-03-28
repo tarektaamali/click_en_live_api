@@ -1,5 +1,5 @@
-tags_multi:
-  title: Les tags
+items_multi:
+  title: Les articles
   fields:   
     Identifiant:
       name: id
@@ -13,8 +13,21 @@ tags_multi:
         name: Détails => Détails 
       rule: no
       required: no  
- 
-    libelle:
+
+    photo:
+      name: Image
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no
+      modificateur: getUrl 
+      arguments: 
+        - uploads
+        - single 
+
+    titre:
       name: Intitulé
       type: text
       display:
@@ -22,8 +35,27 @@ tags_multi:
         - show_form
       placeholder: Ajouter un nom
       rule: no 
+    prix:
+      name: Prix
+      type: text
+      display:
+        - show_table
+        - show_form
+      placeholder: Ajouter un nom
+      rule: no 
     
+    linkedCompte:
+      name: Propriétaire
+      type: text
+      modificateur: getDetails 
+      arguments: 
+        - comptes      
+      display:
+        - show_table
+        - hidden_form
+      placeholder: Ajouter link livreur 
     
+     
 
     isActive:
       name: Etat

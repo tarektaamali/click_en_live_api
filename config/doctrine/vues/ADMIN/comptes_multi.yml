@@ -1,48 +1,45 @@
 comptes_multi:
-  title: Les comptes
+  title: Les clients
   fields:   
     Identifiant:
-        name: id
-        type: text
-        display:
-          - show_table
-          - hidden_form
-        placeholder: Ajouter un identifiant
-        rule: no
+      name: id
+      type: text
+      display:
+        - show_table
+        - hidden_form
+      placeholder: id
+      format:
+        type: tab
+        name: Détails => Détails 
+      rule: no
+      required: no  
     nom:
-      name: nom
+      name: Nom
       type: text
       display:
         - show_table
         - show_form
       placeholder: Ajouter un nom
-      rule: no
+      rule: no  
     prenom:
-      name: prenom
-      type: textArea
+      name: Prénom
+      type: text
       display:
         - show_table
         - show_form
-      placeholder: Ajouter un prenom
-      rule: no
+      placeholder: Ajouter un nom
+      rule: no   
     email:
-      name: email
+      name: Email
       type: text
       display:
         - show_table
         - show_form
-      placeholder: Ajouter un code
-      rule: no
-    phone:
-      name: Téléphone
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un telephone
-      rule: no     
-    statut:
-      name: Statut
+      placeholder: Ajouter un nom
+      rule: no  
+
+    isActive:
+      name: Etat
       type: checkbox
       display:
         - show_table
@@ -52,19 +49,13 @@ comptes_multi:
       placeholder: Activée
       format:
         type: tab
-        name: Détails => Détails
-    isActive:
-      name: Etat
-      type: text
-      display:
-        - show_table
-        - show_form
-      placeholder: Ajouter un nom
-      rule: no 
-      
+        name: Détails => Détails  
+        
+   
     action:
       name: Actions
       display:
         - show_table
         - hidden_form
       type: button    
+    
