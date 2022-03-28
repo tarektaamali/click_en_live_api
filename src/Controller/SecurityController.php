@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
             if ($extraPayload["type"] == "facebook" || $extraPayload["type"] == "google") {
                 $extraPayload["isActive"] = "1";
             } else {
-                $extraPayload["isActive"] = "0";
+                 $extraPayload["isActive"] = "0";
             }
 
 
@@ -100,18 +100,15 @@ class SecurityController extends AbstractController
 
             $extraPayload['Identifiant'] = $data->getId();
 
-           $testCustomerId= $this->gestionComptesBancaires($extraPayload['Identifiant'],$extraPayload['nom'],$extraPayload['email']);
-
-            if($testCustomerId)
-            {
-
+     
+           
                 $user = $userService->creationCompte($extraPayload);
 
 
-                $subject = "Bienvenue chez FoodLine";
+                $subject = "Bienvenue chez Click On Live";
     
                 $email = (new TemplatedEmail())
-                    ->from("foodline2022@gmail.com")
+                    ->from("clickonlive65@gmail.com")
                     ->to(new Address(trim($extraPayload["email"])))
                     //->bcc('touhemib@gmail.com')
                     ->subject($subject)
@@ -133,7 +130,7 @@ class SecurityController extends AbstractController
                     $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
                     // $emailservice->sendMailCodeForgotPassworClient($email, $code);
                     $email = (new TemplatedEmail())
-                        ->from("foodline2022@gmail.com")
+                        ->from("clickonlive65@gmail.com")
                         ->to(new Address(trim($user->getEmail())))
                         //->bcc('touhemib@gmail.com')
                         ->subject($subject)
@@ -151,11 +148,7 @@ class SecurityController extends AbstractController
     
     
                 return new JsonResponse($data->getId());
-            }
-            else{
-
-                return new JsonResponse(array('message' => 'problème lors de création customer id stripe or paypal'), 400);
-            }
+           
           
         } else {
             return new JsonResponse(array('message' => 'cet email déja utilisé'), 400);
@@ -211,9 +204,6 @@ class SecurityController extends AbstractController
 
                 $extraPayload['Identifiant'] = $data->getId();
 
-                $testCustomerId= $this->gestionComptesBancaires($extraPayload['Identifiant'],$extraPayload['nom'],$extraPayload['email']);
-                if($testCustomerId)
-                {
 
                     $user = $userService->creationCompte($extraPayload);
 
@@ -221,7 +211,7 @@ class SecurityController extends AbstractController
                     $subject = "Bienvenue chez FoodLine";
     
                     $email = (new TemplatedEmail())
-                        ->from("foodline2022@gmail.com")
+                        ->from("clickonlive65@gmail.com")
                         ->to(new Address(trim($extraPayload["email"])))
                         //->bcc('touhemib@gmail.com')
                         ->subject($subject)
@@ -237,11 +227,7 @@ class SecurityController extends AbstractController
     
     
                     return new JsonResponse(array('message' => 'inscription avec success'), 200);
-                }
-                else{
-
-                    return new JsonResponse(array('message' => 'problème lors de création customer id stripe or paypal'), 400);
-                }
+              
             
             } else {
                 return new JsonResponse(array('message' => 'Access token invalide'), 400);
@@ -493,7 +479,7 @@ class SecurityController extends AbstractController
             $subject = "Mot de passe oublier";
 
             $email = (new TemplatedEmail())
-                ->from("foodline@gmail.com")
+                ->from("clickonlive65@gmail.com")
                 ->to(new Address(trim($account->getEmail())))
                 //->bcc('touhemib@gmail.com')
                 ->subject($subject)
@@ -553,7 +539,7 @@ class SecurityController extends AbstractController
                 $subject = "Mot de passe oublier";
 
                 $email = (new TemplatedEmail())
-                    ->from("glamyouup0@gmail.com")
+                    ->from("clickonlive65@gmail.com")
                     ->to(new Address(trim($user->getEmail())))
                     //->bcc('touhemib@gmail.com')
                     ->subject($subject)
@@ -675,7 +661,7 @@ class SecurityController extends AbstractController
             $code = $this->em->getRepository(CodeActivation::class)->findOneBy(array('idUser' => $user, 'isActive' => 1));
             // $emailservice->sendMailCodeForgotPassworClient($email, $code);
             $email = (new TemplatedEmail())
-                ->from("foodline2022@gmail.com")
+                ->from("clickonlive65@gmail.com")
                 ->to(new Address(trim($user->getEmail())))
                 //->bcc('touhemib@gmail.com')
                 ->subject($subject)
@@ -721,7 +707,7 @@ class SecurityController extends AbstractController
             $subject = "Bienvenue chez FoodLine";
 
             $email = (new TemplatedEmail())
-                ->from("foodline2022@gmail.com")
+                ->from("clickonlive65@gmail.com")
                 ->to(new Address(trim($extraPayload["email"])))
                 //->bcc('touhemib@gmail.com')
                 ->subject($subject)
@@ -785,81 +771,8 @@ class SecurityController extends AbstractController
 
 
  
-    /**
-     * @Route("/userAnonyme", methods={"POST"})
-    */
-
-    public function userAnonyme(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
-    {
-
-        $form = "comptes";
-        $entity = null;
-
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $content = json_decode($request->getContent(), true);
-            $extraPayload = $content['extraPayload'];
-        }
-
-        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
-        return new JsonResponse(array('identifiantAnonyme'=>$data->getId()),200);
-    }
+ 
 
 
 
-    function  gestionComptesBancaires($idCompte,$nom,$email)
-    {
-
-
-        $response = $this->client->request('POST', 'https://api.stripe.com/v1/customers', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer '."sk_test_51KDliCIbA1TFqS1mGO7zsozjbmQIZmAVCYf2l1VQP3flyCvJNJOvU9fmnrnGQCo9lAxNSsX1jdc5Qvh7T6sxNQ9b00ijVRFdMI",
-            ],
-            'body' => [
-                "email"=> $email,
-                "name"=>$nom
-
-            ]
-        ]);
-        $statusCode = $response->getStatusCode();
-
-        if ($statusCode == 200 ){
-            $content = $response->toArray();
-
-            $extraPayload['customerId']=$content['id'];
-            $extraPayload['compte']=$idCompte;
-            $data = $this->entityManager->setResult('comptesBancaires', null, $extraPayload);
-         
-            $commande = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('comptes')
-            ->field('extraPayload.Identifiant')->equals($idCompte)
-            ->findAndUpdate()
-            ->field('extraPayload.idCompteBancaire')->set($data->getId())
-           
-   
-            ->getQuery()
-            ->execute();
-            
-         
-            //Paypal configuration
-            $gateway = new Gateway([
-                'environment' => 'sandbox',
-                'merchantId' => 'hfpchnqptzc9hn4x',
-                'publicKey' => 'gh9gtp42x9hh7m7d',
-                'privateKey' => '4a6b0da198056fb21814788a00cca76e'
-              
-            ]);
-//                    $gateway->clientToken()->generate();
-            //Affecter customer_id stripe to paypal
-            $result = $gateway->customer()->create([
-                'id'=>$content['id'],
-                'email' =>  $email,
-            ]);
-            $result->success;
-
-            return true;
-        }else{
-            return false;
-        }
-    }
 }

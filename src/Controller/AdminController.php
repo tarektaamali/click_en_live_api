@@ -351,43 +351,5 @@ class AdminController extends AbstractController
     }
 
 
-        /**
-     * @Route("/api/admin/createCollection", methods={"POST"})
-     */
-    public function createCollection(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer,  Request $request, HttpClientInterface $client)
-    {
-        $extraPayload = null;
-        $form="collections";
-
-        $entity = null;
-
-
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $content = json_decode($request->getContent(), true);
-            $extraPayload = $content['extraPayload'];
-        }
-
-        if(isset($extraPayload))
-        {
-            $items=$extraPayload['items'];
-            unset($extraPayload['items']);
-        }
         
-        $collection = $this->entityManager->setResult($form, $entity, $extraPayload);
-
-        $tabItems=[];
-        foreach($items as $item)
-        {
-            $item['linkedCompte']=$collection->getExtraPayload()['linkedCompte'];
-            $item['linkedCollection']=$collection->getId();
-            $item = $this->entityManager->setResult("items", null, $item);
-            array_push($tabItems,$item->getId());
-        }
-
-        $tab['items']=$tabItems;
-
-       $data= $this->entityManager->updateResultV2($collection->getId(), $tab);
-
-        return new JsonResponse($data->getId());
-    }
 }
