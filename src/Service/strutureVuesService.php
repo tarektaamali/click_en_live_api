@@ -107,15 +107,15 @@ class strutureVuesService
     {
 
         $type = $param[1];
-        $reference = $param[2];
+        $tabImages = $param[2];
 
-
-        if ($reference != '') {
+        $listePhotos = [];
+        if (sizeof($tabImages)) {
 
             if ($type == "multi") {
 
-                $tabImages = explode(",", $reference);
-                $listePhotos = [];
+           
+             
                 foreach ($tabImages as $img) {
 
 
