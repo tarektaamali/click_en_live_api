@@ -106,7 +106,9 @@ class entityManager
             array_push($data, $extraPayload);
         }
 
-        return $data;
+        $preparedData = $this->prepareDates($data);
+        return $preparedData;
+
     }
 
     public function getResult($entity, $vue = 'none', $vueVersion = 'latest', $filter = 'none', $filterValue = 'none', $filterVersion = 'latest', $maxResults = '1000', $offset = '0')
