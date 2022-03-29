@@ -253,7 +253,7 @@ class SecurityController extends AbstractController
         }
         // Make sure it's the correct app.
         $tokenApp = json_decode($tokenAppResp, true);
-        if (!$tokenApp || !isset($tokenApp['id']) || $tokenApp['id'] != 654143709352565) {
+        if (!$tokenApp || !isset($tokenApp['id']) || $tokenApp['id'] != 515392983356248) {
             return false;
         }
         // Get the token's FB user info.
