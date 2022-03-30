@@ -417,9 +417,9 @@ class DefaultController extends AbstractController
 
 
         /**
-     * @Route("/listeRestaurants", methods={"GET"})
+     * @Route("/listeAnnonces", methods={"GET"})
      */
-    public function listeRestaurants(DocumentManager $dm, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function listeAnnonces(DocumentManager $dm, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $entity = "annonces";
 
