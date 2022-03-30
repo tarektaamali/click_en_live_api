@@ -942,7 +942,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('anonnces')
+            ->field('name')->equals('annonces')
             ->getQuery()
             ->execute();
 
