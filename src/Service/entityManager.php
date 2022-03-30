@@ -942,7 +942,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('tags')
+            ->field('name')->equals('anonnces')
             ->getQuery()
             ->execute();
 
@@ -987,7 +987,10 @@ class entityManager
            
 
            
-        $payload["couleur"]="#FCF0F8"; 
+        $payload["categories"]=[];
+
+        $payload["tags"]=[];
+
       /*   $payload["reste"]=[
             "MidiNow"=> 100,
             "MidiTomorrow"=>100,

@@ -369,4 +369,44 @@ class ClientController extends AbstractController
     }
 
 
+
+
+
+
+        /**
+     * @Route("/api/client/rdv", methods={"POST"})
+     */
+
+    public function RDV(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, Request $request, HttpClientInterface $client)
+    {
+
+        $extraPayload = null;
+
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+
+        //
+
+        return new JsonResponse($data->getId());
+
+    }
+
+
+            /**
+     * @Route("/api/client/responseRDV", methods={"POST"})
+     */
+    public function responseRDV()
+    {
+
+
+
+    }
+
+
 }
