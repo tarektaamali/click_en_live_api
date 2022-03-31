@@ -987,9 +987,9 @@ class entityManager
            
 
            
-        $payload["categories"]=[];
+        $payload["disponible"]="0";
 
-        $payload["tags"]=[];
+
 
       /*   $payload["reste"]=[
             "MidiNow"=> 100,
