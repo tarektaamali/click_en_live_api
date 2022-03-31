@@ -409,4 +409,55 @@ class ClientController extends AbstractController
     }
 
 
+        /**
+     * @Route("api/client/likeAnnonce", methods={"POST"})
+     */
+    public function likeAnnonce(DocumentManager $dm, Request $request)
+    {
+
+        $idAnnonce = $request->get('idAnnonce');
+        $user = $this->getUser();
+
+        if (is_null($idAnnonce) || $idAnnonce == "") {
+            return new JsonResponse(array('merci de verifier les donnees envoyees.'), 400);
+        }
+
+        if ($user) {
+
+            $idMongo = $user->getUserIdentifier();
+
+            $nbreFavoris = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('favoris')
+                ->field('extraPayload.annonce')->equals($idAnnonce)
+                ->field('extraPayload.client')->equals($idMongo)
+                ->count()
+                ->getQuery()
+                ->execute();
+
+            if ($nbreFavoris == 0) {
+
+                $extraPayload['client'] = $idMongo;
+                $extraPayload['annonce'] = $idAnnonce;
+
+                $data = $this->entityManager->setResult('favoris', null, $extraPayload);
+            } else {
+                $favoris = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('favoris')
+                    ->field('extraPayload.client')->equals($idMongo)
+                    ->field('extraPayload.annonce')->equals($idAnnonce)
+                    ->getQuery()
+                    ->getSingleResult();
+
+                $entities = $dm->getRepository(Entities::class)->find($favoris->getId());
+                $dm->remove($entities);
+                $dm->flush();
+            }
+
+            return new JsonResponse(array('message' => 'done'), 200);
+        } else {
+            return new JsonResponse(array('merci de se connecter.'), 400);
+        }
+    }
+
+
 }

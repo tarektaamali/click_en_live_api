@@ -1235,8 +1235,8 @@ class entityManager
         $dm = $this->documentManager;
         $nbreFavoris = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('favoris')
-        ->field('extraPayload.restaurant')->equals($idResto)
-        ->field('extraPayload.compte')->equals($idClient)
+        ->field('extraPayload.annonce')->equals($idResto)
+        ->field('extraPayload.client')->equals($idClient)
         ->count()
         ->getQuery()
         ->execute();
