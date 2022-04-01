@@ -987,7 +987,8 @@ class entityManager
            
 
            
-        $payload["disponible"]="0";
+        $payload["etages"]="0";
+        $payload["niveau"]="0";
 
 
 
