@@ -1454,7 +1454,8 @@ class entityManager
             array_push($data, $extraPayload);
         }
         $alldata = array();
-        $alldata['results'] = $data;
+        $preparedData = $this->prepareDates($data);
+        $alldata['results'] = $preparedData;
         $alldata['count'] = $count;
         return $alldata;
     }
