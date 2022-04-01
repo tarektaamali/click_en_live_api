@@ -274,6 +274,50 @@ class DefaultController extends AbstractController
                 $structuresFinal['count'] = $data['count'];
 
                 $structuresFinal['results'] = $structureVues;
+
+
+                foreach($structuresFinal['results'] as $key=>$result)
+                {
+
+                    if(isset($result['client']))
+                    {
+                       
+                            if(isset($result['client'][0]))
+                            {
+                                if(isset($result['client'][0]['photoProfil']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['client'][0]['photoProfil'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['client'][0]['photoProfil']= $logo;
+                                }
+                            }
+                        
+                    }
+
+                    if(isset($result['annonce']))
+                    {
+                       
+                            if(isset($result['annonce'][0]))
+                            {
+                                if(isset($result['annonce'][0]['photoPrincipale']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['annonce'][0]['photoPrincipale'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
+                                }
+                            }
+                        
+                    }
+                }
+  
                 return new JsonResponse($structuresFinal, '200');
             } else {
 
@@ -348,12 +392,25 @@ class DefaultController extends AbstractController
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
                 
-                $params[0] = 'uploads';
-                $params[1] = 'single';
-                $params[2] = $structureVues[0]['linkedCompte'][0]['photoProfil'];
-                $logo = $strutureVuesService->getUrl($params);
-                $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
+                if(isset($structureVues[0]))
+                {
+                    if(isset($structureVues[0]['linkedCompte']))
+                    {
+                        if(isset($structureVues[0]['linkedCompte'][0]))
+                        {
+                            if(isset($structureVues[0]['linkedCompte'][0]['photoProfil']))
+                            {
 
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] = $structureVues[0]['linkedCompte'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
+                            }
+                        }
+                    }
+                }
                 return new JsonResponse($structureVues, '200');
             } else {
                 return new JsonResponse($data, '200');
