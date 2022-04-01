@@ -1457,6 +1457,7 @@ class entityManager
         $preparedData = $this->prepareDates($data);
         $alldata['results'] = $preparedData;
         $alldata['count'] = $count;
+        
         return $alldata;
     }
     }

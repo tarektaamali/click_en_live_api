@@ -611,7 +611,17 @@ class DefaultController extends AbstractController
     
        
 
+        $extraPayload=[];
+        $extraPayload['pieces']=$nbrePieces;
+        $extraPayload['budget']=$budget;
+        $extraPayload['surface']=$surface;
+        $extraPayload['typeDeBien']=$typeDeBien;
+        $extraPayload['client']=$identifiantMongo;
+        $extraPayload['localisation']=$localisation;
 
+
+
+        $logRecherches=$entityManager->setResult("recherches",null,$extraPayload);
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
 
         $data = $this->entityManager->serializeContent($results);
