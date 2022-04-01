@@ -1372,9 +1372,9 @@ class entityManager
 
     if (!is_null($localisation) && $localisation != "") {
         $arrayValue = new \MongoDB\BSON\Regex($localisation, 'i');
-        $qb->field('extraPayload.codePostal')->equals($arrayValue);
+      //  $qb->field('extraPayload.codePostal')->equals($arrayValue);
         $qb->field('extraPayload.addresse')->equals($arrayValue);
-        $qb->field('extraPayload.ville')->equals($arrayValue);
+        //$qb->field('extraPayload.ville')->equals($arrayValue);
         //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
     }
 
