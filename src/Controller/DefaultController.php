@@ -348,6 +348,11 @@ class DefaultController extends AbstractController
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
                 
+                $params[0] = 'uploads';
+                $params[1] = 'single';
+                $params[2] = $structureVues[0]['linkedCompte'][0]['photoProfil'];
+                $logo = $strutureVuesService->getUrl($params);
+                $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
 
                 return new JsonResponse($structureVues, '200');
             } else {
