@@ -655,6 +655,85 @@ class DefaultController extends AbstractController
 
     }
 
+             /**
+     * @Route("/voirDetailsRecherche", methods={"POST"})
+     */
+
+
+    public function voirDetailsRecherche(Request $request,entityManager $entityManager,DocumentManager $dm,strutureVuesService $strutureVuesService)
+    {
+
+        $entity = "annonces";
+
+        $listeTags = "";
+
+
+
+
+        $vueAvancer = "annonces_multi";
+
+        $maxResults = 1000;
+        if ($request->get('maxResults') != null) {
+            $maxResults = $request->get('maxResults');
+        }
+
+        $offset = 0;
+        if ($request->get('maxResults') != null) {
+            $offset = $request->get('offset');
+        }
+
+
+        $indexVue = "CLIENT";
+
+        $id=$request->get('idRecherche');
+        if(is_null($id))
+        {
+
+            return new JsonResponse(array('message'=>'merci de verifier id recherche'),400);
+        }
+        $logRecherche = $dm->getRepository(Entities::class)->find($id);
+
+        $nbrePieces=$logRecherche->getExtraPayload()['pieces'];
+        $budget=$logRecherche->getExtraPayload()['budget'];
+        $surface=$logRecherche->getExtraPayload()['surface'];
+        $typeDeBien=$logRecherche->getExtraPayload()['typeDeBien'];
+        $identifiantMongo=$logRecherche->getExtraPayload()['client'];
+        $localisation=$logRecherche->getExtraPayload()['localisation'];
+
+
+
+        
+        $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
+
+        $data = $this->entityManager->serializeContent($results);
+
+
+
+
+        if (isset($data['results'])) {
+
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], 'fr');
+            $structuresFinal['count'] = $data['count'];
+            $structuresFinal['results'] = $structureVues;
+
+            
+        } else {
+
+            $structuresFinal['count'] = 0;
+            $structuresFinal['results'] = [];
+        }
+
+        foreach ($structuresFinal['results'] as $key => $resto) {                
+        $structuresFinal['results'][$key]['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
+        }
+
+
+      
+        
+
+        return new JsonResponse($structuresFinal, '200');
+
+    }
 
    
 }
