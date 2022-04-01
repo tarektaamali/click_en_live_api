@@ -533,32 +533,118 @@ class DefaultController extends AbstractController
      * @Route("/rechercheAvanceAnnonce", methods={"POST"})
      */
 
-    public function rechercheAvanceAnnonce(Request $request,entityManager $entityManager)
+    public function rechercheAvanceAnnonce(Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
     {
 
+        $entity = "annonces";
+
+        $listeTags = "";
+
+
+
+
+        $vueAvancer = "annonces_multi";
+
+        $maxResults = 1000;
+        if ($request->get('maxResults') != null) {
+            $maxResults = $request->get('maxResults');
+        }
+
+        $offset = 0;
+        if ($request->get('maxResults') != null) {
+            $offset = $request->get('offset');
+        }
+
+
+        $indexVue = "CLIENT";
+
+
+
+       
 
         $identifiantMongo=$request->get('identifiantMongo');
-        $localisation=$request->get('localisation');
-        $typeDeBien=$request->get('typeDeBien');
-        $budget=$request->get('budget');
-        $surface=$request->get('surface');
-        $nbrePiece=$request->ge('nbrePieces');
+        if(is_null($identifiantMongo))
+        {
+            return new JsonReponse(array('message'=>'merci de verifier identifiant mongodb'),400);
+        }
+
+        if(is_null($request->get('localisation')))
+        {
+            $location=null;
+        }
+        else{
+            $localisation=$request->get('localisation');
+        }
+        if(is_null($request->get('typeDeBien')))
+        {
+            $typeDeBien=null;
+        }
+        else{
+            $typeDeBien=$request->get('typeDeBien');
+        }
+    
+     
+        if(is_null($request->get('budget')))
+        {
+            $budget=null;
+        }
+        else{
+            $budget=$request->get('budget');
+        }
+
+        if(is_null($request->get('surface')))
+        {
+            $surface=null;
+        }
+        else{
+            $surface=$request->get('surface');
+        }
+    
+
+        if(is_null($request->get('nbrePieces')))
+        {
+            $nbrePieces=null;
+        }
+        else{
+            $nbrePieces=$request->get('nbrePieces');
+        }
+    
+       
 
 
-        $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePiece);
+        $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
 
+        $data = $this->entityManager->serializeContent($results);
+
+
+
+
+        if (isset($data['results'])) {
+
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
+            $structuresFinal['count'] = $data['count'];
+            $structuresFinal['results'] = $structureVues;
+
+            
+        } else {
+
+            $structuresFinal['count'] = 0;
+            $structuresFinal['results'] = [];
+        }
+
+        foreach ($structuresFinal['results'] as $key => $resto) {                
+        $structuresFinal['results'][$key]['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
+        }
+
+
+      
+        
+
+        return new JsonResponse($structuresFinal, '200');
 
 
     }
 
 
-    public function voirDetailsRecherche($id,Request $request)
-    {
-
-
-
-        $recherche=find($id);
-
-        $results=rechercheAnnonce($recherche->getExtraPayload()['localisation'],$recherche->getExtraPayload()['typeDeBien'],$recherche->getExtraPayload()['budget'],$recherche->getExtraPayload()['surface'],$recherche->getExtraPayload()['pieces']);
-    }
+   
 }

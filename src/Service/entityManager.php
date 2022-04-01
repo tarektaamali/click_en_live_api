@@ -1336,11 +1336,72 @@ class entityManager
 
 
 
-    public function rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePiece)
+    public function rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePiece,$offset,$maxResults)
     {
+        $data = [];
+        $sort = '';
 
 
+        if ($offset == 0) {
+            $offset++;
+        }
+
+
+        if(  (!is_null($localisation) && $localisation != "")&&(!is_null($budget) ||$budget!="")&& (!is_null($typeDeBien)||$typeDeBien!="")&& (!is_null($surface) || sizeof($surface))&&(!is_null($nbrePiece) || sizeof($nbrePiece)))
         
+        {
+
+            $alldata = array();
+            $alldata['results'] = [];
+            $alldata['count'] = 0;
+            return $alldata;
+        }
+        else{
+
+       
+        $qb = $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('annonces')
+        ->field('status')->equals("active");
+    
+        
+    if (!is_null($typeDeBien) && $typeDeBien!="") {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.typeAnnonce')->equals($typeDeBien);
+    }
+
+    if (!is_null($localisation) && $localisation != "") {
+        $arrayValue = new \MongoDB\BSON\Regex($localisation, 'i');
+        $qb->field('extraPayload.codePostal')->equals($arrayValue);
+        $qb->field('extraPayload.addresse')->equals($arrayValue);
+        $qb->field('extraPayload.ville')->equals($arrayValue);
+        //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
+    }
+
+
+    if (!is_null($budget) && sizeof($budget)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
+    }
+
+    if (!is_null($surface) && sizeof($surface)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.surface')->range(intval($surface[0]), intval($surface[1]));
+    }
+
+    if (!is_null($nbrePiece) && sizeof($nbrePiece)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
+    }
+
+    $qb->limit($maxResults)
+        ->skip($maxResults * ($offset - 1));
+    $entities = $qb->getQuery()
+        ->execute();
+
         $qb = $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
         ->field('status')->equals("active");
@@ -1367,7 +1428,7 @@ class entityManager
         $qb->field('extraPayload.prixTTC')->range(intval($budget[0]), intval($budget[1]));
     }
 
-    if (!is_null($n) && sizeof($surface)) {
+    if (!is_null($surface) && sizeof($surface)) {
 
         //rechercheParPrix
         $qb->field('extraPayload.prixTTC')->range(intval($surface[0]), intval($surface[1]));
@@ -1381,8 +1442,22 @@ class entityManager
 
     $qb->limit($maxResults)
         ->skip($maxResults * ($offset - 1));
-    $entities = $qb->getQuery()
+    $count = $qb->count()
+    ->getQuery()
         ->execute();
+        
+        foreach ($entities as $key => $entity) {
+            $extraPayload = $entity->getExtraPayload();
+            $extraPayload['dateCreation'] = $entity->getDateCreation()->format('Y-m-d H:i:s');
+            $extraPayload['dateLastModif'] = $entity->getDateLastMmodif()->format('Y-m-d H:i:s');
+            //     $extraPayload['statut']=$entity->getStatus();
+            array_push($data, $extraPayload);
+        }
+        $alldata = array();
+        $alldata['results'] = $data;
+        $alldata['count'] = $count;
+        return $alldata;
+    }
     }
 
 
