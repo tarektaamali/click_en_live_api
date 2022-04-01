@@ -570,7 +570,7 @@ class DefaultController extends AbstractController
 
         if(is_null($request->get('localisation')))
         {
-            $location=null;
+            $localisation=null;
         }
         else{
             $localisation=$request->get('localisation');
@@ -621,7 +621,7 @@ class DefaultController extends AbstractController
 
         if (isset($data['results'])) {
 
-            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
+            $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], 'fr');
             $structuresFinal['count'] = $data['count'];
             $structuresFinal['results'] = $structureVues;
 
