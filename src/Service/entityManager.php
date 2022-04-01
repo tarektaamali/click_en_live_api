@@ -1333,4 +1333,57 @@ class entityManager
         
     }
 
+
+
+
+    public function rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePiece)
+    {
+
+
+        
+        $qb = $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('annonces')
+        ->field('status')->equals("active");
+    
+        
+    if (!is_null($typeDeBien) && $typeDeBien!="") {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.typeAnnonce')->equals($typeDeBien);
+    }
+
+    if (!is_null($localisation) && $localisation != "") {
+        $arrayValue = new \MongoDB\BSON\Regex($localisation, 'i');
+        $qb->field('extraPayload.codePostal')->equals($arrayValue);
+        $qb->field('extraPayload.addresse')->equals($arrayValue);
+        $qb->field('extraPayload.ville')->equals($arrayValue);
+        //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
+    }
+
+
+    if (!is_null($budget) && sizeof($budget)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.prixTTC')->range(intval($budget[0]), intval($budget[1]));
+    }
+
+    if (!is_null($n) && sizeof($surface)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.prixTTC')->range(intval($surface[0]), intval($surface[1]));
+    }
+
+    if (!is_null($surface) && sizeof($surface)) {
+
+        //rechercheParPrix
+        $qb->field('extraPayload.prixTTC')->range(intval($surface[0]), intval($surface[1]));
+    }
+
+    $qb->limit($maxResults)
+        ->skip($maxResults * ($offset - 1));
+    $entities = $qb->getQuery()
+        ->execute();
+    }
+
+
 }

@@ -512,67 +512,51 @@ class DefaultController extends AbstractController
             $structuresFinal['results'] = [];
         }
 
-        $listeTags = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('categories')
-            ->field('extraPayload.isActive')->equals("1")
-            ->getQuery()
-            ->execute();
-        $nbreTags = $dm->createQueryBuilder(Entities::class)
-            ->field('name')->equals('categories')
-            ->field('extraPayload.isActive')->equals("1")
-            ->count()
-            ->getQuery()
-            ->execute();
-
-
-        $results = array();
-
-        foreach ($listeTags as $tag) {
-            $data = array(
-                'id' => $tag->getId(),
-                'name' => $tag->getExtraPayload()['libelle'],
-                'listeAnnonces' => []
-            );
-            //var_dump($data);
-            array_push($results, $data);
-        }
-        //    var_dump($results);
-
-        //	dd($structuresFinal['results']);           
-
-
-        foreach ($structuresFinal['results'] as $key => $resto) {
-            $tabT = $resto["categories"];
-            if (sizeof($tabT)) {
-
-                foreach ($tabT as $t) {
-                    //var_dump($t);
-                    $test = array_search($t, array_column($results, 'id'));
-                    //var_dump($test);
-                    //$test=in_array($t,$results);
-                    //		var_dump($test);
-                    if (is_int($test)) {
-                      
-                     
-
-                        $resto['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
-                        //    dd($resto);
-
-                        array_push($results[$test]['listeAnnonces'], $resto);
-                    }
-                }
-            }
+        foreach ($structuresFinal['results'] as $key => $resto) {                
+        $structuresFinal['results'][$key]['like'] = $this->entityManager->checkFavoris($resto['Identifiant'], $identifiantMongo);
         }
 
 
-        foreach ($results as $key => $resto) {
+      
+        
 
-            if (sizeof($results[$key]['listeAnnonces']) == 0) {
-                unset($results[$key]);
-            }
-        }
-
-        return new JsonResponse(array_values($results), '200');
+        return new JsonResponse(array_values($structuresFinal), '200');
     }
 
+
+
+
+
+          /**
+     * @Route("/rechercheAvanceAnnonce", methods={"POST"})
+     */
+
+    public function rechercheAvanceAnnonce(Request $request,entityManager $entityManager)
+    {
+
+
+        $identifiantMongo=$request->get('identifiantMongo');
+        $localisation=$request->get('localisation');
+        $typeDeBien=$request->get('typeDeBien');
+        $budget=$request->get('budget');
+        $surface=$request->get('surface');
+        $nbrePiece=$request->ge('nbrePieces');
+
+
+        $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePiece);
+
+
+
+    }
+
+
+    public function voirDetailsRecherche($id,Request $request)
+    {
+
+
+
+        $recherche=find($id);
+
+        $results=rechercheAnnonce($recherche->getExtraPayload()['localisation'],$recherche->getExtraPayload()['typeDeBien'],$recherche->getExtraPayload()['budget'],$recherche->getExtraPayload()['surface'],$recherche->getExtraPayload()['pieces']);
+    }
 }
