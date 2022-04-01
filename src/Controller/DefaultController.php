@@ -506,6 +506,8 @@ class DefaultController extends AbstractController
             $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
             $structuresFinal['count'] = $data['count'];
             $structuresFinal['results'] = $structureVues;
+
+            
         } else {
 
             $structuresFinal['count'] = 0;
@@ -520,7 +522,7 @@ class DefaultController extends AbstractController
       
         
 
-        return new JsonResponse(array_values($structuresFinal), '200');
+        return new JsonResponse($structuresFinal, '200');
     }
 
 
