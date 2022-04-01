@@ -1425,19 +1425,19 @@ class entityManager
     if (!is_null($budget) && sizeof($budget)) {
 
         //rechercheParPrix
-        $qb->field('extraPayload.prixTTC')->range(intval($budget[0]), intval($budget[1]));
+        $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
     }
 
     if (!is_null($surface) && sizeof($surface)) {
 
         //rechercheParPrix
-        $qb->field('extraPayload.prixTTC')->range(intval($surface[0]), intval($surface[1]));
+        $qb->field('extraPayload.surface')->range(intval($surface[0]), intval($surface[1]));
     }
 
-    if (!is_null($surface) && sizeof($surface)) {
+    if (!is_null($nbrePiece) && sizeof($nbrePiece)) {
 
         //rechercheParPrix
-        $qb->field('extraPayload.prixTTC')->range(intval($surface[0]), intval($surface[1]));
+        $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
     }
 
     $qb->limit($maxResults)
