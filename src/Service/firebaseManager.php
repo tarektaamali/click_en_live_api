@@ -47,6 +47,20 @@ class firebaseManager
 
     }
 
+
+    public function notificationNewAnnonce($token,$msg,$title){
+
+        
+        $message = CloudMessage::withTarget('token', $token)
+        ->withNotification(Notification::create('CLICK ON LIVE '.$title , $msg));
+       // ->withData(['key' => 'value']);
+        $response = $this->messaging->send($message);
+        return $response;
+
+
+
+    }
+
     
     
 }

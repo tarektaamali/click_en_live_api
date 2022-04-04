@@ -1397,8 +1397,12 @@ class entityManager
         $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
     }
 
-    $qb->limit($maxResults)
+    if(!is_null($maxResults))
+    {
+        $qb->limit($maxResults)
         ->skip($maxResults * ($offset - 1));
+    }
+
     $entities = $qb->getQuery()
         ->execute();
 
@@ -1440,8 +1444,12 @@ class entityManager
         $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
     }
 
-    $qb->limit($maxResults)
+    if(!is_null($maxResults))
+    {
+        $qb->limit($maxResults)
         ->skip($maxResults * ($offset - 1));
+    }
+
     $count = $qb->count()
     ->getQuery()
         ->execute();
