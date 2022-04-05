@@ -797,5 +797,95 @@ class DefaultController extends AbstractController
 
     }
 
+
+
+
+              /**
+     * @Route("/configurationAlert", methods={"POST"})
+     */
+
+    public function configurationAlert(Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
+    {
+    
+
+        $identifiantMongo=$request->get('identifiantMongo');
+        if(is_null($identifiantMongo))
+        {
+            return new JsonReponse(array('message'=>'merci de verifier identifiant mongodb'),400);
+        }
+
+        if(is_null($request->get('localisation')))
+        {
+            $localisation=null;
+        }
+        else{
+            $localisation=$request->get('localisation');
+        }
+        if(is_null($request->get('typeDeBien')))
+        {
+            $typeDeBien=null;
+        }
+        else{
+            $typeDeBien=$request->get('typeDeBien');
+        }
+    
+     
+        if(is_null($request->get('budget')))
+        {
+            $budget=null;
+        }
+        else{
+            $budget=$request->get('budget');
+        }
+
+        if(is_null($request->get('surface')))
+        {
+            $surface=null;
+        }
+        else{
+            $surface=$request->get('surface');
+        }
+    
+
+        if(is_null($request->get('nbrePieces')))
+        {
+            $nbrePieces=null;
+        }
+        else{
+            $nbrePieces=$request->get('nbrePieces');
+        }
+    
+       
+
+        $extraPayload=[];
+        $extraPayload['pieces']=$nbrePieces;
+        $extraPayload['budget']=$budget;
+        $extraPayload['surface']=$surface;
+        $extraPayload['typeDeBien']=$typeDeBien;
+        $extraPayload['client']=$identifiantMongo;
+        $extraPayload['localisation']=$localisation;
+
+
+
+        $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('configurationAlerts')
+        ->field('extraPayload.client')->equals($identifiantMongo)
+        ->getSingleResult()
+        ->getQuery()
+        ->execute();
+
+        if($configurationAlerts)
+        {
+            $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
+        }
+        else{
+            $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
+        }
+      
+     
+        return new JsonResponse(array('message'=>'save configuration'), '200');
+
+
+    }
    
 }

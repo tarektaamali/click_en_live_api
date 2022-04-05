@@ -988,7 +988,8 @@ class entityManager
 
            
        // $payload["etages"]="0";
-        $payload["deviceToken"]=[];
+        $payload["chambres"]=[1,4];
+        $payload["chambresParentale"]=[1,1];
 
 
 
