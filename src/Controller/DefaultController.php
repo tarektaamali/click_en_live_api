@@ -1054,7 +1054,7 @@ class DefaultController extends AbstractController
 
 
                 }
-                return new JsonResponse($structuresFinal, '200');
+                return new JsonResponse($resultats, '200');
             } else {
 
                 $structuresFinal['count'] = 0;
