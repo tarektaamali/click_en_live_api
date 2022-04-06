@@ -1031,6 +1031,11 @@ class DefaultController extends AbstractController
                 }
 
                 $tabDateUnique=array_unique($tabDate);
+
+                foreach($tabDateUnique as $date)
+                {
+                    $listeHeures[$date]=[];
+                }
                 foreach($structuresFinal['results'] as $key=>$time)
                 {
 
