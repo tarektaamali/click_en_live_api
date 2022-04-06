@@ -69,27 +69,27 @@ class alertsAnnoncesCommand extends Command
 
 
 
-            $results = $this->entityManager->rechercheAnnonce($localisation, $typeDeBien, $budget, $surface, $nbrePieces, null, null);
+            $results = $entityManager->rechercheAnnonce($localisation, $typeDeBien, $budget, $surface, $nbrePieces, null, null);
 
             foreach ($results['results'] as $annonce) {
 
                 $alert =  $this->dm->createQueryBuilder(Entities::class)
                     ->field('name')->equals('alerts')
                     ->field('extraPayload.client')->equals($identifiantMongo)
-                    ->field('extraPayload.annonce')->equals($annonce->getId())
+                    ->field('extraPayload.annonce')->equals($annonce['Identifiant'])
                     ->getSingleResult()
                     ->getQuery()
                     ->execute();
 
                 if (is_null($alert)) {
-                    $tabAlert['annonce'] = $annonce->getId();
+                    $tabAlert['annonce'] = $annonce['Identifiant'];
                     $tabAlert['client'] = $identifiantMongo;
                     $tabAlert['vue'] = false;
 
 
                     $title = "Nouvelle annonce";
 
-                    $msg = $annonce->getExtraPayload()['titre'];
+                    $msg = $annonce['titre'];
 
 
                     $client = $this->dm->getRepository(Entities::class)->find($identifiantMongo);
