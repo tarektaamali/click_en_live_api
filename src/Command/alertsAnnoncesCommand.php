@@ -77,9 +77,8 @@ class alertsAnnoncesCommand extends Command
                     ->field('name')->equals('alerts')
                     ->field('extraPayload.client')->equals($identifiantMongo)
                     ->field('extraPayload.annonce')->equals($annonce['Identifiant'])
-                    ->getSingleResult()
                     ->getQuery()
-                    ->execute();
+                    ->getSingleResult();
 
                 if (is_null($alert)) {
                     $tabAlert['annonce'] = $annonce['Identifiant'];
