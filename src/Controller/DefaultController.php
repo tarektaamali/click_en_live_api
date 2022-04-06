@@ -884,6 +884,187 @@ class DefaultController extends AbstractController
      
         return new JsonResponse(array('message'=>'save configuration'), '200');
 
+    }
+
+
+              /**
+     * @Route("/disponibilteAnnonceur", methods={"GET"})
+     */
+
+    public function disponibilteAnnonceur()
+    {
+
+        $vueAvancer = "timeplanner_multi"; 
+        $version = 2;
+    
+
+        $vue = null;
+        if ($request->get('vue') != null) {
+            $vue = $request->get('vue');
+        }
+
+        $vueVersion = null;
+        if ($request->get('vueVersion') != null) {
+            $vueVersion = $request->get('vueVersion');
+        }
+
+        $maxResults = 1000;
+        if ($request->get('maxResults') != null) {
+            $maxResults = $request->get('maxResults');
+        }
+
+        $offset = 0;
+        if ($request->get('maxResults') != null) {
+            $offset = $request->get('offset');
+        }
+
+        $filter = null;
+        if ($request->get('filter') != null) {
+            $filter = $request->get('filter');
+        }
+
+        $filterValue = null;
+        if ($request->get('filterValue') != null) {
+            $filterValue = $request->get('filterValue');
+        }
+
+        $filterVersion = null;
+        if ($request->get('filterVersion') != null) {
+            $filterVersion = $request->get('filterVersion');
+        }
+
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+
+        $indexVue = "CLIENT";
+    
+
+
+
+        switch ($version) {
+            case 1:
+                $data = $this->entityManager->getResult($entity, $vue, $vueVersion, $filter, $filterValue, $filterVersion, $maxResults, $offset);
+                break;
+            case 2:
+
+                $filter = array_merge($routeParams, $request->query->all());
+
+                unset($filter['version']);
+                unset($filter['vueAvancer']);
+                unset($filter['lang']);
+                unset($filter['indexVue']);
+
+                $data = $this->entityManager->getResultFromArray($entity, $filter);
+                break;
+        }
+
+        $data = $this->entityManager->serializeContent($data);
+
+
+
+        //return new JsonResponse(array('data'=>$data),200);
+        //        dd($data);
+        if ($vueAvancer) {
+            if (isset($data['results'])) {
+
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
+                $structuresFinal['count'] = $data['count'];
+
+                $structuresFinal['results'] = $structureVues;
+
+
+                foreach($structuresFinal['results'] as $key=>$result)
+                {
+
+                    if(isset($result['client']))
+                    {
+                       
+                            if(isset($result['client'][0]))
+                            {
+                                if(isset($result['client'][0]['photoProfil']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['client'][0]['photoProfil'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['client'][0]['photoProfil']= $logo;
+                                }
+                            }
+                        
+                    }
+
+                    if(isset($result['annonce']))
+                    {
+                       
+                            if(isset($result['annonce'][0]))
+                            {
+                                if(isset($result['annonce'][0]['photoPrincipale']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['annonce'][0]['photoPrincipale'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
+                                }
+                            }
+                        
+                    }
+                }
+  
+                    
+
+                $listeHeures=array();
+                $annonce=array();
+                $client=array();
+
+                $tabDate=[];
+                foreach($structuresFinal['results'] as $key=>$time)
+                {
+                    array_push($tabDate,$time['day']);
+                }
+
+                $tabDateUnique=array_unique($tabDate);
+                foreach($structuresFinal['results'] as $key=>$time)
+                {
+
+
+                    $annonce[$time['day']]=$time['annonce'];
+                    $client[$time['day']]=$time['client'];
+                    $listeHeures[$time['day']]=array('starHour'=>$time['starHour'],'endHour'=>$time['endHour'],'etat'=>$time['etat']);
+
+
+                }
+
+
+                $resultats=[];
+                foreach($tabDateUnique as $date)
+                {
+
+                   $resultats['day']=$date;
+                   $resultats['annonce']=$annonce[$date];
+                   $resultats['client']=$client[$date];
+                   $resultats['listeHeures']=$date;
+
+
+                }
+                return new JsonResponse($structuresFinal, '200');
+            } else {
+
+                $structuresFinal['count'] = 0;
+                $structuresFinal['results'] = [];
+                return new JsonResponse($structuresFinal, '200');
+            }
+        }
+
+        return new JsonResponse($data, '200');
+
+
 
     }
    
