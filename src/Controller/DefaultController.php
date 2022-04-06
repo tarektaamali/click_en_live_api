@@ -804,7 +804,7 @@ class DefaultController extends AbstractController
      * @Route("/configurationAlert", methods={"POST"})
      */
 
-    public function configurationAlert(Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
+    public function configurationAlert(DocumentManager $dm,Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
     {
     
 
