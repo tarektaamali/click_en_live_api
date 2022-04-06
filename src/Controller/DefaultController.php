@@ -1039,7 +1039,7 @@ class DefaultController extends AbstractController
                 foreach($structuresFinal['results'] as $key=>$time)
                 {
 
-                    $listeHeures[$time['day']]=[];
+                  //  $listeHeures[$time['day']]=[];
 
                     $annonce[$time['day']]=$time['annonce'];
                     $client[$time['day']]=$time['client'];
