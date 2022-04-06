@@ -32,100 +32,85 @@ class alertsAnnoncesCommand extends Command
             );
     }
 
-   
-    public function __construct(firebaseManager $firebaseManager,DocumentManager $dm,EntityManagerInterface $em,entityManager $entityManager)
-    {
-        $this->entityManager=$entityManager;
-     
-        $this->firebaseManager=$firebaseManager;
 
-        $this->em=$em;
-        $this->dm=$dm;
-       
-        
+    public function __construct(firebaseManager $firebaseManager, DocumentManager $dm, EntityManagerInterface $em, entityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+
+        $this->firebaseManager = $firebaseManager;
+
+        $this->em = $em;
+        $this->dm = $dm;
+
+
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-   
-        $alerts=  $this->dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('configurationAlerts')
-        ->getQuery()
-        ->execute();
 
-        
-
-        foreach($alerts as $alert)
-        {
-
-            
-        $nbrePieces=$alert->getExtraPayload()['pieces'];
-        $budget=$alert->getExtraPayload()['budget'];
-        $surface=$alert->getExtraPayload()['surface'];
-        $typeDeBien=$alert->getExtraPayload()['typeDeBien'];
-        $identifiantMongo=$alert->getExtraPayload()['client'];
-        $localisation=$alert->getExtraPayload()['localisation'];
+        $alerts =  $this->dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('configurationAlerts')
+            ->getQuery()
+            ->execute();
 
 
 
-        
-        $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,null,null);
+        foreach ($alerts as $alert) {
 
-            foreach($results['results'] as $annonce)
-            {
 
-                $alert=  $this->dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('alerts')
-                ->field('extraPayload.client')->equals($identifiantMongo)
-                ->field('extraPayload.annonce')->equals($annonce->getId())
-                ->getSingleResult()
-                ->getQuery()
-                ->execute();
+            $nbrePieces = $alert->getExtraPayload()['pieces'];
+            $budget = $alert->getExtraPayload()['budget'];
+            $surface = $alert->getExtraPayload()['surface'];
+            $typeDeBien = $alert->getExtraPayload()['typeDeBien'];
+            $identifiantMongo = $alert->getExtraPayload()['client'];
+            $localisation = $alert->getExtraPayload()['localisation'];
 
-                if(is_null($alert))
-                {
-                    $tabAlert['annonce']=$annonce->getId();
-                    $tabAlert['client']=$identifiantMongo;
-                    $tabAlert['vue']=false;
-                    
 
-                    $title="Nouvelle annonce";
 
-                    $msg=$annonce->getExtraPayload()['titre'];
-                    
+
+            $results = $this->entityManager->rechercheAnnonce($localisation, $typeDeBien, $budget, $surface, $nbrePieces, null, null);
+
+            foreach ($results['results'] as $annonce) {
+
+                $alert =  $this->dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('alerts')
+                    ->field('extraPayload.client')->equals($identifiantMongo)
+                    ->field('extraPayload.annonce')->equals($annonce->getId())
+                    ->getSingleResult()
+                    ->getQuery()
+                    ->execute();
+
+                if (is_null($alert)) {
+                    $tabAlert['annonce'] = $annonce->getId();
+                    $tabAlert['client'] = $identifiantMongo;
+                    $tabAlert['vue'] = false;
+
+
+                    $title = "Nouvelle annonce";
+
+                    $msg = $annonce->getExtraPayload()['titre'];
+
 
                     $client = $this->dm->getRepository(Entities::class)->find($identifiantMongo);
-                    if($client)
-                    {
+                    if ($client) {
 
-                        if(sizeof($client->getExtraPayload()['deviceToken']))
-                        {
+                        if (sizeof($client->getExtraPayload()['deviceToken'])) {
 
-                            foreach($client->getExtraPayload()['deviceToken']  as $token)
-                            {
+                            foreach ($client->getExtraPayload()['deviceToken']  as $token) {
 
-                                $this->firebaseManager->notificationNewAnnonce($token,$msg,$title);
+                                $this->firebaseManager->notificationNewAnnonce($token, $msg, $title);
                             }
-
                         }
                     }
-                    $this->entityManager->setResult('alerts',null,$tabAlert);
-
-
-
+                    $this->entityManager->setResult('alerts', null, $tabAlert);
                 }
-
-
             }
-
-
-
         }
 
 
 
 
-      return 0; 
+        return 0;
     }
 }
