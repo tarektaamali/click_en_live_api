@@ -870,9 +870,8 @@ class DefaultController extends AbstractController
         $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('configurationAlerts')
         ->field('extraPayload.client')->equals($identifiantMongo)
-        ->getSingleResult()
         ->getQuery()
-        ->execute();
+        ->getSingleResult();
 
         if($configurationAlerts)
         {
