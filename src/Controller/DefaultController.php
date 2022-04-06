@@ -1047,12 +1047,13 @@ class DefaultController extends AbstractController
                 foreach($tabDateUnique as $date)
                 {
 
-                   $resultats['day']=$date;
-                   $resultats['annonce']=$annonce[$date];
-                   $resultats['client']=$client[$date];
-                   $resultats['listeHeures']=$date;
+                   $t['day']=$date;
+                   $t['annonce']=$annonce[$date];
+                   $t['client']=$client[$date];
+                   $t['listeHeures']=$listeHeures[$date];
 
 
+                   array_push($resultats,$t);
                 }
                 return new JsonResponse($resultats, '200');
             } else {
