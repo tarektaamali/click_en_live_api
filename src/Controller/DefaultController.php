@@ -1037,7 +1037,7 @@ class DefaultController extends AbstractController
 
                     $annonce[$time['day']]=$time['annonce'];
                     $client[$time['day']]=$time['client'];
-                    $listeHeures[$time['day']]=array('starHour'=>$time['starHour'],'endHour'=>$time['endHour'],'etat'=>$time['etat']);
+                    array_push($listeHeures[$time['day']],array('starHour'=>$time['starHour'],'endHour'=>$time['endHour'],'etat'=>$time['etat']));
 
 
                 }
