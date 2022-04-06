@@ -69,7 +69,7 @@ class alertsAnnoncesCommand extends Command
 
 
 
-            $results = $entityManager->rechercheAnnonce($localisation, $typeDeBien, $budget, $surface, $nbrePieces, null, null);
+            $results = $this->entityManager->rechercheAnnonce($localisation, $typeDeBien, $budget, $surface, $nbrePieces, null, null);
 
             foreach ($results['results'] as $annonce) {
 
