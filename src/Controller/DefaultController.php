@@ -891,7 +891,7 @@ class DefaultController extends AbstractController
      * @Route("/disponibilteAnnonceur", methods={"GET"})
      */
 
-    public function disponibilteAnnonceur()
+    public function disponibilteAnnonceur(DocumentManager $dm, $entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
 
         $vueAvancer = "timeplanner_multi"; 
