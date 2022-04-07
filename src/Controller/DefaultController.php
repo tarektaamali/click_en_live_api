@@ -684,6 +684,7 @@ class DefaultController extends AbstractController
 
 
         $logRecherches=$entityManager->setResult("recherches",null,$extraPayload);
+        
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
 
         $data = $this->entityManager->serializeContent($results);
@@ -709,7 +710,7 @@ class DefaultController extends AbstractController
         }
 
 
-      
+               
         
 
         return new JsonResponse($structuresFinal, '200');
