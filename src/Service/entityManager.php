@@ -1348,7 +1348,7 @@ class entityManager
         }
 
 
-        if(  (!is_null($localisation) && $localisation != "")&&(!is_null($budget) ||count($budget))&& (!is_null($typeDeBien)||$typeDeBien!="")&& (!is_null($surface) || count($surface))&&(!is_null($nbrePiece) || count($nbrePiece)))
+        if(  (!is_null($localisation) && $localisation != "")&&(!is_null($budget) ||sizeof($budget))&& (!is_null($typeDeBien)||$typeDeBien!="")&& (!is_null($surface) || sizeof($surface))&&(!is_null($nbrePiece) || sizeof($nbrePiece)))
         
         {
 

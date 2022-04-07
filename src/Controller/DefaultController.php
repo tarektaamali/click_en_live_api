@@ -648,7 +648,7 @@ class DefaultController extends AbstractController
      
         if(is_null($request->get('budget')))
         {
-            $budget=null;
+            $budget=[];
         }
         else{
             $budget=$request->get('budget');
@@ -656,7 +656,7 @@ class DefaultController extends AbstractController
 
         if(is_null($request->get('surface')))
         {
-            $surface=null;
+            $surface=[];
         }
         else{
             $surface=$request->get('surface');
@@ -665,7 +665,7 @@ class DefaultController extends AbstractController
 
         if(is_null($request->get('nbrePieces')))
         {
-            $nbrePieces=null;
+            $nbrePieces=[];
         }
         else{
             $nbrePieces=$request->get('nbrePieces');
