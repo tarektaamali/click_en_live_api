@@ -313,9 +313,20 @@ class DefaultController extends AbstractController
                                     $logo = $strutureVuesService->getUrl($params);
                                     $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
                                 }
+
+                                if(isset($result['annonce'][0]['typeDeBien'])&&$entity=="recherches")
+                                {
+                                    $typeDeBien= $dm->getRepository(Entities::class)->find($result['annonce'][0]['typeDeBien']);
+                                    $name=$typeDeBien->getExtraPayload()['libelle'];
+                                    $structuresFinal['results'][$key]['annonce'][0]['typeDeBien']=$name;
+
+                                    
+                                }
                             }
                         
                     }
+
+                 
                 }
   
                 return new JsonResponse($structuresFinal, '200');

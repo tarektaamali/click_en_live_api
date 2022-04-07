@@ -377,7 +377,7 @@ class ClientController extends AbstractController
      * @Route("/api/client/rdv", methods={"POST"})
      */
 
-    public function RDV(UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, Request $request, HttpClientInterface $client)
+    public function RDV(DocumentManager $dm,firebaseManager $firebaseManager,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, Request $request, HttpClientInterface $client)
     {
 
         $extraPayload = null;
@@ -389,11 +389,44 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+        $disponbilite=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('timeplanner')
+        ->field('extraPayload.day')->equals($extraPayload['day'])
+        ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
+        ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
+        ->field('extraPayload.isActive')->equals("1")
+        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+        ->getQuery()
+        ->getSingleResult();
+
+        if($disponbilite)
+        {
+            $extraPayload['statut']="created";
+            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            $title = "Rendez-vous";
+
+            $msg = $annonce->getExtraPayload()['titre'];
+
+
+            $annonceur = $this->dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['client']);
+            if ($annonceur) {
+
+                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+
+                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                    }
+                }
+            }
+            return new JsonResponse($data->getId());
+        }
+
 
         //
 
-        return new JsonResponse($data->getId());
+
 
     }
 
