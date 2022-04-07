@@ -314,18 +314,21 @@ class DefaultController extends AbstractController
                                     $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
                                 }
 
-                                if(isset($result['annonce'][0]['typeDeBien']))
-                                {
-                                    $typeDeBien= $dm->getRepository(Entities::class)->find($result['annonce'][0]['typeDeBien']);
-                                    $name=$typeDeBien->getExtraPayload()['libelle'];
-                                    $structuresFinal['results'][$key]['annonce'][0]['typeDeBien']=$name;
-
-                                    
-                                }
+                            
                             }
+
+
                         
                     }
 
+                    if(isset($result['typeDeBien']))
+                    {
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($result['typeDeBien']);
+                        $name=$typeDeBien->getExtraPayload()['libelle'];
+                        $structuresFinal['results'][$key]['typeDeBien']=$name;
+
+                        
+                    }
                  
                 }
   
