@@ -425,11 +425,11 @@ class DefaultController extends AbstractController
                         }
                     }
 
-                    if(isset($structureVues[0]['typeDeBien']))
+                    if(isset($structureVues[0]['typeAnnonce']))
                     {
-                        $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeDeBien']);
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeAnnonce']);
                         $name=$typeDeBien->getExtraPayload()['libelle'];
-                        $structureVues[0]['typeDeBien']=$name;
+                        $structureVues[0]['typeAnnonce']=$name;
 
                         
                     }
