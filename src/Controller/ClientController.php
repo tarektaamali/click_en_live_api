@@ -460,12 +460,65 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             /**
      * @Route("/api/client/responseRDV", methods={"POST"})
      */
-    public function responseRDV()
+    public function responseRDV(Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
     {
     //waiting
 //accepted
 //refuse
 
+        	$statut=$request->get('statut');
+            $idRDV=$request->get('idRDV');
+
+            $rdv = $dm->getRepository(Entities::class)->find($idRDV);
+
+            $client=$rdv->getExtraPayload()['client'];
+            $annonceur=$rdv->getExtraPayload()['annonceur'];
+
+            $day=$rdv->getExtraPayload()['annonceur'];
+            $starHour=$rdv->getExtraPayload()['starHour'];
+            $endHour=$rdv->getExtraPayload()['endHour'];
+            
+            
+            if($statut=="accepted")
+            {
+                $title = "Réponse DE Rendez-vous";
+
+
+
+                $msg = "Rendez-vous accepté";
+    
+    
+    
+       
+            }
+            elseif($statut=="refuse")
+            {
+                $msg = "Rendez-vous refusé";
+                $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('timeplanner')
+                ->field('extraPayload.day')->equals($day)
+                ->field('extraPayload.starHour')->equals(intval($starHour))
+                ->field('extraPayload.endHour')->equals(intval($endHour))
+                ->field('extraPayload.annonce')->equals($annonceur)
+                ->findAndUpdate()
+                ->field('extraPayload.etat')->set('1')
+                ->getQuery()
+                ->execute();
+            }
+
+            $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('rendezvous')
+            ->field('extraPayload.Identifiant')->equals($idRDV)
+            ->findAndUpdate()
+            ->field('extraPayload.statut')->set($statut)
+            ->getQuery()
+            ->execute();
+
+
+            $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+
+            return new JsonResponse(array('message'=>'done'),200);
 
 
     }
