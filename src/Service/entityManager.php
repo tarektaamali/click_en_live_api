@@ -945,7 +945,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('annonces')
+            ->field('name')->equals('timeplanner')
             ->getQuery()
             ->execute();
 
@@ -991,8 +991,8 @@ class entityManager
 
            
        // $payload["etages"]="0";
-        $payload["chambres"]=[1,4];
-        $payload["chambresParentale"]=[1,1];
+      //  $payload["chambres"]=[1,4];
+        $payload["etat"]="1";
 
 
 
