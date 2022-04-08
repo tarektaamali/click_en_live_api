@@ -627,9 +627,12 @@ class entityManager
             $payload = $entities->getExtraPayload();
             foreach ($extraPayload as $j => $content) {
                 if (array_key_exists($j, $payload)) {
-//		var_dump($content);
-                    if ($content && isset($content[0])&& $content[0] == ",") {
+//	var_dump($content);
+//	var_dump($j);
+
+                    if ($content && isset($content[0])&& $content[0] === ",") {
                         if ($payload[$j]) {
+		//	var_dump($payload[$j]);var_dump($content[0]);		
                             $content = ltrim($content, $content[0]);
                             $payload[$j] = $payload[$j] . ',' . $content;
                         } else {
