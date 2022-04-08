@@ -401,12 +401,28 @@ class ClientController extends AbstractController
 
         if($disponbilite)
         {
-            $extraPayload['statut']="created";
-            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
-            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
-            $title = "Rendez-vous";
 
-            $msg = $annonce->getExtraPayload()['titre'];
+
+            $extraPayload['statut']="waiting";
+            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+
+            $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('timeplanner')
+            ->field('extraPayload.day')->equals($extraPayload['day'])
+            ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
+            ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
+            ->field('extraPayload.isActive')->equals("1")
+            ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+            ->findAndUpdate()
+            ->field('extraPayload.isActive')->set('0')
+            ->getQuery()
+            ->execute();
+            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            $title = "DEMANDE DE Rendez-vous";
+
+            $client = $this->dm->getRepository(Entities::class)->find($extraPayload['client']);
+            $nomClient=$client->getExtraPayload()['civilite'].' '.$client->getExtraPayload()['nom'].' '.$client->getExtraPayload()['prenom'];
+            $msg = $annonce->getExtraPayload()['titre'].'\n'.$extraPayload['day'].' à '.$extraPayload['starHour'].'\n'.'Rendez-vous avec: \n'. $nomClient;
 
 
             $annonceur = $this->dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['client']);
@@ -415,6 +431,7 @@ class ClientController extends AbstractController
                 if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
 
                     foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
 
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
                     }
@@ -431,11 +448,15 @@ class ClientController extends AbstractController
     }
 
 
+
             /**
      * @Route("/api/client/responseRDV", methods={"POST"})
      */
     public function responseRDV()
     {
+    //waiting
+//accepted
+//refuse
 
 
 
@@ -492,5 +513,35 @@ class ClientController extends AbstractController
         }
     }
 
+
+
+
+     /**
+     * @Route("api/client/likeAnnonce", methods={"POST"})
+     */
+    public function removeTimePlanner()
+    {
+
+        $extraPayload = null;
+
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $disponbilite=$dm->createQueryBuilder(Entities::class)
+        ->findAndRemove()
+        ->field('name')->equals('timeplanner')
+        ->field('extraPayload.day')->equals($extraPayload['day'])
+        ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
+        ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
+        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+        ->getQuery()
+        ->execute();
+
+        return new JsonResponse(array('message'=>'supprimé'),200);
+    }
 
 }
