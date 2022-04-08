@@ -462,9 +462,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
      */
     public function responseRDV(Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
     {
-    //waiting
-//accepted
-//refuse
+
 
         	$statut=$request->get('statut');
             $idRDV=$request->get('idRDV');
@@ -524,6 +522,37 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
     }
 
+            /**
+     * @Route("/api/client/annulerAnnonce", methods={"POST"})
+     */
+    public function annulerAnnonce(Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
+    {
+        	$statut=$request->get('statut');
+            $idRDV=$request->get('idRDV');
+            $client=$request->get('user');
+
+            $rdv = $dm->getRepository(Entities::class)->find($idRDV);
+
+            $client=$rdv->getExtraPayload()['client'];
+            $annonceur=$rdv->getExtraPayload()['annonceur'];
+            $title = "Réponse DE Rendez-vous";
+            $msg = "Rendez-vous annulé";
+            $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('rendezvous')
+            ->field('extraPayload.Identifiant')->equals($idRDV)
+            ->findAndUpdate()
+            ->field('extraPayload.statut')->set($statut)
+            ->getQuery()
+            ->execute();
+
+
+            $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+
+            return new JsonResponse(array('message'=>'done'),200);
+
+
+    }
 
         /**
      * @Route("api/client/likeAnnonce", methods={"POST"})

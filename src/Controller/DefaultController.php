@@ -358,7 +358,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/read/{id}", methods={"GET"})
      */
-    public function readAvance(strutureVuesService $strutureVuesService, $id, Request $request)
+    public function readAvance(strutureVuesService $strutureVuesService, $id, Request $request,DocumentManager $dm)
     {
         $vue = null;
         if ($request->get('vue') != null) {
@@ -423,6 +423,15 @@ class DefaultController extends AbstractController
                                 $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
                             }
                         }
+                    }
+
+                    if(isset($structureVues[0]['typeDeBien']))
+                    {
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeDeBien']);
+                        $name=$typeDeBien->getExtraPayload()['libelle'];
+                        $structureVues[0]['typeDeBien']=$name;
+
+                        
                     }
                 }
                 return new JsonResponse($structureVues, '200');
