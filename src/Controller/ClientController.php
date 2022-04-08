@@ -471,8 +471,8 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
             $client=$rdv->getExtraPayload()['client'];
             $annonceur=$rdv->getExtraPayload()['annonceur'];
-
-            $day=$rdv->getExtraPayload()['annonceur'];
+            $annonce=$rdv->getExtraPayload()['annonce'];
+            $day=$rdv->getExtraPayload()['day'];
             $starHour=$rdv->getExtraPayload()['starHour'];
             $endHour=$rdv->getExtraPayload()['endHour'];
             
@@ -498,7 +498,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
                 ->field('extraPayload.day')->equals($day)
                 ->field('extraPayload.starHour')->equals(intval($starHour))
                 ->field('extraPayload.endHour')->equals(intval($endHour))
-                ->field('extraPayload.annonce')->equals($annonceur)
+                ->field('extraPayload.annonce')->equals($annonce)
                 ->findAndUpdate()
                 ->field('extraPayload.etat')->set('1')
                 ->getQuery()
@@ -529,14 +529,36 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
     {
         	$statut=$request->get('statut');
             $idRDV=$request->get('idRDV');
-            $client=$request->get('user');
+            $role=$request->get('role');
 
             $rdv = $dm->getRepository(Entities::class)->find($idRDV);
+            $annonce=$rdv->getExtraPayload()['annonce'];
+            $day=$rdv->getExtraPayload()['day'];
+            $starHour=$rdv->getExtraPayload()['starHour'];
+            $endHour=$rdv->getExtraPayload()['endHour'];
 
-            $client=$rdv->getExtraPayload()['client'];
-            $annonceur=$rdv->getExtraPayload()['annonceur'];
+            if($role=="client")
+            {
+                $distinataire=$rdv->getExtraPayload()['client'];
+            }
+            else{
+                $distinataire=$rdv->getExtraPayload()['annonceur'];
+            }
+
+           
+           
             $title = "Réponse DE Rendez-vous";
             $msg = "Rendez-vous annulé";
+            $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('timeplanner')
+            ->field('extraPayload.day')->equals($day)
+            ->field('extraPayload.starHour')->equals(intval($starHour))
+            ->field('extraPayload.endHour')->equals(intval($endHour))
+            ->field('extraPayload.annonce')->equals($annonce)
+            ->findAndUpdate()
+            ->field('extraPayload.etat')->set('1')
+            ->getQuery()
+            ->execute();
             $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('rendezvous')
             ->field('extraPayload.Identifiant')->equals($idRDV)
