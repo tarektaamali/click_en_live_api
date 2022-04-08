@@ -377,7 +377,7 @@ class ClientController extends AbstractController
      * @Route("/api/client/rdv", methods={"POST"})
      */
 
-    public function RDV(DocumentManager $dm,firebaseManager $firebaseManager,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, $form, Request $request, HttpClientInterface $client)
+    public function RDV(DocumentManager $dm,firebaseManager $firebaseManager,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
     {
 
         $extraPayload = null;
@@ -404,7 +404,7 @@ class ClientController extends AbstractController
 
 
             $extraPayload['statut']="waiting";
-            $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+            $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
 
             $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('timeplanner')
