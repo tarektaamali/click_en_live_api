@@ -493,6 +493,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             }
             elseif($statut=="refuse")
             {
+                $title = "Réponse DE Rendez-vous";
                 $msg = "Rendez-vous refusé";
                 $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('timeplanner')
