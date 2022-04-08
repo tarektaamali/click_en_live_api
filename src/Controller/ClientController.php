@@ -392,16 +392,17 @@ class ClientController extends AbstractController
         $disponbilite=$dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('timeplanner')
         ->field('extraPayload.day')->equals($extraPayload['day'])
-        ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
-        ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
-        ->field('extraPayload.isActive')->equals("1")
+        ->field('extraPayload.starHour')->equals(intval($extraPayload['starHour']))
+        ->field('extraPayload.endHour')->equals(intval($extraPayload['endHour']))
+        ->field('extraPayload.etat')->equals("1")
         ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
         ->getQuery()
         ->getSingleResult();
-
+//dd($disponbilite);
         if($disponbilite)
         {
-
+         	$annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+             $extraPayload['annonceur']=$annonce->getExtraPayload()['linkedCompte'];
 
             $extraPayload['statut']="waiting";
             $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
@@ -409,36 +410,43 @@ class ClientController extends AbstractController
             $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('timeplanner')
             ->field('extraPayload.day')->equals($extraPayload['day'])
-            ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
-            ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
-            ->field('extraPayload.isActive')->equals("1")
+            ->field('extraPayload.starHour')->equals(intval($extraPayload['starHour']))
+            ->field('extraPayload.endHour')->equals(intval($extraPayload['endHour']))
+            ->field('extraPayload.etat')->equals("1")
             ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
             ->findAndUpdate()
-            ->field('extraPayload.isActive')->set('0')
+            ->field('extraPayload.etat')->set('0')
             ->getQuery()
             ->execute();
-            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+           // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
             $title = "DEMANDE DE Rendez-vous";
 
-            $client = $this->dm->getRepository(Entities::class)->find($extraPayload['client']);
+
+
+            $client = $dm->getRepository(Entities::class)->find($extraPayload['client']);
             $nomClient=$client->getExtraPayload()['civilite'].' '.$client->getExtraPayload()['nom'].' '.$client->getExtraPayload()['prenom'];
-            $msg = $annonce->getExtraPayload()['titre'].'\n'.$extraPayload['day'].' à '.$extraPayload['starHour'].'\n'.'Rendez-vous avec: \n'. $nomClient;
+            $msg = $annonce->getExtraPayload()['titre']."\r".$extraPayload['day'].' à '.$extraPayload['starHour']."\r Rendez-vous avec: \r". $nomClient;
 
 
-            $annonceur = $this->dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['client']);
-            if ($annonceur) {
 
-                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
 
-                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
-                        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+            $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+           // if ($annonceur) {
 
+             //   if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+
+               //     foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+//                        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+$token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                    }
-                }
-            }
+                 //   }
+               // }
+           //  }
             return new JsonResponse($data->getId());
-        }
+        }else{
+	  return new JsonResponse(array('message'=>'RDV impossible'),400);
+
+	}
 
 
         //
