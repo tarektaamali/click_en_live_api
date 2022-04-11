@@ -683,9 +683,9 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
 
         $disponbilite=$dm->createQueryBuilder(Entities::class)
-        ->findAndRemove()
         ->field('name')->equals('timeplanner')
         ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
+        ->findAndRemove()
         ->getQuery()
         ->execute();
 
@@ -701,7 +701,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
             $tab['etat']="1";
 
-            $data = $this->entityManager->setResult("timeplanner", null, $tab);
+            $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
         }
 
 
