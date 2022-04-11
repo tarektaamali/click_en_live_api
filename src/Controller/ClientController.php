@@ -664,29 +664,40 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
     public function deposerDisponibilite(Request $request,DocumentManager $dm)
     {
 
-        $idAnnonce=$request->get('idAnnonce');
 
-        $client=$request->get('idClient');
+        $extraPayload = null;
 
-        $data=$request->get('data');
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+
+     //   $idAnnonce=$request->get('idAnnonce');
+
+//        $client=$request->get('idClient');
+
+//$data=$request->get('data');
 
 
         $disponbilite=$dm->createQueryBuilder(Entities::class)
         ->findAndRemove()
         ->field('name')->equals('timeplanner')
-        ->field('extraPayload.annonce')->equals($idAnnonce)
+        ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
         ->getQuery()
         ->execute();
 
         
-        foreach($data as $d)
+        foreach($extraPayload['data'] as $d)
         {
 
             $extraPayload['day']=$d['day'];
             $extaPayload['starHour']=$d['starHour'];
             $extaPayload['endHour']=$d['endHour'];
-            $extaPayload['annonce']=$idAnnonce;
-            $extaPayload['client']=$client;
+            $extaPayload['annonce']=$extraPayload['idAnnonce'];
+            $extaPayload['client']=$extraPayload['idClient'];
 
             $extaPayload['etat']="1";
 
