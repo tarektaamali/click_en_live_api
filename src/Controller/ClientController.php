@@ -632,7 +632,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
      /**
      * @Route("api/client/likeAnnonce", methods={"POST"})
      */
-    public function removeTimePlanner()
+    public function removeTimePlanner(Request $request,DocumentManager $dm)
     {
 
         $extraPayload = null;
@@ -655,6 +655,50 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
         ->execute();
 
         return new JsonResponse(array('message'=>'supprimé'),200);
+    }
+
+
+     /**
+     * @Route("api/client/deposerDisponibilite", methods={"POST"})
+     */
+    public function deposerDisponibilite(Request $request,DocumentManager $dm)
+    {
+
+        $idAnnonce=$request->get('idAnnonce');
+
+        $client=$request->get('idClient');
+
+        $data=$request->get('data');
+
+
+        $disponbilite=$dm->createQueryBuilder(Entities::class)
+        ->findAndRemove()
+        ->field('name')->equals('timeplanner')
+        ->field('extraPayload.annonce')->equals($idAnnonce)
+        ->getQuery()
+        ->execute();
+
+        
+        foreach($data as $d)
+        {
+
+            $extraPayload['day']=$d['day'];
+            $extaPayload['starHour']=$d['starHour'];
+            $extaPayload['endHour']=$d['endHour'];
+            $extaPayload['annonce']=$idAnnonce;
+            $extaPayload['client']=$client;
+
+            $extaPayload['etat']="1";
+
+            $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
+        }
+
+
+
+        return new JsonResponse(array('message'=>'timePlanner créé avec succès'),200);
+
+
+
     }
 
 }
