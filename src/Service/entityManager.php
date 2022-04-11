@@ -1368,10 +1368,10 @@ class entityManager
         ->field('status')->equals("active");
     
         
-    if (!is_null($typeDeBien) && $typeDeBien!="") {
+    if (!is_null($typeDeBien) && sizeof($typeDeBien)) {
 
         //rechercheParPrix
-        $qb->field('extraPayload.typeAnnonce')->equals($typeDeBien);
+        $qb->field('extraPayload.typeAnnonce')->in($typeDeBien);
     }
 
     if (!is_null($localisation) && $localisation != "") {
