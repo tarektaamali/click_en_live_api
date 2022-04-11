@@ -693,11 +693,11 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
         foreach($extraPayload['data'] as $d)
         {
 
-            $extraPayload['day']=$d['day'];
-            $extaPayload['starHour']=$d['starHour'];
-            $extaPayload['endHour']=$d['endHour'];
-            $extaPayload['annonce']=$extraPayload['idAnnonce'];
-            $extaPayload['client']=$extraPayload['idClient'];
+            $tab['day']=$d['day'];
+            $tab['starHour']=$d['starHour'];
+            $tab['endHour']=$d['endHour'];
+            $tab['annonce']=$extraPayload['idAnnonce'];
+            $tab['client']=$extraPayload['idClient'];
 
             $extaPayload['etat']="1";
 
