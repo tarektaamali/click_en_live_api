@@ -699,9 +699,9 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             $tab['annonce']=$extraPayload['idAnnonce'];
             $tab['client']=$extraPayload['idClient'];
 
-            $extaPayload['etat']="1";
+            $tab['etat']="1";
 
-            $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
+            $data = $this->entityManager->setResult("timeplanner", null, $tab);
         }
 
 
