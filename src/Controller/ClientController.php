@@ -663,53 +663,45 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
      */
     public function deposerDisponibilite(Request $request,DocumentManager $dm)
     {
-
-
         $extraPayload = null;
-
         $entity = null;
-
         if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $content = json_decode($request->getContent(), true);
             $extraPayload = $content['extraPayload'];
         }
-
-
-     //   $idAnnonce=$request->get('idAnnonce');
-
-//        $client=$request->get('idClient');
-
-//$data=$request->get('data');
-
-
-        $disponbilite=$dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('timeplanner')
+        $countRDV=$dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('rendezvous')
         ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
-        ->findAndRemove()
+        ->field('extraPayload.etat')->equals('1')
+        ->count()
         ->getQuery()
         ->execute();
-
-        
-        foreach($extraPayload['data'] as $d)
+        if($countRDV==0)
         {
-
-            $tab['day']=$d['day'];
-            $tab['starHour']=$d['starHour'];
-            $tab['endHour']=$d['endHour'];
-            $tab['annonce']=$extraPayload['idAnnonce'];
-            $tab['client']=$extraPayload['idClient'];
-
-            $tab['etat']="1";
-
-            $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
-        }
-
-
-
+            $timeplanner=$dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('timeplanner')
+            ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
+            ->getQuery()
+            ->execute();
+            foreach($timeplanner as $t)
+            {
+                $this->entityManager->deleteResult($t->getExtraPayload()['Identifiant']);
+            }
+            foreach($extraPayload['data'] as $d)
+            {
+                $tab['day']=$d['day'];
+                $tab['starHour']=$d['starHour'];
+                $tab['endHour']=$d['endHour'];
+                $tab['annonce']=$extraPayload['idAnnonce'];
+                $tab['client']=$extraPayload['idClient'];
+                $tab['etat']="1";
+                $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
+            }
         return new JsonResponse(array('message'=>'timePlanner créé avec succès'),200);
-
-
-
+        }
+        else{
+        return new JsonResponse(array('message'=>'impossible de suprrimer'),400);
+        }
     }
 
 }
