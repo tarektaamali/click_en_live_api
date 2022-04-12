@@ -422,7 +422,7 @@ class AdminController extends AbstractController
 
 
       /**
-     * @Route("/api/admin/refuserAnnnoce", methods={"POST"})
+     * @Route("/api/admin/bloquerImages", methods={"POST"})
      */
 
     public function bloquerImages(Request $request)
