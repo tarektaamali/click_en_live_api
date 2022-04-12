@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Entity\CodeActivation;
 use App\Service\entityManager;
 use App\Service\eventsManager;
+use App\Service\firebaseManager;
 use App\Service\strutureVuesService;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -350,6 +351,101 @@ class AdminController extends AbstractController
         }
     }
 
+
+
+      /**
+     * @Route("/api/admin/accepterAnnnoce", methods={"POST"})
+     */
+    public function accepterAnnnoce(Request $request,firebaseManager $firebaseManager)
+    {
+
+        
+        $idAnnonce=$request->get('idAnnonce');        
+        
+        
+        $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('annonces')
+        ->field('extraPayload.Identifiant')->equals($idAnnonce)
+        ->findAndUpdate()
+        ->field('extraPayload.statut')->set('valide')
+        ->field('extraPayload.isActive')->set('1')
+        ->getQuery()
+        ->execute();
+
+        $title="CLICK ON LIVE";
+        $msg="Votre annonce a été accepté";
+
+        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+
+
+
+        return new JsonResponse(array('message'=>'done'));
+    }
+
+  /**
+     * @Route("/api/admin/refuserAnnnoce", methods={"POST"})
+     */
+    public function refuserAnnnoce(Request $request,firebaseManager $firebaseManager)
+    {
+
+        
+        $idAnnonce=$request->get('idAnnonce');
+
+        $raison=$request->get('raison');
+
+        
+        
+        
+        $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('annonces')
+        ->field('extraPayload.Identifiant')->equals($idAnnonce)
+        ->findAndUpdate()
+        ->field('extraPayload.statut')->set('refused')
+        ->field('extraPayload.isActive')->set('0')
+        ->field('extraPayload.raison')->set($raison)
+        ->getQuery()
+        ->execute();
+
+        $title="CLICK ON LIVE";
+        $msg="Votre annonce a été refusée pour la raison suivante: ".$raison;
+
+        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+
+
+
+        return new JsonResponse(array('message'=>'done'));
+    }
+
+
+
+
+      /**
+     * @Route("/api/admin/refuserAnnnoce", methods={"POST"})
+     */
+
+    public function bloquerImages(Request $request)
+    {
+        $extraPayload = null;
+
+        $entity = null;
+
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $data = $this->entityManager->setResult('imagesAnnonces', null, $extraPayload);
+
+
+
+
+        return new JsonResponse(array('message'=>'done'),200);
+        
+
+    } 
 
         
 }
