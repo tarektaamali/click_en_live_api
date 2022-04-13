@@ -435,9 +435,18 @@ class DefaultController extends AbstractController
 
                     if(isset($structureVues[0]['typeAnnonce']))
                     {
+                        
                         $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeAnnonce']);
-                        $name=$typeDeBien->getExtraPayload()['libelle'];
-                        $structureVues[0]['typeAnnonce']=$name;
+                        if($typeDeBien)
+                        {
+                            $name=$typeDeBien->getExtraPayload()['libelle'];
+                            $structureVues[0]['typeAnnonce']=$name;
+                        }
+                        else{
+                            
+                            $structureVues[0]['typeAnnonce']="";
+                        }
+                       
 
                         
                     }
@@ -599,6 +608,49 @@ class DefaultController extends AbstractController
             $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
             $structuresFinal['count'] = $data['count'];
             $structuresFinal['results'] = $structureVues;
+
+            foreach($structuresFinal['results'] as $key=>$result)
+            {
+
+                if(isset($result['client']))
+                {
+                   
+                        if(isset($result['client'][0]))
+                        {
+                            if(isset($result['client'][0]['photoProfil']))
+                            {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] =$result['client'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structuresFinal['results'][$key]['client'][0]['photoProfil']= $logo;
+                            }
+                        }
+                    
+                }
+
+             
+
+                if(isset($result['typeAnnonce']))
+                {
+                    $typeDeBien= $dm->getRepository(Entities::class)->find($result['typeAnnonce']);
+                    if($typeDeBien)
+                    {
+                        $name=$typeDeBien->getExtraPayload()['libelle'];
+                        $structuresFinal['results'][$key]['typeAnnonce']=$name;
+                    }
+                    else{
+                        $structuresFinal['results'][$key]['typeAnnonce']="";
+
+                    }
+       
+
+                    
+                }
+             
+            }
 
             
         } else {
