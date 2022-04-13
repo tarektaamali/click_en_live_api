@@ -653,14 +653,14 @@ class DefaultController extends AbstractController
             return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
         }
 
-        if(is_null($request->get('localisation')))
+        if(is_null($request->get('localisation'))||$request->get('localisation')=="")
         {
             $localisation=null;
         }
         else{
             $localisation=$request->get('localisation');
         }
-        if(is_null($request->get('typeDeBien')))
+        if(is_null($request->get('typeDeBien'))||$request->get('typeDeBien')=="")
         {
             $typeDeBien=null;
         }
@@ -669,7 +669,7 @@ class DefaultController extends AbstractController
         }
     
      
-        if(is_null($request->get('budget')))
+        if(is_null($request->get('budget'))||$request->get('budget')=="")
         {
             $budget=[];
         }
@@ -677,7 +677,7 @@ class DefaultController extends AbstractController
             $budget=$request->get('budget');
         }
 
-        if(is_null($request->get('surface')))
+        if(is_null($request->get('surface'))||$request->get('surface')=="")
         {
             $surface=[];
         }
@@ -686,7 +686,7 @@ class DefaultController extends AbstractController
         }
     
 
-        if(is_null($request->get('nbrePieces')))
+        if(is_null($request->get('nbrePieces'))||$request->get('nbrePieces')=="")
         {
             $nbrePieces=[];
         }
