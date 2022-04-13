@@ -700,7 +700,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
         return new JsonResponse(array('message'=>'timePlanner créé avec succès'),200);
         }
         else{
-        return new JsonResponse(array('message'=>'impossible de suprrimer'),400);
+        return new JsonResponse(array('message'=>'impossible de modifier'),400);
         }
     }
 

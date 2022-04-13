@@ -367,7 +367,6 @@ class AdminController extends AbstractController
         ->field('name')->equals('annonces')
         ->field('extraPayload.Identifiant')->equals($idAnnonce)
         ->findAndUpdate()
-        ->field('extraPayload.statut')->set('valide')
         ->field('extraPayload.isActive')->set('1')
         ->getQuery()
         ->execute();
@@ -401,7 +400,7 @@ class AdminController extends AbstractController
         ->field('name')->equals('annonces')
         ->field('extraPayload.Identifiant')->equals($idAnnonce)
         ->findAndUpdate()
-        ->field('extraPayload.statut')->set('refused')
+    //    ->field('extraPayload.statut')->set('refused')
         ->field('extraPayload.isActive')->set('0')
         ->field('extraPayload.raison')->set($raison)
         ->getQuery()
@@ -446,6 +445,5 @@ class AdminController extends AbstractController
         
 
     } 
-
-        
+ 
 }
