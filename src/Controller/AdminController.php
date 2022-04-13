@@ -436,7 +436,35 @@ class AdminController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+
+        //check if exit
+
+      $nb=  $this->documentManager->createQueryBuilder(Entities::class)
+        ->field('name')->equals('imagesAnnonces')
+        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+        ->field('extraPayload.image')->equals($extraPayload['image'])
+
+        ->getQuery()
+        ->execute();
+
+
+        //remove
+        if( $nb)
+        { $this->documentManager->createQueryBuilder(Entities::class)
+            ->field('name')->equals('imagesAnnonces')
+            ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+            ->field('extraPayload.image')->equals($extraPayload['image'])
+            ->findAndRemove()
+            ->getQuery()
+            ->execute();
+
+        }
+        else{
+        //create
         $data = $this->entityManager->setResult('imagesAnnonces', null, $extraPayload);
+        }
+
+    
 
 
 
