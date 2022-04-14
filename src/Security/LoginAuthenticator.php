@@ -57,7 +57,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
             $credentials = [
                 'type' => $request->request->get('type'),
                 'idUser' => $request->request->get('idUser'),
-                'accessToken' => $request->request->get('tokenFacebook'),
+                'accessToken' => $request->request->get('accessToken'),
             ];
         }
         elseif($request->request->get('type')=='google'){
