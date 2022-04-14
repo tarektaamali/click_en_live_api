@@ -356,7 +356,7 @@ class AdminController extends AbstractController
       /**
      * @Route("/api/admin/accepterAnnnoce", methods={"POST"})
      */
-    public function accepterAnnnoce(Request $request,firebaseManager $firebaseManager)
+    public function accepterAnnnoce(Request $request,firebaseManager $firebaseManager,MailerInterface $mailer)
     {
 
         
@@ -371,6 +371,11 @@ class AdminController extends AbstractController
         ->getQuery()
         ->execute();
 
+
+        $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
+
+        $client=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+
         $title="CLICK ON LIVE";
         $msg="Votre annonce a été accepté";
 
@@ -378,6 +383,21 @@ class AdminController extends AbstractController
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
+                        $subject = "CLICK ON LIVE";
+    
+                        $email = (new TemplatedEmail())
+                            ->from("clickonlive65@gmail.com")
+                            ->to(new Address(trim($client->getExtraPayload()['email'])))
+                            //->bcc('touhemib@gmail.com')
+                            ->subject($subject)
+                            ->htmlTemplate('Email/accepterAnnonce.html.twig')
+                            ->context([
+            
+                                "nom" =>$client->getExtraPayload()['nom'],
+                                "prenom" =>$client->getExtraPayload()['prenom']
+                            ]);
+            
+                        $mailer->send($email);
 
         return new JsonResponse(array('message'=>'done'));
     }
@@ -385,7 +405,7 @@ class AdminController extends AbstractController
   /**
      * @Route("/api/admin/refuserAnnnoce", methods={"POST"})
      */
-    public function refuserAnnnoce(Request $request,firebaseManager $firebaseManager)
+    public function refuserAnnnoce(Request $request,firebaseManager $firebaseManager,MailerInterface $mailer)
     {
 
         
@@ -406,6 +426,11 @@ class AdminController extends AbstractController
         ->getQuery()
         ->execute();
 
+
+        $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
+
+        $client=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+
         $title="CLICK ON LIVE";
         $msg="Votre annonce a été refusée pour la raison suivante: ".$raison;
 
@@ -413,6 +438,22 @@ class AdminController extends AbstractController
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
+                        
+                        $subject = "CLICK ON LIVE";
+    
+                        $email = (new TemplatedEmail())
+                            ->from("clickonlive65@gmail.com")
+                            ->to(new Address(trim($client->getExtraPayload()['email'])))
+                            //->bcc('touhemib@gmail.com')
+                            ->subject($subject)
+                            ->htmlTemplate('Email/accepterAnnonce.html.twig')
+                            ->context([
+            
+                                "nom" =>$client->getExtraPayload()['nom'],
+                                "prenom" =>$client->getExtraPayload()['prenom']
+                            ]);
+            
+                        $mailer->send($email);
 
         return new JsonResponse(array('message'=>'done'));
     }
@@ -424,7 +465,7 @@ class AdminController extends AbstractController
      * @Route("/api/admin/bloquerImages", methods={"POST"})
      */
 
-    public function bloquerImages(Request $request)
+    public function bloquerImages(Request $request,MailerInterface $mailer)
     {
         $extraPayload = null;
 
@@ -462,6 +503,32 @@ class AdminController extends AbstractController
         else{
         //create
         $data = $this->entityManager->setResult('imagesAnnonces', null, $extraPayload);
+
+
+        $annonce=$this->documentManager->getRepository(Entities::class)->find($extraPayload['annonce']);
+
+        $client=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+
+
+                        
+                        $subject = "CLICK ON LIVE";
+    
+                        $email = (new TemplatedEmail())
+                            ->from("clickonlive65@gmail.com")
+                            ->to(new Address(trim($client->getExtraPayload()['email'])))
+                            //->bcc('touhemib@gmail.com')
+                            ->subject($subject)
+                            ->htmlTemplate('Email/bloquerImage.html.twig')
+                            ->context([
+            
+                                "nom" =>$client->getExtraPayload()['nom'],
+                                "prenom" =>$client->getExtraPayload()['prenom']
+                            ]);
+            
+                        $mailer->send($email);
+
+
+        
         }
 
     
