@@ -945,7 +945,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('annonce')
+            ->field('name')->equals('recherches')
             ->getQuery()
             ->execute();
 
@@ -956,56 +956,10 @@ class entityManager
             //dd($entities);
             //var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
-            //var_dump($payload);           
-            /*foreach ($extraPayload as $j => $content) {
-                if (array_key_exists($j, $payload)) {
-                    if ($content && $content[0] == ",") {
-                        if ($payload[$j]) {
-                            $content = ltrim($content, $content[0]);
-                            $payload[$j] = $payload[$j] . ',' . $content;
-                        } else {
-                            $content = ltrim($content, $content[0]);
-                            $payload[$j] = $content;
-                        }
-                        $payload[$j] = preg_replace("/,+/", ",", $payload[$j]);
-                        $payload[$j] = trim($payload[$j], ",");
-                    } else {
-                        $payload[$j] = $content;
-                        if (stripos($j, "date") !== false && trim($content) != null) {
-                            $datetime = new DateTime();
-                            $newDate = $datetime->createFromFormat('Y-m-d', $content);
-                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
-                            $payload[$j] = $newDate;
-                        }
-                    }
-                }
-              
-            }*/
-        
-           
+
+             $payload["titre"]="titre";
 
 
-       
-
-           
-
-           
-       // $payload["etages"]="0";
-      //  $payload["chambres"]=[1,4];
-        $payload["raison"]="";
-
-
-
-      /*   $payload["reste"]=[
-            "MidiNow"=> 100,
-            "MidiTomorrow"=>100,
-            "SoirNow"=> 100,
-            "SoirTomorrow"=>100,
-            "NuitNow"=>100,
-            "NuitTomorrow"=>100
-         ];*/ 
-
-            //$entities->setAuthor('firas'); // should be user // might be useful for blocking unauthorized changes
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
             $entities->setVues("");

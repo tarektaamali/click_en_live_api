@@ -712,13 +712,25 @@ class DefaultController extends AbstractController
 
 
 
-       
+      
+        
 
         $identifiantMongo=$request->get('identifiantMongo');
         if(is_null($identifiantMongo))
         {
             return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
         }
+
+
+        if(is_null($request->get('titre'))||$request->get('titre')=="")
+        {
+            $titre=null;
+        }
+        else{
+            $titre=$request->get('titre');
+        }
+
+        $save=$request->get('save');
 
         if(is_null($request->get('localisation'))||$request->get('localisation')=="")
         {
@@ -764,6 +776,7 @@ class DefaultController extends AbstractController
        
 
         $extraPayload=[];
+        $extraPayload['titre']=$titre;
         $extraPayload['pieces']=$nbrePieces;
         $extraPayload['budget']=$budget;
         $extraPayload['surface']=$surface;
@@ -773,7 +786,11 @@ class DefaultController extends AbstractController
 
 
 
-        $logRecherches=$entityManager->setResult("recherches",null,$extraPayload);
+        if($save)
+        {
+            $logRecherches=$entityManager->setResult("recherches",null,$extraPayload);
+        }
+       
         
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
 
