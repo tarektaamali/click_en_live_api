@@ -446,7 +446,7 @@ class AdminController extends AbstractController
                             ->to(new Address(trim($client->getExtraPayload()['email'])))
                             //->bcc('touhemib@gmail.com')
                             ->subject($subject)
-                            ->htmlTemplate('Email/accepterAnnonce.html.twig')
+                            ->htmlTemplate('Email/refuserAnnonce.html.twig')
                             ->context([
             
                                 "nom" =>$client->getExtraPayload()['nom'],
