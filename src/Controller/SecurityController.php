@@ -244,7 +244,7 @@ class SecurityController extends AbstractController
     public function facebook_check($credentials)
     {
 
-        $token = $credentials['tokenFacebook'];
+        $token = $credentials['accessToken'];
         // Get the token's FB app info.
         $tokenAppResp = file_get_contents('https://graph.facebook.com/app/?access_token=' . $token);
         //   var_dump($tokenAppResp);
