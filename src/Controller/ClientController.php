@@ -442,6 +442,23 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
                  //   }
                // }
            //  }
+
+
+           $subject = "CLICK ON LIVE";
+    
+           $email = (new TemplatedEmail())
+               ->from("clickonlive65@gmail.com")
+               ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+               //->bcc('touhemib@gmail.com')
+               ->subject($subject)
+               ->htmlTemplate('Email/demandeRendezVous.html.twig')
+               ->context([
+
+                   "nom" =>$client->getExtraPayload()['nom'],
+                   "prenom" =>$client->getExtraPayload()['prenom']
+               ]);
+
+           $mailer->send($email);
             return new JsonResponse($data->getId());
         }else{
 	  return new JsonResponse(array('message'=>'RDV impossible'),400);
@@ -460,7 +477,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             /**
      * @Route("/api/client/responseRDV", methods={"POST"})
      */
-    public function responseRDV(Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
+    public function responseRDV(Request $request,DocumentManager $dm,firebaseManager $firebaseManager,MailerInterface $mailer)
     {
 
 
@@ -472,6 +489,12 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             $client=$rdv->getExtraPayload()['client'];
             $annonceur=$rdv->getExtraPayload()['annonceur'];
             $annonce=$rdv->getExtraPayload()['annonce'];
+
+            
+        $entityannonce=$this->documentManager->getRepository(Entities::class)->find($annonce);
+
+        $client=$this->documentManager->getRepository(Entities::class)->find($entityannonce->getExtraPayload()['linkedCompte']);
+
             $day=$rdv->getExtraPayload()['day'];
             $starHour=$rdv->getExtraPayload()['starHour'];
             $endHour=$rdv->getExtraPayload()['endHour'];
@@ -485,7 +508,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
                 $msg = "Rendez-vous accepté";
     
-    
+                $twig="accepterRendezVous.html.twig";
     
        
             }
@@ -503,6 +526,8 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
                 ->field('extraPayload.etat')->set('1')
                 ->getQuery()
                 ->execute();
+
+                $twig="refuserRendezVous.html.twig";
             }
 
             $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
@@ -517,6 +542,22 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
             $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
+
+            $subject = "CLICK ON LIVE";
+    
+            $email = (new TemplatedEmail())
+                ->from("clickonlive65@gmail.com")
+                ->to(new Address(trim($client->getExtraPayload()['email'])))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/'.$twig)
+                ->context([
+
+                    "nom" =>$client->getExtraPayload()['nom'],
+                    "prenom" =>$client->getExtraPayload()['prenom']
+                ]);
+
+            $mailer->send($email);
             return new JsonResponse(array('message'=>'done'),200);
 
 
@@ -525,7 +566,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             /**
      * @Route("/api/client/annulerAnnonce", methods={"POST"})
      */
-    public function annulerAnnonce(Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
+    public function annulerAnnonce(MailerInterface $mailer,Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
     {
         	$statut=$request->get('statut');
             $idRDV=$request->get('idRDV');
@@ -571,6 +612,23 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
             $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
+
+            $client=$this->documentManager->getRepository(Entities::class)->find($distinataire);
+            $subject = "CLICK ON LIVE";
+    
+            $email = (new TemplatedEmail())
+                ->from("clickonlive65@gmail.com")
+                ->to(new Address(trim($client->getExtraPayload()['email'])))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/annulerRendezVous.html.twig')
+                ->context([
+
+                    "nom" =>$client->getExtraPayload()['nom'],
+                    "prenom" =>$client->getExtraPayload()['prenom']
+                ]);
+
+            $mailer->send($email);
             return new JsonResponse(array('message'=>'done'),200);
 
 

@@ -530,7 +530,14 @@ class DefaultController extends AbstractController
 
 
 
-        $vueAvancer = "annonces_multi";
+        if(is_null($request->get('vueAvancer')))
+        {
+            $vueAvancer = "annonces_multi";
+        }
+        else{
+            $vueAvancer =  "annonces_multi_localisations";
+        }
+
         $version = 2;
         if ($request->get('version') != null) {
             $version = $request->get('version');
