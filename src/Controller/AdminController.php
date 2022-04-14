@@ -484,7 +484,7 @@ class AdminController extends AbstractController
         ->field('name')->equals('imagesAnnonces')
         ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
         ->field('extraPayload.image')->equals($extraPayload['image'])
-
+        ->count()
         ->getQuery()
         ->execute();
 
