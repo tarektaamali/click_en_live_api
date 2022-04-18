@@ -870,6 +870,10 @@ class ClientController extends AbstractController
     }
 
 
+        /**
+     * @Route("/api/client/getMesRendezVous", methods={"GET"})
+     */
+
 
     public function getMesRendezVous($entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
