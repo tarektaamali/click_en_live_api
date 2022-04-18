@@ -943,6 +943,7 @@ class ClientController extends AbstractController
 
 
    
+                $entity="rendezvous";
         $data1 = $this->entityManager->getResultFromArray($entity, $filter);
     
         $array1 = $this->entityManager->serializeContent($data1);
