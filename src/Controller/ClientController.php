@@ -875,7 +875,7 @@ class ClientController extends AbstractController
      */
 
 
-    public function getMesRendezVous($entity, strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function getMesRendezVous( strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
