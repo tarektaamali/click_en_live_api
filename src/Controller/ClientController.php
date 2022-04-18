@@ -802,8 +802,8 @@ class ClientController extends AbstractController
             $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
 
             $extraPayload['day'] = $day;
-            $extraPayload['starHour'] = $starHour;
-            $extraPayload['endHour'] = $endHour;
+            $extraPayload['starHour'] = intval($starHour);
+            $extraPayload['endHour'] = intval($endHour);
             $extraPayload['statut'] = "waiting";
             $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
 
