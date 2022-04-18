@@ -374,27 +374,41 @@ class AdminController extends AbstractController
 
         $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
 
-        $client=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+        $annonceur=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
 
         $title="CLICK ON LIVE";
         $msg="Votre annonce a été accepté";
 
-        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+        
+      //  $client = $dm->getRepository(Entities::class)->find($distinataire);
+        if ($annonceur) {
+
+           if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+
+               foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                if(!is_null($token)&&$token!="")
+                {
+                    $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                }  
+               }
+            }
+         }
+     //   $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+    //$firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
                         $subject = "CLICK ON LIVE";
     
                         $email = (new TemplatedEmail())
                             ->from("clickonlive65@gmail.com")
-                            ->to(new Address(trim($client->getExtraPayload()['email'])))
+                            ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
                             //->bcc('touhemib@gmail.com')
                             ->subject($subject)
                             ->htmlTemplate('Email/accepterAnnonce.html.twig')
                             ->context([
             
-                                "nom" =>$client->getExtraPayload()['nom'],
-                                "prenom" =>$client->getExtraPayload()['prenom']
+                                "nom" =>$annonceur->getExtraPayload()['nom'],
+                                "prenom" =>$annonceur->getExtraPayload()['prenom']
                             ]);
             
                         $mailer->send($email);
@@ -429,28 +443,40 @@ class AdminController extends AbstractController
 
         $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
 
-        $client=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+        $annonceur=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
 
         $title="CLICK ON LIVE";
         $msg="Votre annonce a été refusée pour la raison suivante: ".$raison;
 
-        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+      //  $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+               //         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
+               if ($annonceur) {
+
+                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+     
+                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                     if(!is_null($token)&&$token!="")
+                     {
+                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                     }  
+                    }
+                 }
+              }
 
                         
                         $subject = "CLICK ON LIVE";
     
                         $email = (new TemplatedEmail())
                             ->from("clickonlive65@gmail.com")
-                            ->to(new Address(trim($client->getExtraPayload()['email'])))
+                            ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
                             //->bcc('touhemib@gmail.com')
                             ->subject($subject)
                             ->htmlTemplate('Email/refuserAnnonce.html.twig')
                             ->context([
             
-                                "nom" =>$client->getExtraPayload()['nom'],
-                                "prenom" =>$client->getExtraPayload()['prenom']
+                                "nom" =>$annonceur->getExtraPayload()['nom'],
+                                "prenom" =>$annonceur->getExtraPayload()['prenom']
                             ]);
             
                         $mailer->send($email);

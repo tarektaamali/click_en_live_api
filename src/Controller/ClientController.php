@@ -431,17 +431,18 @@ class ClientController extends AbstractController
 
 
             $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
-           // if ($annonceur) {
+            if ($annonceur) {
 
-             //   if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+               if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
 
-               //     foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
-//                        $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-$token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+                   foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                    if(!is_null($token)&&$token!="")
+                    {
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                 //   }
-               // }
-           //  }
+                    }  
+                   }
+                }
+             }
 
 
            $subject = "CLICK ON LIVE";
@@ -486,7 +487,7 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
 
             $rdv = $dm->getRepository(Entities::class)->find($idRDV);
 
-            $client=$rdv->getExtraPayload()['client'];
+            $idClient=$rdv->getExtraPayload()['client'];
             $annonceur=$rdv->getExtraPayload()['annonceur'];
             $annonce=$rdv->getExtraPayload()['annonce'];
 
@@ -539,8 +540,21 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             ->execute();
 
 
-            $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+            $client = $dm->getRepository(Entities::class)->find($idClient);
+            if ($client) {
+
+               if (sizeof($client->getExtraPayload()['deviceToken'])) {
+
+                   foreach ($client->getExtraPayload()['deviceToken']  as $token) {
+                    if(!is_null($token)&&$token!="")
+                    {
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                    }  
+                   }
+                }
+             }
+
+           
 
 
             $subject = "CLICK ON LIVE";
@@ -564,9 +578,9 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
     }
 
             /**
-     * @Route("/api/client/annulerAnnonce", methods={"POST"})
+     * @Route("/api/client/annulerRendezVous", methods={"POST"})
      */
-    public function annulerAnnonce(MailerInterface $mailer,Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
+    public function annulerRendezVous(MailerInterface $mailer,Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
     {
         	$statut=$request->get('statut');
             $idRDV=$request->get('idRDV');
@@ -609,8 +623,22 @@ $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepV
             ->execute();
 
 
-            $token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+            $client = $dm->getRepository(Entities::class)->find($distinataire);
+            if ($client) {
+
+               if (sizeof($client->getExtraPayload()['deviceToken'])) {
+
+                   foreach ($client->getExtraPayload()['deviceToken']  as $token) {
+                    if(!is_null($token)&&$token!="")
+                    {
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                    }  
+                   }
+                }
+             }
+
+        //$token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
+          //  $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
             $client=$this->documentManager->getRepository(Entities::class)->find($distinataire);
