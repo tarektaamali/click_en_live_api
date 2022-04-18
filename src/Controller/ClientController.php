@@ -627,7 +627,7 @@ class ClientController extends AbstractController
         //  $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
-        $client = $this->documentManager->getRepository(Entities::class)->find($distinataire);
+        $client = $dm->getRepository(Entities::class)->find($distinataire);
         $subject = "CLICK ON LIVE";
 
         $email = (new TemplatedEmail())
