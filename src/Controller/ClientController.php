@@ -795,8 +795,8 @@ class ClientController extends AbstractController
 
         $day=date('Y-m-d');
 
-        $starHour=date('H');
-        $endHour=date('H',strtotime('+1 hour',strtotime($starHour)));
+        $starHour=intval(date('H'));
+        $endHour=$starHour+1;
 
             $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
             $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
