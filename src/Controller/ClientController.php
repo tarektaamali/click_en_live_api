@@ -373,11 +373,11 @@ class ClientController extends AbstractController
 
 
 
-        /**
-     * @Route("/api/client/rdv", methods={"POST"})
+    /**
+     * @Route("/api/client/demandeRendezVous", methods={"POST"})
      */
 
-    public function RDV(DocumentManager $dm,firebaseManager $firebaseManager,UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
+    public function demandeRendezVous(DocumentManager $dm, firebaseManager $firebaseManager, UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
     {
 
         $extraPayload = null;
@@ -389,43 +389,42 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        $disponbilite=$dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('timeplanner')
-        ->field('extraPayload.day')->equals($extraPayload['day'])
-        ->field('extraPayload.starHour')->equals(intval($extraPayload['starHour']))
-        ->field('extraPayload.endHour')->equals(intval($extraPayload['endHour']))
-        ->field('extraPayload.etat')->equals("1")
-        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
-        ->getQuery()
-        ->getSingleResult();
-//dd($disponbilite);
-        if($disponbilite)
-        {
-         	$annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
-             $extraPayload['annonceur']=$annonce->getExtraPayload()['linkedCompte'];
-
-            $extraPayload['statut']="waiting";
-            $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
-
-            $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+        $disponbilite = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('timeplanner')
             ->field('extraPayload.day')->equals($extraPayload['day'])
             ->field('extraPayload.starHour')->equals(intval($extraPayload['starHour']))
             ->field('extraPayload.endHour')->equals(intval($extraPayload['endHour']))
             ->field('extraPayload.etat')->equals("1")
             ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
-            ->findAndUpdate()
-            ->field('extraPayload.etat')->set('0')
             ->getQuery()
-            ->execute();
-           // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            ->getSingleResult();
+        //dd($disponbilite);
+        if ($disponbilite) {
+            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
+
+            $extraPayload['statut'] = "waiting";
+            $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
+
+            $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('timeplanner')
+                ->field('extraPayload.day')->equals($extraPayload['day'])
+                ->field('extraPayload.starHour')->equals(intval($extraPayload['starHour']))
+                ->field('extraPayload.endHour')->equals(intval($extraPayload['endHour']))
+                ->field('extraPayload.etat')->equals("1")
+                ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+                ->findAndUpdate()
+                ->field('extraPayload.etat')->set('0')
+                ->getQuery()
+                ->execute();
+            // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
             $title = "DEMANDE DE Rendez-vous";
 
 
 
             $client = $dm->getRepository(Entities::class)->find($extraPayload['client']);
-            $nomClient=$client->getExtraPayload()['civilite'].' '.$client->getExtraPayload()['nom'].' '.$client->getExtraPayload()['prenom'];
-            $msg = $annonce->getExtraPayload()['titre']."\r".$extraPayload['day'].' à '.$extraPayload['starHour']."\r Rendez-vous avec: \r". $nomClient;
+            $nomClient = $client->getExtraPayload()['civilite'] . ' ' . $client->getExtraPayload()['nom'] . ' ' . $client->getExtraPayload()['prenom'];
+            $msg = $annonce->getExtraPayload()['titre'] . "\r" . $extraPayload['day'] . ' à ' . $extraPayload['starHour'] . "\r Rendez-vous avec: \r" . $nomClient;
 
 
 
@@ -433,38 +432,36 @@ class ClientController extends AbstractController
             $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
             if ($annonceur) {
 
-               if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
 
-                   foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
-                    if(!is_null($token)&&$token!="")
-                    {
-                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                    }  
-                   }
+                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                        if (!is_null($token) && $token != "") {
+                            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                        }
+                    }
                 }
-             }
+            }
 
 
-           $subject = "CLICK ON LIVE";
-    
-           $email = (new TemplatedEmail())
-               ->from("clickonlive65@gmail.com")
-               ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
-               //->bcc('touhemib@gmail.com')
-               ->subject($subject)
-               ->htmlTemplate('Email/demandeRendezVous.html.twig')
-               ->context([
+            $subject = "CLICK ON LIVE";
 
-                   "nom" =>$client->getExtraPayload()['nom'],
-                   "prenom" =>$client->getExtraPayload()['prenom']
-               ]);
+            $email = (new TemplatedEmail())
+                ->from("clickonlive65@gmail.com")
+                ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/demandeRendezVous.html.twig')
+                ->context([
 
-           $mailer->send($email);
+                    "nom" => $client->getExtraPayload()['nom'],
+                    "prenom" => $client->getExtraPayload()['prenom']
+                ]);
+
+            $mailer->send($email);
             return new JsonResponse($data->getId());
-        }else{
-	  return new JsonResponse(array('message'=>'RDV impossible'),400);
-
-	}
+        } else {
+            return new JsonResponse(array('message' => 'RDV impossible'), 400);
+        }
 
 
         //
@@ -475,49 +472,44 @@ class ClientController extends AbstractController
 
 
 
-            /**
+    /**
      * @Route("/api/client/responseRDV", methods={"POST"})
      */
-    public function responseRDV(Request $request,DocumentManager $dm,firebaseManager $firebaseManager,MailerInterface $mailer)
+    public function responseRDV(Request $request, DocumentManager $dm, firebaseManager $firebaseManager, MailerInterface $mailer)
     {
 
 
-        	$statut=$request->get('statut');
-            $idRDV=$request->get('idRDV');
+        $statut = $request->get('statut');
+        $idRDV = $request->get('idRDV');
 
-            $rdv = $dm->getRepository(Entities::class)->find($idRDV);
+        $rdv = $dm->getRepository(Entities::class)->find($idRDV);
 
-            $idClient=$rdv->getExtraPayload()['client'];
-            $annonceur=$rdv->getExtraPayload()['annonceur'];
-            $annonce=$rdv->getExtraPayload()['annonce'];
-
-            
-        $entityannonce=$this->documentManager->getRepository(Entities::class)->find($annonce);
-
-        $client=$this->documentManager->getRepository(Entities::class)->find($entityannonce->getExtraPayload()['linkedCompte']);
-
-            $day=$rdv->getExtraPayload()['day'];
-            $starHour=$rdv->getExtraPayload()['starHour'];
-            $endHour=$rdv->getExtraPayload()['endHour'];
-            
-            
-            if($statut=="accepted")
-            {
-                $title = "Réponse DE Rendez-vous";
+        $idClient = $rdv->getExtraPayload()['client'];
+        $annonceur = $rdv->getExtraPayload()['annonceur'];
+        $annonce = $rdv->getExtraPayload()['annonce'];
 
 
+        $entityannonce = $this->documentManager->getRepository(Entities::class)->find($annonce);
 
-                $msg = "Rendez-vous accepté";
-    
-                $twig="accepterRendezVous.html.twig";
-    
-       
-            }
-            elseif($statut=="refuse")
-            {
-                $title = "Réponse DE Rendez-vous";
-                $msg = "Rendez-vous refusé";
-                $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
+        $client = $this->documentManager->getRepository(Entities::class)->find($entityannonce->getExtraPayload()['linkedCompte']);
+
+        $day = $rdv->getExtraPayload()['day'];
+        $starHour = $rdv->getExtraPayload()['starHour'];
+        $endHour = $rdv->getExtraPayload()['endHour'];
+
+
+        if ($statut == "accepted") {
+            $title = "Réponse DE Rendez-vous";
+
+
+
+            $msg = "Rendez-vous accepté";
+
+            $twig = "accepterRendezVous.html.twig";
+        } elseif ($statut == "refuse") {
+            $title = "Réponse DE Rendez-vous";
+            $msg = "Rendez-vous refusé";
+            $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('timeplanner')
                 ->field('extraPayload.day')->equals($day)
                 ->field('extraPayload.starHour')->equals(intval($starHour))
@@ -528,10 +520,10 @@ class ClientController extends AbstractController
                 ->getQuery()
                 ->execute();
 
-                $twig="refuserRendezVous.html.twig";
-            }
+            $twig = "refuserRendezVous.html.twig";
+        }
 
-            $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
+        $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('rendezvous')
             ->field('extraPayload.Identifiant')->equals($idRDV)
             ->findAndUpdate()
@@ -540,71 +532,66 @@ class ClientController extends AbstractController
             ->execute();
 
 
-            $client = $dm->getRepository(Entities::class)->find($idClient);
-            if ($client) {
+        $client = $dm->getRepository(Entities::class)->find($idClient);
+        if ($client) {
 
-               if (sizeof($client->getExtraPayload()['deviceToken'])) {
+            if (sizeof($client->getExtraPayload()['deviceToken'])) {
 
-                   foreach ($client->getExtraPayload()['deviceToken']  as $token) {
-                    if(!is_null($token)&&$token!="")
-                    {
+                foreach ($client->getExtraPayload()['deviceToken']  as $token) {
+                    if (!is_null($token) && $token != "") {
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                    }  
-                   }
+                    }
                 }
-             }
-
-           
-
-
-            $subject = "CLICK ON LIVE";
-    
-            $email = (new TemplatedEmail())
-                ->from("clickonlive65@gmail.com")
-                ->to(new Address(trim($client->getExtraPayload()['email'])))
-                //->bcc('touhemib@gmail.com')
-                ->subject($subject)
-                ->htmlTemplate('Email/'.$twig)
-                ->context([
-
-                    "nom" =>$client->getExtraPayload()['nom'],
-                    "prenom" =>$client->getExtraPayload()['prenom']
-                ]);
-
-            $mailer->send($email);
-            return new JsonResponse(array('message'=>'done'),200);
+            }
+        }
 
 
+
+
+        $subject = "CLICK ON LIVE";
+
+        $email = (new TemplatedEmail())
+            ->from("clickonlive65@gmail.com")
+            ->to(new Address(trim($client->getExtraPayload()['email'])))
+            //->bcc('touhemib@gmail.com')
+            ->subject($subject)
+            ->htmlTemplate('Email/' . $twig)
+            ->context([
+
+                "nom" => $client->getExtraPayload()['nom'],
+                "prenom" => $client->getExtraPayload()['prenom']
+            ]);
+
+        $mailer->send($email);
+        return new JsonResponse(array('message' => 'done'), 200);
     }
 
-            /**
+    /**
      * @Route("/api/client/annulerRendezVous", methods={"POST"})
      */
-    public function annulerRendezVous(MailerInterface $mailer,Request $request,DocumentManager $dm,firebaseManager $firebaseManager)
+    public function annulerRendezVous(MailerInterface $mailer, Request $request, DocumentManager $dm, firebaseManager $firebaseManager)
     {
-        	$statut=$request->get('statut');
-            $idRDV=$request->get('idRDV');
-            $role=$request->get('role');
+        $statut = $request->get('statut');
+        $idRDV = $request->get('idRDV');
+        $role = $request->get('role');
 
-            $rdv = $dm->getRepository(Entities::class)->find($idRDV);
-            $annonce=$rdv->getExtraPayload()['annonce'];
-            $day=$rdv->getExtraPayload()['day'];
-            $starHour=$rdv->getExtraPayload()['starHour'];
-            $endHour=$rdv->getExtraPayload()['endHour'];
+        $rdv = $dm->getRepository(Entities::class)->find($idRDV);
+        $annonce = $rdv->getExtraPayload()['annonce'];
+        $day = $rdv->getExtraPayload()['day'];
+        $starHour = $rdv->getExtraPayload()['starHour'];
+        $endHour = $rdv->getExtraPayload()['endHour'];
 
-            if($role=="client")
-            {
-                $distinataire=$rdv->getExtraPayload()['client'];
-            }
-            else{
-                $distinataire=$rdv->getExtraPayload()['annonceur'];
-            }
+        if ($role == "client") {
+            $distinataire = $rdv->getExtraPayload()['client'];
+        } else {
+            $distinataire = $rdv->getExtraPayload()['annonceur'];
+        }
 
-           
-           
-            $title = "Réponse DE Rendez-vous";
-            $msg = "Rendez-vous annulé";
-            $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
+
+
+        $title = "Réponse DE Rendez-vous";
+        $msg = "Rendez-vous annulé";
+        $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('timeplanner')
             ->field('extraPayload.day')->equals($day)
             ->field('extraPayload.starHour')->equals(intval($starHour))
@@ -614,7 +601,7 @@ class ClientController extends AbstractController
             ->field('extraPayload.etat')->set('1')
             ->getQuery()
             ->execute();
-            $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
+        $changerStatutRDV = $dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('rendezvous')
             ->field('extraPayload.Identifiant')->equals($idRDV)
             ->findAndUpdate()
@@ -623,46 +610,43 @@ class ClientController extends AbstractController
             ->execute();
 
 
-            $client = $dm->getRepository(Entities::class)->find($distinataire);
-            if ($client) {
+        $client = $dm->getRepository(Entities::class)->find($distinataire);
+        if ($client) {
 
-               if (sizeof($client->getExtraPayload()['deviceToken'])) {
+            if (sizeof($client->getExtraPayload()['deviceToken'])) {
 
-                   foreach ($client->getExtraPayload()['deviceToken']  as $token) {
-                    if(!is_null($token)&&$token!="")
-                    {
+                foreach ($client->getExtraPayload()['deviceToken']  as $token) {
+                    if (!is_null($token) && $token != "") {
                         $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                    }  
-                   }
+                    }
                 }
-             }
+            }
+        }
 
         //$token="e4gkAJU3RN2brA3YL7UXB-:APA91bFEW8v0BRGcxNRgz6KRE2VQhK9Bvh2fGy01fX4ykSepVg14qSooUjElNqCC2SAO9hUPkwHwqwxQAnMnAXCsMN44rGQwqn4kD4NnV9ROflmK_43YToJ1ogaEi9nLJ9htg8dc5bgF";
-          //  $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+        //  $firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
-            $client=$this->documentManager->getRepository(Entities::class)->find($distinataire);
-            $subject = "CLICK ON LIVE";
-    
-            $email = (new TemplatedEmail())
-                ->from("clickonlive65@gmail.com")
-                ->to(new Address(trim($client->getExtraPayload()['email'])))
-                //->bcc('touhemib@gmail.com')
-                ->subject($subject)
-                ->htmlTemplate('Email/annulerRendezVous.html.twig')
-                ->context([
+        $client = $this->documentManager->getRepository(Entities::class)->find($distinataire);
+        $subject = "CLICK ON LIVE";
 
-                    "nom" =>$client->getExtraPayload()['nom'],
-                    "prenom" =>$client->getExtraPayload()['prenom']
-                ]);
+        $email = (new TemplatedEmail())
+            ->from("clickonlive65@gmail.com")
+            ->to(new Address(trim($client->getExtraPayload()['email'])))
+            //->bcc('touhemib@gmail.com')
+            ->subject($subject)
+            ->htmlTemplate('Email/annulerRendezVous.html.twig')
+            ->context([
 
-            $mailer->send($email);
-            return new JsonResponse(array('message'=>'done'),200);
+                "nom" => $client->getExtraPayload()['nom'],
+                "prenom" => $client->getExtraPayload()['prenom']
+            ]);
 
-
+        $mailer->send($email);
+        return new JsonResponse(array('message' => 'done'), 200);
     }
 
-        /**
+    /**
      * @Route("api/client/likeAnnonce", methods={"POST"})
      */
     public function likeAnnonce(DocumentManager $dm, Request $request)
@@ -715,10 +699,10 @@ class ClientController extends AbstractController
 
 
 
-     /**
+    /**
      * @Route("api/client/likeAnnonce", methods={"POST"})
      */
-    public function removeTimePlanner(Request $request,DocumentManager $dm)
+    public function removeTimePlanner(Request $request, DocumentManager $dm)
     {
 
         $extraPayload = null;
@@ -730,67 +714,155 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        $disponbilite=$dm->createQueryBuilder(Entities::class)
-        ->findAndRemove()
-        ->field('name')->equals('timeplanner')
-        ->field('extraPayload.day')->equals($extraPayload['day'])
-        ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
-        ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
-        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
-        ->getQuery()
-        ->execute();
-
-        return new JsonResponse(array('message'=>'supprimé'),200);
-    }
-
-
-     /**
-     * @Route("api/client/deposerDisponibilite", methods={"POST"})
-     */
-    public function deposerDisponibilite(Request $request,DocumentManager $dm)
-    {
-        $extraPayload = null;
-        $entity = null;
-        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $content = json_decode($request->getContent(), true);
-            $extraPayload = $content['extraPayload'];
-        }
-        $countRDV=$dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('rendezvous')
-        ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
-        ->field('extraPayload.etat')->equals('1')
-        ->count()
-        ->getQuery()
-        ->execute();
-        if($countRDV==0)
-        {
-            $timeplanner=$dm->createQueryBuilder(Entities::class)
+        $disponbilite = $dm->createQueryBuilder(Entities::class)
+            ->findAndRemove()
             ->field('name')->equals('timeplanner')
-            ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
+            ->field('extraPayload.day')->equals($extraPayload['day'])
+            ->field('extraPayload.starHour')->equals($extraPayload['starHour'])
+            ->field('extraPayload.endHour')->equals($extraPayload['endHour'])
+            ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
             ->getQuery()
             ->execute();
-            foreach($timeplanner as $t)
-            {
+
+        return new JsonResponse(array('message' => 'supprimé'), 200);
+    }
+
+
+    /**
+     * @Route("api/client/deposerDisponibilite", methods={"POST"})
+     */
+    public function deposerDisponibilite(Request $request, DocumentManager $dm)
+    {
+        $extraPayload = null;
+        $entity = null;
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+        $countRDV = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('rendezvous')
+            ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
+            ->field('extraPayload.etat')->equals('1')
+            ->count()
+            ->getQuery()
+            ->execute();
+        if ($countRDV == 0) {
+            $timeplanner = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('timeplanner')
+                ->field('extraPayload.annonce')->equals($extraPayload['idAnnonce'])
+                ->getQuery()
+                ->execute();
+            foreach ($timeplanner as $t) {
                 $this->entityManager->deleteResult($t->getExtraPayload()['Identifiant']);
             }
-            foreach($extraPayload['data'] as $d)
-            {
-                $tab['day']=$d['day'];
-                $tab['starHour']=$d['starHour'];
-                $tab['endHour']=$d['endHour'];
-                $tab['annonce']=$extraPayload['idAnnonce'];
-                $tab['client']=$extraPayload['idClient'];
-                $tab['etat']="1";
-                $data = $this->entityManager->setResult("timeplanner", null, $extraPayload);
+            foreach ($extraPayload['data'] as $d) {
+                $tab['day'] = $d['day'];
+                $tab['starHour'] = $d['starHour'];
+                $tab['endHour'] = $d['endHour'];
+                $tab['annonce'] = $extraPayload['idAnnonce'];
+                $tab['client'] = $extraPayload['idClient'];
+                $tab['etat'] = "1";
+                $data = $this->entityManager->setResult("timeplanner", null, $tab);
             }
-        return new JsonResponse(array('message'=>'timePlanner créé avec succès'),200);
-        }
-        else{
-        return new JsonResponse(array('message'=>'impossible de modifier'),400);
+            return new JsonResponse(array('message' => 'timePlanner créé avec succès'), 200);
+        } else {
+            return new JsonResponse(array('message' => 'impossible de modifier'), 400);
         }
     }
 
 
 
-    
+
+
+
+
+
+        /**
+     * @Route("/api/client/visiterMaitenant", methods={"POST"})
+     */
+
+    public function visiterMaitenant(DocumentManager $dm, firebaseManager $firebaseManager, UserService $userService, UrlGeneratorInterface $router, MailerInterface $mailer, Request $request, HttpClientInterface $client)
+    {
+
+        $extraPayload = null;
+
+        $entity = null;
+
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
+        $day=date('Y-m-d');
+
+        $starHour=date('H');
+        $endHour=date('H',strtotime('+1 hour',strtotime($starHour)));
+
+            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
+
+            $extraPayload['statut'] = "waiting";
+            $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
+
+            $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('timeplanner')
+                ->field('extraPayload.day')->equals($day)
+                ->field('extraPayload.starHour')->equals(intval($starHour))
+                ->field('extraPayload.endHour')->equals(intval($endHour))
+                ->field('extraPayload.etat')->equals("1")
+                ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+                ->findAndUpdate()
+                ->field('extraPayload.etat')->set('0')
+                ->getQuery()
+                ->execute();
+            // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+            $title = "VISITEZ MAINTENANT";
+
+
+
+            $client = $dm->getRepository(Entities::class)->find($extraPayload['client']);
+            $nomClient = $client->getExtraPayload()['civilite'] . ' ' . $client->getExtraPayload()['nom'] . ' ' . $client->getExtraPayload()['prenom'];
+            $msg = $annonce->getExtraPayload()['titre'] . "\r" . $day . ' à ' . $starHour . "\r Rendez-vous avec: \r" . $nomClient;
+
+
+
+
+            $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+            if ($annonceur) {
+
+                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+
+                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                        if (!is_null($token) && $token != "") {
+                            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
+                        }
+                    }
+                }
+            }
+
+
+            $subject = "CLICK ON LIVE";
+
+            $email = (new TemplatedEmail())
+                ->from("clickonlive65@gmail.com")
+                ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+                //->bcc('touhemib@gmail.com')
+                ->subject($subject)
+                ->htmlTemplate('Email/demandeRendezVous.html.twig')
+                ->context([
+
+                    "nom" => $client->getExtraPayload()['nom'],
+                    "prenom" => $client->getExtraPayload()['prenom']
+                ]);
+
+            $mailer->send($email);
+            return new JsonResponse($data->getId());
+        
+
+
+        //
+
+
+
+    }
 }
