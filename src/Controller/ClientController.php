@@ -935,20 +935,23 @@ class ClientController extends AbstractController
         }
 
                 $filter = array_merge($routeParams, $request->query->all());
-            dd($filter);
+            //dd($filter);
 
                 $filter['annonceur']=$identifiantMongo;
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
+	        unset($filter['indexVue']);
+
                 unset($filter['lang']);
                 unset($filter['identifiantMongo']);
-
+	//	dd($filter);
    
                 $entity="rendezvous";
         $data1 = $this->entityManager->getResultFromArray($entity, $filter);
-    
+   // dd($data1);
         $array1 = $this->entityManager->serializeContent($data1);
-        unset($filter['annonceur']);
+     //   dd($array1);
+	unset($filter['annonceur']);
         $filter['client']=$identifiantMongo;
 
         $data2 = $this->entityManager->getResultFromArray($entity, $filter);
@@ -968,6 +971,70 @@ class ClientController extends AbstractController
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], $lang);
                 $structuresFinal['count'] = $data['count'];
                 $structuresFinal['results'] = $structureVues;
+
+		    foreach($structuresFinal['results'] as $key=>$result)
+                {
+
+                    if(isset($result['client']))
+                    {
+                       
+                            if(isset($result['client'][0]))
+                            {
+                                if(isset($result['client'][0]['photoProfil']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['client'][0]['photoProfil'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['client'][0]['photoProfil']= $logo;
+                                }
+                            }
+                        
+                    }
+
+                    if(isset($result['annonce']))
+                    {
+                       
+                            if(isset($result['annonce'][0]))
+                            {
+                                if(isset($result['annonce'][0]['photoPrincipale']))
+                                {
+    
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$result['annonce'][0]['photoPrincipale'];
+                                    $logo = $strutureVuesService->getUrl($params);
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
+                                }
+
+                            
+                            }
+
+
+                        
+                    }
+
+                    if(isset($result['typeDeBien']))
+                    {
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($result['typeDeBien']);
+                        if($typeDeBien)
+                        {
+                            $name=$typeDeBien->getExtraPayload()['libelle'];
+                            $structuresFinal['results'][$key]['typeDeBien']=$name;
+                        }
+                        else{
+                            $structuresFinal['results'][$key]['typeDeBien']="";
+
+                        }
+           
+
+                        
+                    }
+                 
+                }
                 return new JsonResponse($structuresFinal, '200');
             } else {
 
