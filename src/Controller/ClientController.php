@@ -935,6 +935,7 @@ class ClientController extends AbstractController
         }
 
                 $filter = array_merge($routeParams, $request->query->all());
+            dd($filter);
 
                 $filter['annonceur']=$identifiantMongo;
                 unset($filter['version']);
