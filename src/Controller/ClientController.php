@@ -940,7 +940,7 @@ class ClientController extends AbstractController
                 unset($filter['version']);
                 unset($filter['vueAvancer']);
                 unset($filter['lang']);
-
+                unset($filter['identifiantMongo']);
 
    
                 $entity="rendezvous";
