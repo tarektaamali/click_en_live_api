@@ -489,9 +489,9 @@ class ClientController extends AbstractController
         $annonce = $rdv->getExtraPayload()['annonce'];
 
 
-        $entityannonce = $this->documentManager->getRepository(Entities::class)->find($annonce);
+        $entityannonce = $dm->getRepository(Entities::class)->find($annonce);
 
-        $client = $this->documentManager->getRepository(Entities::class)->find($entityannonce->getExtraPayload()['linkedCompte']);
+        $client = $dm->getRepository(Entities::class)->find($entityannonce->getExtraPayload()['linkedCompte']);
 
         $day = $rdv->getExtraPayload()['day'];
         $starHour = $rdv->getExtraPayload()['starHour'];
