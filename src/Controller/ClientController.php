@@ -1091,9 +1091,9 @@ class ClientController extends AbstractController
         $tab['idRdv']=$idRDV;
         $tab['client']=$client;
         $tab['annonce']=$annonce;
-        $tab['leBienCorrespondAnnonce']=$leBienCorrespondAnnonce;
-        $tab['lePrixCorrespondAuBien']=$lePrixCorrespondAuBien;
-        $tab['laVisiteBienPasse']=$laVisiteBienPasse;
+        $tab['leBienCorrespondAnnonce']=intval($leBienCorrespondAnnonce);
+        $tab['lePrixCorrespondAuBien']=intval($lePrixCorrespondAuBien);
+        $tab['laVisiteBienPasse']=intval($laVisiteBienPasse);
 
 
         
