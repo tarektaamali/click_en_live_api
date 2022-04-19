@@ -1047,4 +1047,62 @@ class ClientController extends AbstractController
         return new JsonResponse($data, '200');
 
     }
+
+
+        /**
+     * @Route("/api/client/getMesRendezVous", methods={"GET"})
+     */
+
+    public function compteRenduRDV(Request $request)
+    {
+        $idRDV=$request->get('idRDV');
+        
+        $client=$request->get('client');
+        $annonce=$request->get('annonce');
+
+        $leBienCorrespondAnnonce=$request->get('leBienCorrespondAnnonce');
+        $lePrixCorrespondAuBien=$request->get('lePrixCorrespondAuBien');
+        $laVisiteBienPasse=$request->get('laVisiteBienPasse');
+
+
+
+        if(is_null($idRDV))
+        {
+
+            return new JsonResponse(array('message'=>'merci de vérifier id rdv'),400);
+        }
+
+
+        if(is_null($leBienCorrespondAnnonce))
+        {
+            $leBienCorrespondAnnonce=0;
+        }
+
+        if(is_null($lePrixCorrespondAuBien))
+        {
+            $lePrixCorrespondAuBien=0;
+        }
+        if(is_null($laVisiteBienPasse))
+        {
+            $laVisiteBienPasse=0;
+        }
+
+
+        $tab['idRdv']=$idRDV;
+        $tab['client']=$client;
+        $tab['annonce']=$annonce;
+        $tab['leBienCorrespondAnnonce']=$leBienCorrespondAnnonce;
+        $tab['lePrixCorrespondAuBien']=$lePrixCorrespondAuBien;
+        $tab['laVisiteBienPasse']=$laVisiteBienPasse;
+
+
+        
+        $data = $this->entityManager->setResult("compteRenduVisite", null, $tab);
+
+
+        return new JsonResponse($data->getId());
+
+
+
+    }
 }
