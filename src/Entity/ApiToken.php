@@ -87,6 +87,6 @@ class ApiToken
 
     public function extendExpiresAt()
     {
-        $this->expiresAt = new \DateTime('+1 day');
+        $this->expiresAt = new \DateTime('+1 month');
     }
 }
