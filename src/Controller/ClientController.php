@@ -1050,7 +1050,7 @@ class ClientController extends AbstractController
 
 
         /**
-     * @Route("/api/client/getMesRendezVous", methods={"GET"})
+     * @Route("/api/client/compteRenduRDV", methods={"POST"})
      */
 
     public function compteRenduRDV(Request $request)
