@@ -36,7 +36,7 @@ class ApiToken
     {
         $this->token = bin2hex(random_bytes(60));
         $this->user = $user;
-        $this->expiresAt = new \DateTime('+30 days');
+        $this->expiresAt = new \DateTime('+1 month');
     }
 
     public function getId(): ?int
