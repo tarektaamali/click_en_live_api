@@ -1121,7 +1121,7 @@ class ClientController extends AbstractController
     {
 
         $id = $request->get('id');
-        $entity ="annonce";
+        $entity ="annonces";
         if (is_null($id) || is_null($entity)) {
 
             return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
@@ -1138,5 +1138,5 @@ class ClientController extends AbstractController
         }
     }
 
-    
+
 }
