@@ -1107,5 +1107,34 @@ class ClientController extends AbstractController
 
 
 
+
+
+
+
+
+    }
+
+                /**
+     * @Route("/api/client/removeAnnonce", methods={"POST"})
+     */
+    public function removeAnnonce(Request $request)
+    {
+
+        $id = $request->get('id');
+        $entity ="annonce";
+        if (is_null($id) || is_null($entity)) {
+
+            return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
+        } else {
+
+            $this->documentManager->createQueryBuilder(Entities::class)
+                ->field('name')->equals($entity)
+                ->field('extraPayload.Identifiant')->equals($id)
+                ->findAndUpdate()
+                ->field('status')->set('delete')
+                ->getQuery()
+                ->execute();
+            return new JsonResponse(array('message' => 'opération effectué'), 200);
+        }
     }
 }
