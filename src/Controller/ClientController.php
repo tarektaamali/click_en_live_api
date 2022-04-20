@@ -1115,13 +1115,13 @@ class ClientController extends AbstractController
     }
 
                 /**
-     * @Route("/api/client/removeAnnonce", methods={"POST"})
+     * @Route("/api/client/removeEntity", methods={"POST"})
      */
-    public function removeAnnonce(Request $request,DocumentManager $dm)
+    public function removeEntity(Request $request,DocumentManager $dm)
     {
 
         $id = $request->get('id');
-        $entity ="annonces";
+        $entity =$request->get('entity');
         if (is_null($id) || is_null($entity)) {
 
             return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
