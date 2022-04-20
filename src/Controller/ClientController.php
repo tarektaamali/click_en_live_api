@@ -1117,7 +1117,7 @@ class ClientController extends AbstractController
                 /**
      * @Route("/api/client/removeAnnonce", methods={"POST"})
      */
-    public function removeAnnonce(Request $request)
+    public function removeAnnonce(Request $request,DocumentManager $dm)
     {
 
         $id = $request->get('id');
@@ -1127,7 +1127,7 @@ class ClientController extends AbstractController
             return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
         } else {
 
-            $this->documentManager->createQueryBuilder(Entities::class)
+            $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals($entity)
                 ->field('extraPayload.Identifiant')->equals($id)
                 ->findAndUpdate()
