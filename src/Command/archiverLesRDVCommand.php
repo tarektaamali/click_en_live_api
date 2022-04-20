@@ -56,17 +56,26 @@ class archiverLesRDVCommand extends Command
             ->execute();
 
 
+            var_dump(sizeof($listeRDV));
+
 
         foreach ($listeRDV as $rdv) {
 
 
             $date=date('Y-m-d');
+            var_dump($date);
             $day = strtotime($rdv->getExtraPayload()['day']);
 
             $dateRDV=date('Y-m-d', $day);
+
+            var_dump($dateRDV);
            
+
+            var_dump($date>$dateRDV);
             if($date>$dateRDV)
             {
+
+                var_dump($rdv->getId());
 
                 $listeRDV =  $this->dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('rendezvous')
@@ -80,6 +89,7 @@ class archiverLesRDVCommand extends Command
 
             }
         
+            var_dump("********");
 
 
 
