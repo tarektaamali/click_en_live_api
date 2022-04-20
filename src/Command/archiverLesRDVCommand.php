@@ -51,7 +51,7 @@ class archiverLesRDVCommand extends Command
 
         $listeRDV =  $this->dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('rendezvous')
-            ->field('extraPaylaod.etat')->equals('1')
+            ->field('extraPayload.etat')->equals('1')
             ->getQuery()
             ->execute();
 
@@ -80,7 +80,7 @@ class archiverLesRDVCommand extends Command
                 $listeRDV =  $this->dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('rendezvous')
                 ->field('extraPayload.Identifiant')->equals($rdv->getId())
-                ->field('extraPaylaod.etat')->set('0')
+                ->field('extraPayload.etat')->set('0')
                 ->findAndUpdate()
                 ->getQuery()
                 ->execute();
