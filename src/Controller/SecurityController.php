@@ -208,7 +208,7 @@ class SecurityController extends AbstractController
                     $user = $userService->creationCompte($extraPayload);
 
 
-                    $subject = "Bienvenue chez FoodLine";
+                    $subject = "Bienvenue chez CLICK ON LIVE";
     
                     $email = (new TemplatedEmail())
                         ->from("clickonlive65@gmail.com")
@@ -704,7 +704,7 @@ class SecurityController extends AbstractController
 
 
             $extraPayload['deviceToken']=[];
-            $subject = "Bienvenue chez FoodLine";
+            $subject = "Bienvenue chez CLICK ON LIVE";
 
             $email = (new TemplatedEmail())
                 ->from("clickonlive65@gmail.com")
