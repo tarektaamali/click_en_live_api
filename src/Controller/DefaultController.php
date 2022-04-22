@@ -773,6 +773,7 @@ class DefaultController extends AbstractController
             $nbrePieces=$request->get('nbrePieces');
         }
     
+        $alert=$request->get('alert');
        
 
         $extraPayload=[];
@@ -790,7 +791,11 @@ class DefaultController extends AbstractController
         {
             $logRecherches=$entityManager->setResult("recherches",null,$extraPayload);
         }
-       
+
+        if($alert)
+        {
+            $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
+        }
         
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
 
@@ -919,7 +924,7 @@ class DefaultController extends AbstractController
         $identifiantMongo=$request->get('identifiantMongo');
         if(is_null($identifiantMongo))
         {
-            return new JsonReponse(array('message'=>'merci de verifier identifiant mongodb'),400);
+            return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
         }
 
         if(is_null($request->get('localisation')))
@@ -983,11 +988,11 @@ class DefaultController extends AbstractController
 
         if($configurationAlerts)
         {
-            $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
+          $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
         }
         else{
             $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
-        }
+       }
       
      
         return new JsonResponse(array('message'=>'save configuration'), '200');
