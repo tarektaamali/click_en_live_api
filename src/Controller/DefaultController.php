@@ -685,7 +685,7 @@ class DefaultController extends AbstractController
      * @Route("/rechercheAvanceAnnonce", methods={"POST"})
      */
 
-    public function rechercheAvanceAnnonce(Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
+    public function rechercheAvanceAnnonce(DocumentManager $dm,Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
     {
 
         $entity = "annonces";
@@ -794,7 +794,19 @@ class DefaultController extends AbstractController
 
         if($alert)
         {
+            $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('configurationAlerts')
+        ->field('extraPayload.client')->equals($identifiantMongo)
+        ->getQuery()
+        ->getSingleResult();
+
+        if($configurationAlerts)
+        {
+          $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
+        }
+        else{
             $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
+       }
         }
         
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
