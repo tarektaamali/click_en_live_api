@@ -56,7 +56,7 @@ class archiverLesRDVCommand extends Command
             ->execute();
 
 
-            var_dump(sizeof($listeRDV));
+//            var_dump(sizeof($listeRDV));
 
 
         foreach ($listeRDV as $rdv) {
