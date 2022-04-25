@@ -71,6 +71,7 @@ class archiverLesRDVCommand extends Command
             var_dump($dateRDV);
            
 
+            $statut=$rdv->getExtraPayload()['statut'];
             var_dump($date>$dateRDV);
             if($date>$dateRDV)
             {
@@ -84,6 +85,19 @@ class archiverLesRDVCommand extends Command
                 ->findAndUpdate()
                 ->getQuery()
                 ->execute();
+
+                if($statut=="accepted")
+                {
+                    $listeRDV =  $this->dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('rendezvous')
+                    ->field('extraPayload.Identifiant')->equals($rdv->getId())
+                    ->field('extraPayload.etat')->equals('0')
+                    ->field('extraPayload.statut')->set('finished')
+                    ->findAndUpdate()
+                    ->getQuery()
+                    ->execute();
+
+                }
 
 
 
