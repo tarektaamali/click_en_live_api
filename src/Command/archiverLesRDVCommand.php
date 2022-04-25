@@ -88,6 +88,10 @@ class archiverLesRDVCommand extends Command
 
                 if($statut=="accepted")
                 {
+
+
+                    var_dump($statut);
+                    
                     $listeRDV =  $this->dm->createQueryBuilder(Entities::class)
                     ->field('name')->equals('rendezvous')
                     ->field('extraPayload.Identifiant')->equals($rdv->getId())
