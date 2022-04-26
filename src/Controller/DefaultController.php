@@ -1344,6 +1344,19 @@ class DefaultController extends AbstractController
 
                         }
 
+                        if(sizeof($newTabImages))
+                        {
+                            foreach($newTabImages as $key=>$image)
+                            {
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] =$image['id'];
+                                $urlImage = $strutureVuesService->getUrl($params);
+                                $newTabImages[$key]['id']=$urlImage;
+
+                            }
+                        }
                         $structureVues[0]['listePhotos']=$newTabImages;
 
                     }
