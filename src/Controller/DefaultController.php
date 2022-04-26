@@ -1201,4 +1201,160 @@ class DefaultController extends AbstractController
 
     }
    
+
+
+        /**
+     * @Route("/detailsAnnonce/{id}", methods={"GET"})
+     */
+    public function detailsAnnonce(strutureVuesService $strutureVuesService, $id, Request $request,DocumentManager $dm)
+    {
+        $vue = null;
+        if ($request->get('vue') != null) {
+            $vue = $request->get('vue');
+        }
+
+        $lang = 'fr';
+        if ($request->get('lang') != null) {
+            $lang = $request->get('lang');
+        }
+
+        $vueVersion = null;
+        if ($request->get('vueVersion') != null) {
+            $vueVersion = $request->get('vueVersion');
+        }
+
+        $details = null;
+        if ($request->get('details') != null) {
+            $details = $request->get('details');
+        }
+
+        $identifiantMongo = null;
+        if ($request->get('identifiantMongo') != null) {
+            $identifiantMongo = $request->get('identifiantMongo');
+        }
+
+        if(is_null($identifiantMongo))
+        {
+
+            return new JsonResponse(array('message'=>'merci de verifier id mongo'),400);
+
+        }
+
+        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion, $details);
+
+        // launch additional events on insert
+        $fireEvent = null;
+        if ($request->get('fireEvent') != null) {
+            $fireEvent = $request->get('fireEvent');
+        }
+
+        $data = $this->entityManager->serializeContent($data);
+
+
+        $vueAvancer = "annonces_single";
+        
+
+        $indexVue = "CLIENT";
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
+        if ($vueAvancer) {
+            if (isset($data[0])) {
+
+                $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
+
+                
+                if(isset($structureVues[0]))
+                {
+                    if(isset($structureVues[0]['linkedCompte']))
+                    {
+                        if(isset($structureVues[0]['linkedCompte'][0]))
+                        {
+                            if(isset($structureVues[0]['linkedCompte'][0]['photoProfil']))
+                            {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] = $structureVues[0]['linkedCompte'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
+                            }
+                        }
+                    }
+
+                    if(isset($structureVues[0]['typeAnnonce']))
+                    {
+                        
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeAnnonce']);
+                        if($typeDeBien)
+                        {
+                            $name=$typeDeBien->getExtraPayload()['libelle'];
+                            $structureVues[0]['typeAnnonce']=$name;
+                        }
+                        else{
+                            
+                            $structureVues[0]['typeAnnonce']="";
+                        }
+                       
+
+                        
+                    }
+
+                    if(isset($structureVues[0]['listePhotos']))
+                    {
+                        $listePhotos=$structureVues[0]['listePhotos'];
+                        $newTabImages=[];
+                        if(sizeof($listePhotos))
+                        {
+                            foreach($listePhotos as $photo)
+                            {
+
+
+                                $imagesAnnonce   = $dm->createQueryBuilder(Entities::class)
+                                ->field('name')->equals('imagesAnnonces')
+                                ->field('extraPayload.image')->equals($photo)
+                                ->field('extraPayload.annonce')->equals($id)
+                                ->getQuery()
+                                ->getSingleResult();
+                                if($imagesAnnonce)
+                                {
+                                    $test=false;
+                                    $image=array('id'=>$photo,'test'=>$test);
+
+
+                                    if($structureVues[0]['linkedCompte'][0]['Identifiant']==$identifiantMongo)
+                                    {
+                                        array_push($newTabImages,$image);
+                                    }
+
+                                }
+                                else{
+                                     
+                                    $test=true;
+                                    $image=array('id'=>$photo,'test'=>$test);
+                                    array_push($newTabImages,$image);
+                                }
+
+
+
+
+
+                            }
+
+                        }
+
+                        $structureVues[0]['listePhotos']=$newTabImages;
+
+                    }
+                }
+                return new JsonResponse($structureVues, '200');
+            } else {
+                return new JsonResponse($data, '200');
+            }
+        }
+
+        return new JsonResponse($data, '200');
+    }
+
 }
