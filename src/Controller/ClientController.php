@@ -777,7 +777,7 @@ class ClientController extends AbstractController
 
 
 
-        /**
+    /**
      * @Route("/api/client/visiterMaitenant", methods={"POST"})
      */
 
@@ -793,74 +793,74 @@ class ClientController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
-        $day=date('Y-m-d');
+        $day = date('Y-m-d');
 
-        $starHour=intval(date('H'));
-        $endHour=$starHour+1;
+        $starHour = intval(date('H'));
+        $endHour = $starHour + 1;
 
-            $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
-            $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
+        $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+        $extraPayload['annonceur'] = $annonce->getExtraPayload()['linkedCompte'];
 
-            $extraPayload['day'] = $day;
-            $extraPayload['starHour'] = intval($starHour);
-            $extraPayload['endHour'] = intval($endHour);
-            $extraPayload['statut'] = "waiting";
-            $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
+        $extraPayload['day'] = $day;
+        $extraPayload['starHour'] = intval($starHour);
+        $extraPayload['endHour'] = intval($endHour);
+        $extraPayload['statut'] = "waiting";
+        $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
 
-            $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
-                ->field('name')->equals('timeplanner')
-                ->field('extraPayload.day')->equals($day)
-                ->field('extraPayload.starHour')->equals(intval($starHour))
-                ->field('extraPayload.endHour')->equals(intval($endHour))
-                ->field('extraPayload.etat')->equals("1")
-                ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
-                ->findAndUpdate()
-                ->field('extraPayload.etat')->set('0')
-                ->getQuery()
-                ->execute();
-            // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
-            $title = "VISITEZ MAINTENANT";
-
-
-
-            $client = $dm->getRepository(Entities::class)->find($extraPayload['client']);
-            $nomClient = $client->getExtraPayload()['civilite'] . ' ' . $client->getExtraPayload()['nom'] . ' ' . $client->getExtraPayload()['prenom'];
-            $msg = $annonce->getExtraPayload()['titre'] . "\r" . $day . ' à ' . $starHour . "\r Rendez-vous avec: \r" . $nomClient;
+        $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('timeplanner')
+            ->field('extraPayload.day')->equals($day)
+            ->field('extraPayload.starHour')->equals(intval($starHour))
+            ->field('extraPayload.endHour')->equals(intval($endHour))
+            ->field('extraPayload.etat')->equals("1")
+            ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+            ->findAndUpdate()
+            ->field('extraPayload.etat')->set('0')
+            ->getQuery()
+            ->execute();
+        // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
+        $title = "VISITEZ MAINTENANT";
 
 
 
+        $client = $dm->getRepository(Entities::class)->find($extraPayload['client']);
+        $nomClient = $client->getExtraPayload()['civilite'] . ' ' . $client->getExtraPayload()['nom'] . ' ' . $client->getExtraPayload()['prenom'];
+        $msg = $annonce->getExtraPayload()['titre'] . "\r" . $day . ' à ' . $starHour . "\r Rendez-vous avec: \r" . $nomClient;
 
-            $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
-            if ($annonceur) {
 
-                if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
 
-                    foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
-                        if (!is_null($token) && $token != "") {
-                            $firebaseManager->notificationNewAnnonce($token, $msg, $title);
-                        }
+
+        $annonceur = $dm->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
+        if ($annonceur) {
+
+            if (sizeof($annonceur->getExtraPayload()['deviceToken'])) {
+
+                foreach ($annonceur->getExtraPayload()['deviceToken']  as $token) {
+                    if (!is_null($token) && $token != "") {
+                        $firebaseManager->notificationNewAnnonce($token, $msg, $title);
                     }
                 }
             }
+        }
 
 
-            $subject = "CLICK ON LIVE";
+        $subject = "CLICK ON LIVE";
 
-            $email = (new TemplatedEmail())
-                ->from("clickonlive65@gmail.com")
-                ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
-                //->bcc('touhemib@gmail.com')
-                ->subject($subject)
-                ->htmlTemplate('Email/demandeRendezVous.html.twig')
-                ->context([
+        $email = (new TemplatedEmail())
+            ->from("clickonlive65@gmail.com")
+            ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+            //->bcc('touhemib@gmail.com')
+            ->subject($subject)
+            ->htmlTemplate('Email/demandeRendezVous.html.twig')
+            ->context([
 
-                    "nom" => $client->getExtraPayload()['nom'],
-                    "prenom" => $client->getExtraPayload()['prenom']
-                ]);
+                "nom" => $client->getExtraPayload()['nom'],
+                "prenom" => $client->getExtraPayload()['prenom']
+            ]);
 
-            $mailer->send($email);
-            return new JsonResponse($data->getId());
-        
+        $mailer->send($email);
+        return new JsonResponse($data->getId());
+
 
 
         //
@@ -870,12 +870,12 @@ class ClientController extends AbstractController
     }
 
 
-        /**
+    /**
      * @Route("/api/client/getMesRendezVous", methods={"GET"})
      */
 
 
-    public function getMesRendezVous( strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function getMesRendezVous(strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
@@ -927,42 +927,48 @@ class ClientController extends AbstractController
             $lang = $request->get('lang');
         }
 
-    
-        $identifiantMongo=$request->get('identifiantMongo');
-        if(is_null($identifiantMongo))
-        {
-            return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
+
+        $identifiantMongo = $request->get('identifiantMongo');
+        if (is_null($identifiantMongo)) {
+            return new JsonResponse(array('message' => 'merci de verifier identifiant mongodb'), 400);
         }
 
-                $filter = array_merge($routeParams, $request->query->all());
-            //dd($filter);
+        $filter = array_merge($routeParams, $request->query->all());
+        //dd($filter);
 
-                $filter['annonceur']=$identifiantMongo;
-                unset($filter['version']);
-                unset($filter['vueAvancer']);
-	        unset($filter['indexVue']);
+        $filter['annonceur'] = $identifiantMongo;
+        unset($filter['version']);
+        unset($filter['vueAvancer']);
+        unset($filter['indexVue']);
 
-                unset($filter['lang']);
-                unset($filter['identifiantMongo']);
-	//	dd($filter);
-   
-                $entity="rendezvous";
+        unset($filter['lang']);
+        unset($filter['identifiantMongo']);
+        //	dd($filter);
+
+
+        $entity = "rendezvous";
+
+        //ki yebda annonceur
+        //statuts:waiting accepted
         $data1 = $this->entityManager->getResultFromArray($entity, $filter);
-   // dd($data1);
+        // dd($data1);
         $array1 = $this->entityManager->serializeContent($data1);
-     //   dd($array1);
-	unset($filter['annonceur']);
-        $filter['client']=$identifiantMongo;
+        //   dd($array1);
+        unset($filter['annonceur']);
+
+        //ki yebda client
+        //accepted
+        $filter['client'] = $identifiantMongo;
 
         $data2 = $this->entityManager->getResultFromArray($entity, $filter);
-    
+
         $array2 = $this->entityManager->serializeContent($data2);
 
 
-        $results=array_merge($array1['results'],$array2['results']);
+        $results = array_merge($array1['results'], $array2['results']);
 
-        $data['results']=$results;
-        $data['count']=sizeof($results);
+        $data['results'] = $results;
+        $data['count'] = sizeof($results);
 
 
         if ($vueAvancer) {
@@ -972,68 +978,47 @@ class ClientController extends AbstractController
                 $structuresFinal['count'] = $data['count'];
                 $structuresFinal['results'] = $structureVues;
 
-		    foreach($structuresFinal['results'] as $key=>$result)
-                {
+                foreach ($structuresFinal['results'] as $key => $result) {
 
-                    if(isset($result['client']))
-                    {
-                       
-                            if(isset($result['client'][0]))
-                            {
-                                if(isset($result['client'][0]['photoProfil']))
-                                {
-    
-                                    $params[0] = 'uploads';
-                                    $params[1] = 'single';
-                    
-                                    $params[2] =$result['client'][0]['photoProfil'];
-                                    $logo = $strutureVuesService->getUrl($params);
-                                    $structuresFinal['results'][$key]['client'][0]['photoProfil']= $logo;
-                                }
+                    if (isset($result['client'])) {
+
+                        if (isset($result['client'][0])) {
+                            if (isset($result['client'][0]['photoProfil'])) {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+
+                                $params[2] = $result['client'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structuresFinal['results'][$key]['client'][0]['photoProfil'] = $logo;
                             }
-                        
+                        }
                     }
 
-                    if(isset($result['annonce']))
-                    {
-                       
-                            if(isset($result['annonce'][0]))
-                            {
-                                if(isset($result['annonce'][0]['photoPrincipale']))
-                                {
-    
-                                    $params[0] = 'uploads';
-                                    $params[1] = 'single';
-                    
-                                    $params[2] =$result['annonce'][0]['photoPrincipale'];
-                                    $logo = $strutureVuesService->getUrl($params);
-                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
-                                }
+                    if (isset($result['annonce'])) {
 
-                            
+                        if (isset($result['annonce'][0])) {
+                            if (isset($result['annonce'][0]['photoPrincipale'])) {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+
+                                $params[2] = $result['annonce'][0]['photoPrincipale'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale'] = $logo;
                             }
-
-
-                        
+                        }
                     }
 
-                    if(isset($result['typeDeBien']))
-                    {
-                        $typeDeBien= $dm->getRepository(Entities::class)->find($result['typeDeBien']);
-                        if($typeDeBien)
-                        {
-                            $name=$typeDeBien->getExtraPayload()['libelle'];
-                            $structuresFinal['results'][$key]['typeDeBien']=$name;
+                    if (isset($result['typeDeBien'])) {
+                        $typeDeBien = $dm->getRepository(Entities::class)->find($result['typeDeBien']);
+                        if ($typeDeBien) {
+                            $name = $typeDeBien->getExtraPayload()['libelle'];
+                            $structuresFinal['results'][$key]['typeDeBien'] = $name;
+                        } else {
+                            $structuresFinal['results'][$key]['typeDeBien'] = "";
                         }
-                        else{
-                            $structuresFinal['results'][$key]['typeDeBien']="";
-
-                        }
-           
-
-                        
                     }
-                 
                 }
                 return new JsonResponse($structuresFinal, '200');
             } else {
@@ -1045,83 +1030,70 @@ class ClientController extends AbstractController
         }
 
         return new JsonResponse($data, '200');
-
     }
 
 
-        /**
+    /**
      * @Route("/api/client/compteRenduRDV", methods={"POST"})
      */
 
     public function compteRenduRDV(Request $request)
     {
-        $idRDV=$request->get('idRDV');
-        
-        $client=$request->get('client');
-        $annonce=$request->get('annonce');
+        $idRDV = $request->get('idRDV');
 
-        $leBienCorrespondAnnonce=$request->get('leBienCorrespondAnnonce');
-        $lePrixCorrespondAuBien=$request->get('lePrixCorrespondAuBien');
-        $laVisiteBienPasse=$request->get('laVisiteBienPasse');
+        $client = $request->get('client');
+        $annonce = $request->get('annonce');
+
+        $leBienCorrespondAnnonce = $request->get('leBienCorrespondAnnonce');
+        $lePrixCorrespondAuBien = $request->get('lePrixCorrespondAuBien');
+        $laVisiteBienPasse = $request->get('laVisiteBienPasse');
 
 
 
-        if(is_null($idRDV))
-        {
+        if (is_null($idRDV)) {
 
-            return new JsonResponse(array('message'=>'merci de vérifier id rdv'),400);
+            return new JsonResponse(array('message' => 'merci de vérifier id rdv'), 400);
         }
 
 
-        if(is_null($leBienCorrespondAnnonce))
-        {
-            $leBienCorrespondAnnonce=0;
+        if (is_null($leBienCorrespondAnnonce)) {
+            $leBienCorrespondAnnonce = 0;
         }
 
-        if(is_null($lePrixCorrespondAuBien))
-        {
-            $lePrixCorrespondAuBien=0;
+        if (is_null($lePrixCorrespondAuBien)) {
+            $lePrixCorrespondAuBien = 0;
         }
-        if(is_null($laVisiteBienPasse))
-        {
-            $laVisiteBienPasse=0;
+        if (is_null($laVisiteBienPasse)) {
+            $laVisiteBienPasse = 0;
         }
 
-        
 
 
-        $tab['idRdv']=$idRDV;
-        $tab['client']=$client;
-        $tab['annonce']=$annonce;
 
-        $tab['leBienCorrespondAnnonce']=intval($leBienCorrespondAnnonce);
-        $tab['lePrixCorrespondAuBien']=intval($lePrixCorrespondAuBien);
-        $tab['laVisiteBienPasse']=intval($laVisiteBienPasse);
+        $tab['idRdv'] = $idRDV;
+        $tab['client'] = $client;
+        $tab['annonce'] = $annonce;
+
+        $tab['leBienCorrespondAnnonce'] = intval($leBienCorrespondAnnonce);
+        $tab['lePrixCorrespondAuBien'] = intval($lePrixCorrespondAuBien);
+        $tab['laVisiteBienPasse'] = intval($laVisiteBienPasse);
 
 
-        
+
         $data = $this->entityManager->setResult("compteRenduVisite", null, $tab);
 
 
         return new JsonResponse($data->getId());
-
-
-
-
-
-
-
-
     }
 
-                /**
+    /**
      * @Route("/api/client/removeEntity", methods={"POST"})
      */
-    public function removeEntity(Request $request,DocumentManager $dm)
+    public function removeEntity(Request $request, DocumentManager $dm)
     {
 
         $id = $request->get('id');
-        $entity =$request->get('entity');
+        $entity = $request->get('entity');
         if (is_null($id) || is_null($entity)) {
 
             return new JsonResponse(array('merci de vérifier les données envoyées'), 400);
@@ -1137,6 +1109,4 @@ class ClientController extends AbstractController
             return new JsonResponse(array('message' => 'opération effectué'), 200);
         }
     }
-
-
 }
