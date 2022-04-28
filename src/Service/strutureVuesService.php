@@ -352,6 +352,10 @@ class strutureVuesService
                 {
                     $data=$entity->getExtraPayload()['libelle'];
                 }
+                elseif(isset($entity->getExtraPayload()['titre']))
+                {
+                    $data=$entity->getExtraPayload()['titre'];
+                }
                 
             }
         }
