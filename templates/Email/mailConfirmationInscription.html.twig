@@ -286,7 +286,7 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="center" style="">
-                                                    <img src="{{ asset('images/black.png') }}" border="0" alt="" />
+                                                    <img src="{{email.image('@images/black.png')}}" border="0" alt="" />
                                                 </td>
                                             </tr>
                                         </table>
@@ -317,7 +317,7 @@
                             <table class="col425" width="100%" border="0" cellspacing="0" cellpadding="0" style="width: 488px!important;padding-left: 4%!important;font-size: 16px;">
                                 <tr>
                                     <td class="bodycopy">
-                                        <p style="color:black;">Bonjour Prénom Nom ,<br> 
+                                        <p style="color:black;">Bonjour {{nom}} {{prenom}} ,<br> 
                                         <p style="color:black;">Votre compte Click On Live a bien été créé.</p>
                                         <p style="color:black;">Nous vous remercions pour votre confiance,<br> <br>  à bientôt !</p>
                                     </td>
