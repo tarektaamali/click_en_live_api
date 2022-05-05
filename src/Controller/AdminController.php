@@ -362,12 +362,14 @@ class AdminController extends AbstractController
         
         $idAnnonce=$request->get('idAnnonce');        
         
+        $publicationDate=date('d/m/Y H:i');
         
         $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
         ->field('extraPayload.Identifiant')->equals($idAnnonce)
         ->findAndUpdate()
         ->field('extraPayload.isActive')->set('1')
+        ->field('extraPayload.publicationDate')->set($publicationDate)
         ->getQuery()
         ->execute();
 
