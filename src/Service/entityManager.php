@@ -1443,6 +1443,7 @@ class entityManager
             $qb->field('extraPayload.prix')->lt(floatval($budget[1]));
 
         }
+        
         elseif($budget[0]!=""&&$budget[1]!=""){
             $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
         }
