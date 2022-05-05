@@ -945,7 +945,7 @@ class entityManager
         $id_name = $this->params->get("id_name");
 
         $comptes = $this->documentManager->createQueryBuilder(Entities::class)
-            ->field('name')->equals('recherches')
+            ->field('name')->equals('annonces')
             ->getQuery()
             ->execute();
 
@@ -957,7 +957,7 @@ class entityManager
             //var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
 
-             $payload["titre"]="titre";
+             $payload["publicationDate"]="";
 
 
             $entities->setDateLastMmodif(new DateTime());
