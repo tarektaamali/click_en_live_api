@@ -502,13 +502,16 @@ class ClientController extends AbstractController
             $title = "Réponse DE Rendez-vous";
 
 
-
+            $subject = "Rendez-vous accepté avec succès";
             $msg = "Rendez-vous accepté";
 
             $twig = "accepterRendezVous.html.twig";
         } elseif ($statut == "refuse") {
             $title = "Réponse DE Rendez-vous";
-            $msg = "Rendez-vous refusé";
+            $msg = "";
+            
+        $subject = "Rendez-vous refusé";
+
             $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('timeplanner')
                 ->field('extraPayload.day')->equals($day)
@@ -548,8 +551,6 @@ class ClientController extends AbstractController
 
 
 
-      /*  $subject = "CLICK ON LIVE";
-
         $email = (new TemplatedEmail())
             ->from("clickonlive65@gmail.com")
             ->to(new Address(trim($client->getExtraPayload()['email'])))
@@ -559,10 +560,13 @@ class ClientController extends AbstractController
             ->context([
 
                 "nom" => $client->getExtraPayload()['nom'],
-                "prenom" => $client->getExtraPayload()['prenom']
+                "prenom" => $client->getExtraPayload()['prenom'],
+                "titreannonce"=>$entityannonce->getExtraPayload()['titre'],
+                "date"=>date('d/m/Y'),
+                "heure"=>date('H:i'),
             ]);
 
-        $mailer->send($email);*/
+        $mailer->send($email);
         return new JsonResponse(array('message' => 'done'), 200);
     }
 
@@ -577,6 +581,8 @@ class ClientController extends AbstractController
 
         $rdv = $dm->getRepository(Entities::class)->find($idRDV);
         $annonce = $rdv->getExtraPayload()['annonce'];
+
+      
         $day = $rdv->getExtraPayload()['day'];
         $starHour = $rdv->getExtraPayload()['starHour'];
         $endHour = $rdv->getExtraPayload()['endHour'];
@@ -628,7 +634,7 @@ class ClientController extends AbstractController
 
 
         $client = $dm->getRepository(Entities::class)->find($distinataire);
-      /*  $subject = "CLICK ON LIVE";
+        $subject = "CLICK ON LIVE";
 
         $email = (new TemplatedEmail())
             ->from("clickonlive65@gmail.com")
@@ -639,10 +645,13 @@ class ClientController extends AbstractController
             ->context([
 
                 "nom" => $client->getExtraPayload()['nom'],
-                "prenom" => $client->getExtraPayload()['prenom']
+                "prenom" => $client->getExtraPayload()['prenom'],
+
+               
+
             ]);
 
-        $mailer->send($email);*/
+        $mailer->send($email);
         return new JsonResponse(array('message' => 'done'), 200);
     }
 

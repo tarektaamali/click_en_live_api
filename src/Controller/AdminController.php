@@ -399,7 +399,7 @@ class AdminController extends AbstractController
     //$firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
-                        $subject = "Annonce acceptée avec succès !";
+                        $subject = "Annonce acceptée avec succès";
     
                         $email = (new TemplatedEmail())
                             ->from("clickonlive65@gmail.com")
@@ -478,7 +478,8 @@ class AdminController extends AbstractController
                             ->context([
             
                                 "nom" =>$annonceur->getExtraPayload()['nom'],
-                                "prenom" =>$annonceur->getExtraPayload()['prenom']
+                                "prenom" =>$annonceur->getExtraPayload()['prenom'],
+                                "raison"=>$raison
                             ]);
             
                         $mailer->send($email);
