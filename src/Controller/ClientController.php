@@ -808,11 +808,12 @@ class ClientController extends AbstractController
 
 
         $testRDV = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('timeplanner')
+        ->field('name')->equals('rendezvous')
         ->field('extraPayload.day')->equals($day)
         ->field('extraPayload.starHour')->equals(intval($starHour))
         ->field('extraPayload.endHour')->equals(intval($endHour))
         ->field('extraPayload.etat')->equals("1")
+        ->field('extraPayload.client')->equals($extraPayload['client'])
         ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
         ->field('extraPayload.statut')->equals("waiting")
         ->getQuery()
