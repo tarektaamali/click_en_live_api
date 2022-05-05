@@ -805,6 +805,27 @@ class ClientController extends AbstractController
         $extraPayload['starHour'] = intval($starHour);
         $extraPayload['endHour'] = intval($endHour);
         $extraPayload['statut'] = "waiting";
+
+
+        $testRDV = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('timeplanner')
+        ->field('extraPayload.day')->equals($day)
+        ->field('extraPayload.starHour')->equals(intval($starHour))
+        ->field('extraPayload.endHour')->equals(intval($endHour))
+        ->field('extraPayload.etat')->equals("1")
+        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+        ->field('extraPayload.statut')->equals("waiting")
+        ->getQuery()
+        ->execute();
+        if($testRDV)
+        {
+
+            return new JsonResponse(array('message'=>'vous avez deja un RDV'),400);
+        }
+
+
+
+
         $data = $this->entityManager->setResult("rendezvous", $entity, $extraPayload);
 
         $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
@@ -1083,6 +1104,14 @@ class ClientController extends AbstractController
         $data = $this->entityManager->setResult("compteRenduVisite", null, $tab);
 
 
+        $annonce =  $this->dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('rendezvous')
+        ->field('extraPayload.Identifiant')->equals($idRDV)
+        ->field('extraPayload.etat')->equals('0')
+        ->field('extraPayload.statut')->set('finished')
+        ->findAndUpdate()
+        ->getQuery()
+        ->execute();
         return new JsonResponse($data->getId());
     }
 
