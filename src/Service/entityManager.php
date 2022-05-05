@@ -1341,17 +1341,17 @@ class entityManager
 
         //rechercheParPrix
 
-        if(isset($budget[0])&&!isset($budget[1]))
+        if($budget[0]!=""&&$budget[1]=="")
         {
 
             $qb->field('extraPayload.prix')->gt(floatval($budget[0]));
         }
-        elseif(!isset($budget[0])&&isset($budget[1]))
+        elseif($budget[0]==""&&$budget[1]!="")
         {
             $qb->field('extraPayload.prix')->lt(floatval($budget[1]));
 
         }
-        else{
+        elseif($budget[0]!=""&&$budget[1]!=""){
             $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
         }
     
@@ -1361,17 +1361,21 @@ class entityManager
 
         //rechercheParPrix
 
-        if(isset($surface[0])&&!isset($surface[1]))
+        if($surface[0]!=""&&$surface[1]=="")
         {
 
-            $qb->field('extraPayload.surface')->gt(floatval($surface[0]));
+            if($surface[0]!="")
+            {
+                $qb->field('extraPayload.surface')->gt(floatval($surface[0]));
+            }
+         
         }
-        elseif(!isset($surface[0])&&isset($surface[1]))
+        elseif($surface[0]==""&&$surface[1]!="")
         {
             $qb->field('extraPayload.surface')->lt(floatval($surface[1]));
 
         }
-        else{
+        elseif($surface[0]!=""&&$surface[1]!=""){
             $qb->field('extraPayload.surface')->range(intval($surface[0]), intval($surface[1]));
         }
        
@@ -1380,17 +1384,17 @@ class entityManager
     if (!is_null($nbrePiece) && sizeof($nbrePiece)) {
 
         //rechercheParPrix
-        if(isset($nbrePiece[0])&&!isset($nbrePiece[1]))
+        if($nbrePiece[0]!=""&&$nbrePiece[1]=="")
         {
 
             $qb->field('extraPayload.nombrePieces')->gt(floatval($nbrePiece[0]));
         }
-        elseif(!isset($nbrePiece[0])&&isset($nbrePiece[1]))
+        elseif($nbrePiece[0]==""&&$nbrePiece[1]!="")
         {
             $qb->field('extraPayload.nombrePieces')->lt(floatval($nbrePiece[1]));
 
         }
-        else{
+        elseif($nbrePiece[0]=""&&$nbrePiece[1]!=""){
             $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
         }
       
@@ -1429,17 +1433,17 @@ class entityManager
 
         //rechercheParPrix
 
-        if(isset($budget[0])&&!isset($budget[1]))
+        if($budget[0]!=""&&$budget[1]=="")
         {
 
             $qb->field('extraPayload.prix')->gt(floatval($budget[0]));
         }
-        elseif(!isset($budget[0])&&isset($budget[1]))
+        elseif($budget[0]==""&&$budget[1]!="")
         {
             $qb->field('extraPayload.prix')->lt(floatval($budget[1]));
 
         }
-        else{
+        elseif($budget[0]!=""&&$budget[1]!=""){
             $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
         }
     
@@ -1449,17 +1453,21 @@ class entityManager
 
         //rechercheParPrix
 
-        if(isset($surface[0])&&!isset($surface[1]))
+        if($surface[0]!=""&&$surface[1]=="")
         {
 
-            $qb->field('extraPayload.surface')->gt(floatval($surface[0]));
+            if($surface[0]!="")
+            {
+                $qb->field('extraPayload.surface')->gt(floatval($surface[0]));
+            }
+         
         }
-        elseif(!isset($surface[0])&&isset($surface[1]))
+        elseif($surface[0]==""&&$surface[1]!="")
         {
             $qb->field('extraPayload.surface')->lt(floatval($surface[1]));
 
         }
-        else{
+        elseif($surface[0]!=""&&$surface[1]!=""){
             $qb->field('extraPayload.surface')->range(intval($surface[0]), intval($surface[1]));
         }
        
@@ -1468,21 +1476,22 @@ class entityManager
     if (!is_null($nbrePiece) && sizeof($nbrePiece)) {
 
         //rechercheParPrix
-        if(isset($nbrePiece[0])&&!isset($nbrePiece[1]))
+        if($nbrePiece[0]!=""&&$nbrePiece[1]=="")
         {
 
             $qb->field('extraPayload.nombrePieces')->gt(floatval($nbrePiece[0]));
         }
-        elseif(!isset($nbrePiece[0])&&isset($nbrePiece[1]))
+        elseif($nbrePiece[0]==""&&$nbrePiece[1]!="")
         {
             $qb->field('extraPayload.nombrePieces')->lt(floatval($nbrePiece[1]));
 
         }
-        else{
+        elseif($nbrePiece[0]=""&&$nbrePiece[1]!=""){
             $qb->field('extraPayload.nombrePieces')->range(intval($nbrePiece[0]), intval($nbrePiece[1]));
         }
       
     }
+
 
     if(!is_null($maxResults))
     {

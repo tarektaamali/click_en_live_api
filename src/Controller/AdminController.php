@@ -399,7 +399,7 @@ class AdminController extends AbstractController
     //$firebaseManager->notificationNewAnnonce($token, $msg, $title);
 
 
-                        $subject = "CLICK ON LIVE";
+                        $subject = "Annonce acceptée avec succès !";
     
                         $email = (new TemplatedEmail())
                             ->from("clickonlive65@gmail.com")
