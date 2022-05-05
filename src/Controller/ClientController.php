@@ -548,7 +548,7 @@ class ClientController extends AbstractController
 
 
 
-        $subject = "CLICK ON LIVE";
+      /*  $subject = "CLICK ON LIVE";
 
         $email = (new TemplatedEmail())
             ->from("clickonlive65@gmail.com")
@@ -562,7 +562,7 @@ class ClientController extends AbstractController
                 "prenom" => $client->getExtraPayload()['prenom']
             ]);
 
-        $mailer->send($email);
+        $mailer->send($email);*/
         return new JsonResponse(array('message' => 'done'), 200);
     }
 
@@ -628,7 +628,7 @@ class ClientController extends AbstractController
 
 
         $client = $dm->getRepository(Entities::class)->find($distinataire);
-        $subject = "CLICK ON LIVE";
+      /*  $subject = "CLICK ON LIVE";
 
         $email = (new TemplatedEmail())
             ->from("clickonlive65@gmail.com")
@@ -642,7 +642,7 @@ class ClientController extends AbstractController
                 "prenom" => $client->getExtraPayload()['prenom']
             ]);
 
-        $mailer->send($email);
+        $mailer->send($email);*/
         return new JsonResponse(array('message' => 'done'), 200);
     }
 
