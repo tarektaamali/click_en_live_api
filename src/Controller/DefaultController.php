@@ -794,19 +794,19 @@ class DefaultController extends AbstractController
 
         if($alert)
         {
-            $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
+         /*       $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('configurationAlerts')
         ->field('extraPayload.client')->equals($identifiantMongo)
         ->getQuery()
         ->getSingleResult();
 
-        if($configurationAlerts)
+    if($configurationAlerts)
         {
           $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
         }
-        else{
+        else{*/
             $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
-       }
+    /*   }*/
         }
         
         $results=$entityManager->rechercheAnnonce($localisation,$typeDeBien,$budget,$surface,$nbrePieces,$offset,$maxResults);
