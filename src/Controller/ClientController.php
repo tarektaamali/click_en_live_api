@@ -1059,7 +1059,7 @@ class ClientController extends AbstractController
      * @Route("/api/client/compteRenduRDV", methods={"POST"})
      */
 
-    public function compteRenduRDV(Request $request)
+    public function compteRenduRDV(Request $request,DocumentManager $dm)
     {
         $idRDV = $request->get('idRDV');
 
@@ -1105,7 +1105,7 @@ class ClientController extends AbstractController
         $data = $this->entityManager->setResult("compteRenduVisite", null, $tab);
 
 
-        $annonce =  $this->dm->createQueryBuilder(Entities::class)
+        $annonce =  $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('rendezvous')
         ->field('extraPayload.Identifiant')->equals($idRDV)
         ->field('extraPayload.etat')->equals('0')
