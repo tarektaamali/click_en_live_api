@@ -1108,9 +1108,9 @@ class ClientController extends AbstractController
         $annonce =  $dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('rendezvous')
         ->field('extraPayload.Identifiant')->equals($idRDV)
-        ->field('extraPayload.etat')->equals('0')
-        ->field('extraPayload.statut')->set('finished')
         ->findAndUpdate()
+        ->field('extraPayload.etat')->set('0')
+        ->field('extraPayload.statut')->set('finished')
         ->getQuery()
         ->execute();
         return new JsonResponse($data->getId());
