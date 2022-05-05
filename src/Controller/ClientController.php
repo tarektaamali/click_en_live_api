@@ -816,7 +816,7 @@ class ClientController extends AbstractController
         ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
         ->field('extraPayload.statut')->equals("waiting")
         ->getQuery()
-        ->execute();
+        ->getSingleResult();
         if($testRDV)
         {
 
