@@ -375,7 +375,7 @@ class AdminController extends AbstractController
 
 
         $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
-
+        $titreannonce=$annonce->getExtraPayload()['titre'];
         $annonceur=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
 
         $title="CLICK ON LIVE";
@@ -408,6 +408,7 @@ class AdminController extends AbstractController
                             ->subject($subject)
                             ->htmlTemplate('Email/accepterAnnonce.html.twig')
                             ->context([
+                                "titreannonce"=>  $titreannonce,
             
                                 "nom" =>$annonceur->getExtraPayload()['nom'],
                                 "prenom" =>$annonceur->getExtraPayload()['prenom']
@@ -445,6 +446,8 @@ class AdminController extends AbstractController
 
         $annonce=$this->documentManager->getRepository(Entities::class)->find($idAnnonce);
 
+        $titreannonce=$annonce->getExtraPayload()['titre'];
+
         $annonceur=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
 
         $title="CLICK ON LIVE";
@@ -479,7 +482,8 @@ class AdminController extends AbstractController
             
                                 "nom" =>$annonceur->getExtraPayload()['nom'],
                                 "prenom" =>$annonceur->getExtraPayload()['prenom'],
-                                "raison"=>$raison
+                                "raison"=>$raison,
+                                "titreannonce"=> $titreannonce
                             ]);
             
                         $mailer->send($email);

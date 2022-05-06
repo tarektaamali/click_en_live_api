@@ -582,7 +582,7 @@ class ClientController extends AbstractController
         $rdv = $dm->getRepository(Entities::class)->find($idRDV);
         $annonce = $rdv->getExtraPayload()['annonce'];
 
-      
+        $entityannonce = $dm->getRepository(Entities::class)->find($annonce);
         $day = $rdv->getExtraPayload()['day'];
         $starHour = $rdv->getExtraPayload()['starHour'];
         $endHour = $rdv->getExtraPayload()['endHour'];
@@ -646,6 +646,9 @@ class ClientController extends AbstractController
 
                 "nom" => $client->getExtraPayload()['nom'],
                 "prenom" => $client->getExtraPayload()['prenom'],
+                "titreannonce"=>$entityannonce->getExtraPayload()['titre'],
+                "date"=>date('d/m/Y'),
+                "heure"=>date('H:i'),
 
                
 
