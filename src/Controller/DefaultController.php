@@ -712,68 +712,73 @@ class DefaultController extends AbstractController
 
 
 
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
+
       
         
 
-        $identifiantMongo=$request->get('identifiantMongo');
+        $identifiantMongo= $extraPayload['identifiantMongo'];
         if(is_null($identifiantMongo))
         {
             return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
         }
 
 
-        if(is_null($request->get('titre'))||$request->get('titre')=="")
+        if(is_null( $extraPayload['titre'])|| $extraPayload['titre']=="")
         {
             $titre=null;
         }
         else{
-            $titre=$request->get('titre');
+            $titre= $extraPayload['titre'];
         }
 
-        $save=$request->get('save');
+        $save= $extraPayload['save'];
 
-        if(is_null($request->get('localisation'))||$request->get('localisation')=="")
+        if(is_null( $extraPayload['localisation'])|| $extraPayload['localisation']=="")
         {
             $localisation=null;
         }
         else{
-            $localisation=$request->get('localisation');
+            $localisation= $extraPayload['localisation'];
         }
-        if(is_null($request->get('typeDeBien'))||$request->get('typeDeBien')=="")
+        if(is_null( $extraPayload['typeDeBien'])|| $extraPayload['typeDeBien']=="")
         {
             $typeDeBien=null;
         }
         else{
-            $typeDeBien=$request->get('typeDeBien');
+            $typeDeBien= $extraPayload['typeDeBien'];
         }
     
      
-        if(is_null($request->get('budget'))||$request->get('budget')=="")
+        if(is_null( $extraPayload['budget'])|| $extraPayload['budget']=="")
         {
             $budget=[];
         }
         else{
-            $budget=$request->get('budget');
+            $budget= $extraPayload['budget'];
         }
 
-        if(is_null($request->get('surface'))||$request->get('surface')=="")
+        if(is_null( $extraPayload['surface'])|| $extraPayload['surface']=="")
         {
             $surface=[];
         }
         else{
-            $surface=$request->get('surface');
+            $surface= $extraPayload['surface'];
         }
     
 
-        if(is_null($request->get('nbrePieces'))||$request->get('nbrePieces')=="")
+        if(is_null( $extraPayload['nbrePieces'])|| $extraPayload['nbrePieces']=="")
         {
             $nbrePieces=[];
         }
         else{
-            $nbrePieces=$request->get('nbrePieces');
+            $nbrePieces= $extraPayload['nbrePieces'];
         }
     
-        $alert=$request->get('alert');
+        $alert= $extraPayload['alert'];
        
 
         $extraPayload=[];
@@ -786,7 +791,7 @@ class DefaultController extends AbstractController
         $extraPayload['localisation']=$localisation;
 
 
-        
+
 
         if($save)
         {
