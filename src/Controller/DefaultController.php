@@ -323,19 +323,28 @@ class DefaultController extends AbstractController
 
                     if(isset($result['typeDeBien']))
                     {
-                        $typeDeBien= $dm->getRepository(Entities::class)->find($result['typeDeBien']);
-                        if($typeDeBien)
+                        $ch="";
+                        foreach($result['typeDeBien'] as $t)
                         {
+
+                            $typeDeBien= $dm->getRepository(Entities::class)->find($t);
+
                             $name=$typeDeBien->getExtraPayload()['libelle'];
+                            if($ch=="")
+                            {
+                                $ch=$name;
+                            }
+                            else{
+                                $ch=$ch.",".$name;
+                            }
+
+                        }
+
+
+                          
                             $structuresFinal['results'][$key]['typeDeBien']=$name;
-                        }
-                        else{
-                            $structuresFinal['results'][$key]['typeDeBien']="";
+                   
 
-                        }
-           
-
-                        
                     }
                  
                 }
