@@ -447,7 +447,7 @@ class ClientController extends AbstractController
 
             $email = (new TemplatedEmail())
                 ->from("clickonlive65@gmail.com")
-                ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+                ->to(new Address(trim($client->getExtraPayload()['email'])))
                 //->bcc('touhemib@gmail.com')
                 ->subject($subject)
                 ->htmlTemplate('Email/demandeRendezVous.html.twig')
@@ -879,7 +879,7 @@ class ClientController extends AbstractController
 
         $email = (new TemplatedEmail())
             ->from("clickonlive65@gmail.com")
-            ->to(new Address(trim($annonceur->getExtraPayload()['email'])))
+            ->to(new Address(trim($client->getExtraPayload()['email'])))
             //->bcc('touhemib@gmail.com')
             ->subject($subject)
             ->htmlTemplate('Email/demandeRendezVous.html.twig')
