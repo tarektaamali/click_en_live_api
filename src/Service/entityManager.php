@@ -1319,8 +1319,10 @@ class entityManager
        
         $qb = $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
-        ->field('status')->equals("active");
+        ->field('status')->equals("active")
     
+        ->field('extraPayload.statut')->equals("created")
+        ->field('extraPayload.isActive')->equals("1");
         
     if (!is_null($typeDeBien) && sizeof($typeDeBien)) {
 
@@ -1411,7 +1413,9 @@ class entityManager
 
         $qb = $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
-        ->field('status')->equals("active");
+        ->field('status')->equals("active")
+        ->field('extraPayload.statut')->equals("created")
+        ->field('extraPayload.isActive')->equals("1");
     
         
     if (!is_null($typeDeBien) && $typeDeBien!="") {
@@ -1443,7 +1447,7 @@ class entityManager
             $qb->field('extraPayload.prix')->lt(floatval($budget[1]));
 
         }
-        
+
         elseif($budget[0]!=""&&$budget[1]!=""){
             $qb->field('extraPayload.prix')->range(floatval($budget[0]), floatval($budget[1]));
         }
