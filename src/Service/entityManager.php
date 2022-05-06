@@ -1321,7 +1321,7 @@ class entityManager
         ->field('name')->equals('annonces')
         ->field('status')->equals("active")
     
-        ->field('extraPayload.statut')->equals("created")
+        ->field('extraPayload.statut')->in(["created","reviewed"])
         ->field('extraPayload.isActive')->equals("1");
         
     if (!is_null($typeDeBien) && sizeof($typeDeBien)) {
@@ -1414,7 +1414,7 @@ class entityManager
         $qb = $this->documentManager->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
         ->field('status')->equals("active")
-        ->field('extraPayload.statut')->equals("created")
+        ->field('extraPayload.statut')->in(["created","reviewed"])
         ->field('extraPayload.isActive')->equals("1");
     
         
