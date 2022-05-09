@@ -855,6 +855,22 @@ class DefaultController extends AbstractController
             $structuresFinal['count'] = $data['count'];
             $structuresFinal['results'] = $structureVues;
 
+            foreach($structuresFinal['results'] as $key=>$result)
+            {
+
+
+                if(isset($result['classeEnergie']))
+                {
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                }
+
+                if(isset($result['GES']))
+                {
+                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                }
+             
+            }
+
             
         } else {
 
@@ -935,6 +951,22 @@ class DefaultController extends AbstractController
             $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data['results'], 'fr');
             $structuresFinal['count'] = $data['count'];
             $structuresFinal['results'] = $structureVues;
+
+            foreach($structuresFinal['results'] as $key=>$result)
+            {
+
+
+                if(isset($result['classeEnergie']))
+                {
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                }
+
+                if(isset($result['GES']))
+                {
+                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                }
+             
+            }
 
             
         } else {
