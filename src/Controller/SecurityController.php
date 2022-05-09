@@ -476,7 +476,7 @@ class SecurityController extends AbstractController
 
 
 
-            $subject = "Mot de passe oublier";
+            $subject = "Mot de passe oublié";
 
             $email = (new TemplatedEmail())
                 ->from("clickonlive65@gmail.com")
