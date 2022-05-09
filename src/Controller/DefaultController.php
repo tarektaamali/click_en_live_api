@@ -1467,6 +1467,8 @@ class DefaultController extends AbstractController
             $classe="G";
         }
 
+        return $classe;
+
     }
 
 }
