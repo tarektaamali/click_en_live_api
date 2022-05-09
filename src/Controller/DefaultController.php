@@ -674,6 +674,15 @@ class DefaultController extends AbstractController
 
                     
                 }
+                if(isset($result['classeEnergie']))
+                {
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                }
+
+                if(isset($result['GES']))
+                {
+                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                }
              
             }
 
