@@ -1316,6 +1316,10 @@ class DefaultController extends AbstractController
                         
                     }
 
+                    if(isset($structureVues[0]['classeEnergie']))
+                    {
+                        $structureVues[0]['classeEnergie']= $this->calculEnergie(intval($structureVues[0]['classeEnergie']));
+                    }
                     if(isset($structureVues[0]['listePhotos']))
                     {
                         $listePhotos=$structureVues[0]['listePhotos'];
@@ -1383,6 +1387,47 @@ class DefaultController extends AbstractController
         }
 
         return new JsonResponse($data, '200');
+    }
+
+
+
+    function calculEnergie($val)
+    {
+
+        $classe="A";
+
+        
+        if($val<=50)
+        {
+            $classe="A";
+        }
+        elseif(50<$val&&$val<=90)
+        {
+            $classe="B";
+
+        }
+        elseif(90<$val&&$val<=150)
+        {
+            $classe="C";
+        }
+        elseif(150<$val&&$val<=230)
+        {
+            $classe="D";
+        }
+        elseif(230<$val&&$val<=330)
+        {
+            $classe="E";
+        }
+        elseif(330<$val&&$val<=450)
+        {
+            $classe="F";
+
+        }
+        else{
+            $classe="G";
+        }
+        
+        return $classe;
     }
 
 }
