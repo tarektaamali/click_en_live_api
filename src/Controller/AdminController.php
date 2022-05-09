@@ -274,7 +274,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/api/admin/read/{id}", methods={"GET"})
      */
-    public function readAvance(strutureVuesService $strutureVuesService, $id, Request $request)
+    public function readAvance(strutureVuesService $strutureVuesService, $id, Request $request,DocumentManager $dm)
     {
         $vue = null;
         if ($request->get('vue') != null) {
@@ -291,7 +291,12 @@ class AdminController extends AbstractController
             $vueVersion = $request->get('vueVersion');
         }
 
-        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion);
+        $details = null;
+        if ($request->get('details') != null) {
+            $details = $request->get('details');
+        }
+
+        $data = $this->entityManager->getSingleResult($id, $vue, $vueVersion, $details);
 
         // launch additional events on insert
         $fireEvent = null;
@@ -307,16 +312,54 @@ class AdminController extends AbstractController
             $vueAvancer = $request->get('vueAvancer');
         }
 
-
-        $indexVue = "CLIENT";
-
-
-
+        $indexVue = "ADMIN";
+        if ($request->get('indexVue') != null) {
+            $indexVue = $request->get('indexVue');
+        }
         if ($vueAvancer) {
             if (isset($data[0])) {
 
                 $structureVues = $strutureVuesService->getDetailsEntitySerializer($indexVue, $vueAvancer, $data, $lang);
 
+                
+                if(isset($structureVues[0]))
+                {
+                    if(isset($structureVues[0]['linkedCompte']))
+                    {
+                        if(isset($structureVues[0]['linkedCompte'][0]))
+                        {
+                            if(isset($structureVues[0]['linkedCompte'][0]['photoProfil']))
+                            {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] = $structureVues[0]['linkedCompte'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structureVues[0]['linkedCompte'][0]['photoProfil']= $logo;
+                            }
+                        }
+                    }
+
+                    if(isset($structureVues[0]['typeAnnonce']))
+                    {
+                        
+                        $typeDeBien= $dm->getRepository(Entities::class)->find($structureVues[0]['typeAnnonce']);
+                        if($typeDeBien)
+                        {
+                            $name=$typeDeBien->getExtraPayload()['libelle'];
+                            $structureVues[0]['typeAnnonce']=$name;
+                        }
+                        else{
+                            
+                            $structureVues[0]['typeAnnonce']="";
+                        }
+                       
+
+                        
+                    }
+                  
+                }
                 return new JsonResponse($structureVues, '200');
             } else {
                 return new JsonResponse($data, '200');
