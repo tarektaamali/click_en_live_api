@@ -1192,7 +1192,10 @@ class ClientController extends AbstractController
 
                 $dateRDV = date('Y-m-d', $day);
               
+                var_dump($date);
+                var_dump($dateRDV);
 
+                var_dump($dateRDV >= $date);
                 if ($dateRDV >= $date) {
                     $test = true;
                 }
