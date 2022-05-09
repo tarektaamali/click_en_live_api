@@ -346,14 +346,14 @@ class SecurityController extends AbstractController
 
                 $tabDeviceToken=$compte->getExtraPayload()['deviceToken'];
 
-                if (($key = array_search($deviceToken, $tabDeviceToken)) !== false) {
+                /*if (($key = array_search($deviceToken, $tabDeviceToken)) !== false) {
                     unset($tabDeviceToken[$key]);
-                }
+                }*/
                 $user= $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('comptes')
                 ->field('extraPayload.Identifiant')->equals($idenMongo)
                 ->findAndUpdate()
-                ->field('extraPayload.deviceToken')->set(array_values($tabDeviceToken))
+                ->field('extraPayload.deviceToken')->set([])
                 ->getQuery()
                 ->execute();
             }
