@@ -509,8 +509,8 @@ class ClientController extends AbstractController
         } elseif ($statut == "refuse") {
             $title = "Réponse DE Rendez-vous";
             $msg = "";
-            
-        $subject = "Rendez-vous refusé";
+
+            $subject = "Rendez-vous refusé";
 
             $activerTimePlaner = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('timeplanner')
@@ -561,9 +561,9 @@ class ClientController extends AbstractController
 
                 "nom" => $client->getExtraPayload()['nom'],
                 "prenom" => $client->getExtraPayload()['prenom'],
-                "titreannonce"=>$entityannonce->getExtraPayload()['titre'],
-                "date"=>date('d/m/Y'),
-                "heure"=>date('H:i'),
+                "titreannonce" => $entityannonce->getExtraPayload()['titre'],
+                "date" => date('d/m/Y'),
+                "heure" => date('H:i'),
             ]);
 
         $mailer->send($email);
@@ -646,11 +646,11 @@ class ClientController extends AbstractController
 
                 "nom" => $client->getExtraPayload()['nom'],
                 "prenom" => $client->getExtraPayload()['prenom'],
-                "titreannonce"=>$entityannonce->getExtraPayload()['titre'],
-                "date"=>date('d/m/Y'),
-                "heure"=>date('H:i'),
+                "titreannonce" => $entityannonce->getExtraPayload()['titre'],
+                "date" => date('d/m/Y'),
+                "heure" => date('H:i'),
 
-               
+
 
             ]);
 
@@ -820,20 +820,19 @@ class ClientController extends AbstractController
 
 
         $testRDV = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('rendezvous')
-        ->field('extraPayload.day')->equals($day)
-        ->field('extraPayload.starHour')->equals(intval($starHour))
-        ->field('extraPayload.endHour')->equals(intval($endHour))
-        ->field('extraPayload.etat')->equals("1")
-        ->field('extraPayload.client')->equals($extraPayload['client'])
-        ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
-        ->field('extraPayload.statut')->equals("waiting")
-        ->getQuery()
-        ->getSingleResult();
-        if($testRDV)
-        {
+            ->field('name')->equals('rendezvous')
+            ->field('extraPayload.day')->equals($day)
+            ->field('extraPayload.starHour')->equals(intval($starHour))
+            ->field('extraPayload.endHour')->equals(intval($endHour))
+            ->field('extraPayload.etat')->equals("1")
+            ->field('extraPayload.client')->equals($extraPayload['client'])
+            ->field('extraPayload.annonce')->equals($extraPayload['annonce'])
+            ->field('extraPayload.statut')->equals("waiting")
+            ->getQuery()
+            ->getSingleResult();
+        if ($testRDV) {
 
-            return new JsonResponse(array('message'=>'vous avez deja un RDV'),400);
+            return new JsonResponse(array('message' => 'vous avez deja un RDV'), 400);
         }
 
 
@@ -1071,7 +1070,7 @@ class ClientController extends AbstractController
      * @Route("/api/client/compteRenduRDV", methods={"POST"})
      */
 
-    public function compteRenduRDV(Request $request,DocumentManager $dm)
+    public function compteRenduRDV(Request $request, DocumentManager $dm)
     {
         $idRDV = $request->get('idRDV');
 
@@ -1118,13 +1117,13 @@ class ClientController extends AbstractController
 
 
         $annonce =  $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('rendezvous')
-        ->field('extraPayload.Identifiant')->equals($idRDV)
-        ->findAndUpdate()
-        ->field('extraPayload.etat')->set('0')
-        ->field('extraPayload.statut')->set('finished')
-        ->getQuery()
-        ->execute();
+            ->field('name')->equals('rendezvous')
+            ->field('extraPayload.Identifiant')->equals($idRDV)
+            ->findAndUpdate()
+            ->field('extraPayload.etat')->set('0')
+            ->field('extraPayload.statut')->set('finished')
+            ->getQuery()
+            ->execute();
         return new JsonResponse($data->getId());
     }
 
@@ -1154,20 +1153,59 @@ class ClientController extends AbstractController
 
 
 
+    /**
+     * @Route("/checkTimePlanner", methods={"POST"})
+     */
 
- 
- /*   public function checkTimePlanner(Request $request,DocumentManager $dm)
+    public function checkTimePlanner(Request $request, DocumentManager $dm)
     {
 
-        $idAnnonce=$request->get('idAnnonce');
+        $idAnnonce = $request->get('idAnnonce');
 
-        $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('timeplanner')
-        ->field('extraPayload.etat')->equals('1')
-        ->getQuery()
-        ->execute();
-        
-      
+        $nbretimeplanner = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('timeplanner')
+            ->field('extraPayload.annonce')->field($idAnnonce)
+            ->field('extraPayload.etat')->equals('1')
+            ->count()
+            ->getQuery()
+            ->execute();
 
-    }*/
+
+        if ($nbretimeplanner) {
+
+
+
+            $listeTimePlanner = $dm->createQueryBuilder(Entities::class)
+                ->field('name')->equals('timeplanner')
+                ->field('extraPayload.etat')->equals('1')
+                ->field('extraPayload.annonce')->field($idAnnonce)
+                ->getQuery()
+                ->execute();
+
+            $date = date('Y-m-d');
+            $test = false;
+            foreach ($listeTimePlanner as $time) {
+
+
+                $day = strtotime($time->getExtraPayload()['day']);
+
+                $dateRDV = date('Y-m-d', $day);
+
+
+                if ($day <= $dateRDV) {
+                    $test = true;
+                }
+            }
+
+            if ($test) {
+                return new JsonResponse(array("message" => "disponible"), 200);
+            } else {
+                return new JsonResponse(array("message" => "non disponible"), 400);
+            }
+        } else {
+
+
+            return new JsonResponse(array("message" => "non disponible"), 400);
+        }
+    }
 }
