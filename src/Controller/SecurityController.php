@@ -536,7 +536,7 @@ class SecurityController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                $subject = "Mot de passe oublier";
+                $subject = "Mot de passe oublié";
 
                 $email = (new TemplatedEmail())
                     ->from("clickonlive65@gmail.com")
