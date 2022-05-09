@@ -1188,19 +1188,17 @@ class ClientController extends AbstractController
 
 
                 $day = strtotime($time->getExtraPayload()['day']);
-                var_dump($day);
+          
 
                 $dateRDV = date('Y-m-d', $day);
-                var_dump($dateRDV);
+              
 
-                var_dump($day <= $dateRDV);
-
-                if ($day <= $dateRDV) {
+                if ($dateRDV >= $date) {
                     $test = true;
                 }
             }
 
-            var_dump("test".$test);
+           
             if ($test) {
                 return new JsonResponse(array("message" => "disponible"), 200);
             } else {
