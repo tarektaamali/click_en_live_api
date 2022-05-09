@@ -459,6 +459,15 @@ class DefaultController extends AbstractController
 
                         
                     }
+                    if(isset($structureVues[0]['classeEnergie']))
+                    {
+                        $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie(intval($structureVues[0]['classeEnergie'])));
+                    }
+
+                    if(isset($structureVues[0]['GES']))
+                    {
+                        $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES(intval($structureVues[0]['GES'])));
+                    }
                 }
                 return new JsonResponse($structureVues, '200');
             } else {

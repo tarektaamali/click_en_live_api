@@ -1151,4 +1151,23 @@ class ClientController extends AbstractController
             return new JsonResponse(array('message' => 'opération effectué'), 200);
         }
     }
+
+
+
+
+ 
+ /*   public function checkTimePlanner(Request $request,DocumentManager $dm)
+    {
+
+        $idAnnonce=$request->get('idAnnonce');
+
+        $desactiverTimePlaner = $dm->createQueryBuilder(Entities::class)
+        ->field('name')->equals('timeplanner')
+        ->field('extraPayload.etat')->equals('1')
+        ->getQuery()
+        ->execute();
+        
+      
+
+    }*/
 }
