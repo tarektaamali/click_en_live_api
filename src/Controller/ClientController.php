@@ -1177,8 +1177,8 @@ class ClientController extends AbstractController
 
             $listeTimePlanner = $dm->createQueryBuilder(Entities::class)
                 ->field('name')->equals('timeplanner')
-                ->field('extraPayload.etat')->equals('1')
                 ->field('extraPayload.annonce')->field($idAnnonce)
+                ->field('extraPayload.etat')->equals('1')
                 ->getQuery()
                 ->execute();
 
@@ -1192,10 +1192,7 @@ class ClientController extends AbstractController
 
                 $dateRDV = date('Y-m-d', $day);
               
-                var_dump($date);
-                var_dump($dateRDV);
-
-                var_dump($dateRDV >= $date);
+              
                 if ($dateRDV >= $date) {
                     $test = true;
                 }
