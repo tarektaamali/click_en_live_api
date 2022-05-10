@@ -142,7 +142,7 @@ class AdminController extends AbstractController
         $host = $request->getHost();
 
 
-        $urlPhotoCouverture = 'http://' . $host . ':' . $port . '/uploads/' . str_replace(' ', '',  $data->getName());
+        $urlPhotoCouverture = $this->params->get('Hostapi'). '/uploads/' . str_replace(' ', '',  $data->getName());
 
         /* echo $urlPhotoCouverture.'<br>';*/
 

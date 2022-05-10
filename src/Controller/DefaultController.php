@@ -138,7 +138,7 @@ class DefaultController extends AbstractController
         $host = $request->getHost();
 
 
-        $urlPhotoCouverture = 'http://' . $host . ':' . $port . '/uploads/' . str_replace(' ', '',  $data->getName());
+        $urlPhotoCouverture = $this->params->get('Hostapi') . '/uploads/' . str_replace(' ', '',  $data->getName());
 
         /* echo $urlPhotoCouverture.'<br>';*/
 
@@ -480,6 +480,25 @@ class DefaultController extends AbstractController
                         $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie(intval($structureVues[0]['classeEnergie'])));
                     }
 
+
+                    if(isset($structureVues[0]['photoPrincipale']))
+                    {
+                        $idPhotoPrincipale= $structureVues[0]['photoPrincipale'];
+    
+                        $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                        ->field('name')->equals('imagesAnnonces')
+                        ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                        ->field('extraPayload.annonce')->equals($id)
+                        ->getQuery()
+                        ->getSingleResult();
+                        if($photoPrincipale)
+                        {
+    
+                            $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                        }
+    
+    
+                    }
                     if(isset($structureVues[0]['GES']))
                     {
                         $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES(intval($structureVues[0]['GES'])));
@@ -540,7 +559,7 @@ class DefaultController extends AbstractController
             $host = $request->getHost();
 
 
-            $urlPhotoCouverture = 'http://' . $host . ':' . $port . '/uploads/' . str_replace(' ', '',  $data->getName());
+            $urlPhotoCouverture = $this->params->get('Hostapi'). '/uploads/' . str_replace(' ', '',  $data->getName());
 
             $tab[$i] = array('id' => $id, 'url' => $urlPhotoCouverture);
             $i++;
@@ -689,6 +708,25 @@ class DefaultController extends AbstractController
        
 
                     
+                }
+
+                if(isset($result['photoPrincipale']))
+                {
+                    $idPhotoPrincipale=$result['photoPrincipale'];
+
+                    $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('imagesAnnonces')
+                    ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                    ->field('extraPayload.annonce')->equals($result['Identifiant'])
+                    ->getQuery()
+                    ->getSingleResult();
+                    if($photoPrincipale)
+                    {
+
+                        $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                    }
+
+
                 }
                 if(isset($result['classeEnergie']))
                 {
@@ -874,6 +912,24 @@ class DefaultController extends AbstractController
             foreach($structuresFinal['results'] as $key=>$result)
             {
 
+                if(isset($result['photoPrincipale']))
+                {
+                    $idPhotoPrincipale=$result['photoPrincipale'];
+
+                    $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('imagesAnnonces')
+                    ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                    ->field('extraPayload.annonce')->equals($result['Identifiant'])
+                    ->getQuery()
+                    ->getSingleResult();
+                    if($photoPrincipale)
+                    {
+
+                        $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                    }
+
+
+                }
 
                 if(isset($result['classeEnergie']))
                 {
@@ -971,6 +1027,24 @@ class DefaultController extends AbstractController
             foreach($structuresFinal['results'] as $key=>$result)
             {
 
+                if(isset($result['photoPrincipale']))
+                {
+                    $idPhotoPrincipale=$result['photoPrincipale'];
+
+                    $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('imagesAnnonces')
+                    ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                    ->field('extraPayload.annonce')->equals($result['Identifiant'])
+                    ->getQuery()
+                    ->getSingleResult();
+                    if($photoPrincipale)
+                    {
+
+                        $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                    }
+
+
+                }
 
                 if(isset($result['classeEnergie']))
                 {
@@ -1390,6 +1464,25 @@ class DefaultController extends AbstractController
                     if(isset($structureVues[0]['GES']))
                     {
                         $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES(intval($structureVues[0]['GES'])));
+                    }
+
+                    if(isset($structureVues[0]['photoPrincipale']))
+                    {
+                        $idPhotoPrincipale=$structureVues[0]['photoPrincipale'];
+
+                        $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                        ->field('name')->equals('imagesAnnonces')
+                        ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                        ->field('extraPayload.annonce')->equals($id)
+                        ->getQuery()
+                        ->getSingleResult();
+                        if($photoPrincipale)
+                        {
+
+                            $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                        }
+
+
                     }
                     if(isset($structureVues[0]['listePhotos']))
                     {
