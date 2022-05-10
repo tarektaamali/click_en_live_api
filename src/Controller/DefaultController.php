@@ -298,6 +298,22 @@ class DefaultController extends AbstractController
                         
                     }
 
+
+                    
+                    if (isset($result['annonceur'])) {
+
+                        if (isset($result['annonceur'][0])) {
+                            if (isset($result['annonceur'][0]['photoProfil'])) {
+
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+
+                                $params[2] = $result['annonceur'][0]['photoProfil'];
+                                $logo = $strutureVuesService->getUrl($params);
+                                $structuresFinal['results'][$key]['annonceur'][0]['photoProfil'] = $logo;
+                            }
+                        }
+                    }
                     if(isset($result['annonce']))
                     {
                        
