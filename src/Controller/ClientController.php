@@ -908,7 +908,7 @@ class ClientController extends AbstractController
      */
 
 
-    public function getMesRendezVous(strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
+    public function getMesRendezVous(DocumentManager $dm,strutureVuesService $strutureVuesService, Request $request, $routeParams = array())
     {
         $vueAvancer = null;
         if ($request->get('vueAvancer') != null) {
@@ -1048,12 +1048,28 @@ class ClientController extends AbstractController
                         if (isset($result['annonce'][0])) {
                             if (isset($result['annonce'][0]['photoPrincipale'])) {
 
-                                $params[0] = 'uploads';
-                                $params[1] = 'single';
+                                $idPhotoPrincipale=$result['annonce'][0]['photoPrincipale'];
 
-                                $params[2] = $result['annonce'][0]['photoPrincipale'];
-                                $logo = $strutureVuesService->getUrl($params);
-                                $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale'] = $logo;
+                                $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                                ->field('name')->equals('imagesAnnonces')
+                                ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                                ->field('extraPayload.annonce')->equals($result['annonce'][0]['Identifiant'])
+                                ->getQuery()
+                                ->getSingleResult();
+                                if($photoPrincipale)
+                                {
+        
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                                }
+                                else{
+        
+                                    $params[0] = 'uploads';
+                                    $params[1] = 'single';
+                    
+                                    $params[2] =$idPhotoPrincipale;
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                                }
+                       
                             }
                         }
                     }

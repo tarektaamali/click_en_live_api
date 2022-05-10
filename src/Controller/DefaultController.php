@@ -322,12 +322,27 @@ class DefaultController extends AbstractController
                                 if(isset($result['annonce'][0]['photoPrincipale']))
                                 {
     
+                                    $idPhotoPrincipale=$result['annonce'][0]['photoPrincipale'];
+
+                                $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                                ->field('name')->equals('imagesAnnonces')
+                                ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                                ->field('extraPayload.annonce')->equals($result['annonce'][0]['Identifiant'])
+                                ->getQuery()
+                                ->getSingleResult();
+                                if($photoPrincipale)
+                                {
+        
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                                }
+                                else{
+        
                                     $params[0] = 'uploads';
                                     $params[1] = 'single';
                     
-                                    $params[2] =$result['annonce'][0]['photoPrincipale'];
-                                    $logo = $strutureVuesService->getUrl($params);
-                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale']= $logo;
+                                    $params[2] =$idPhotoPrincipale;
+                                    $structuresFinal['results'][$key]['annonce'][0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                                }
                                 }
 
                             
