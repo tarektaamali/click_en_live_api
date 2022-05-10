@@ -12,6 +12,8 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Yaml\Yaml;
 use App\Service\distance;
+use MongoDB\BSON\Regex;
+use MongoDB\BSON\UTCDateTime;
 
 class entityManager
 {
@@ -323,7 +325,7 @@ class entityManager
                             $qb->field('extraPayload' . '.' . $property)->range(intval($arrayValue[0]), intval($arrayValue[1]));
                         }
                     } elseif (array_key_exists("regex", $value)) {
-                        $arrayValue = new \MongoDB\BSON\Regex($value['regex'], 'i');
+                        $arrayValue = new Regex($value['regex'], 'i');
                         $qb->field('extraPayload' . '.' . $property)->equals($arrayValue);
                     }
                 } else {
@@ -405,7 +407,7 @@ class entityManager
                             $qb->field('extraPayload' . '.' . $property)->range(intval($arrayValue[0]), intval($arrayValue[1]));
                         }
                     } elseif (array_key_exists("regex", $value)) {
-                        $arrayValue = new \MongoDB\BSON\Regex($value['regex'], 'i');
+                        $arrayValue = new Regex($value['regex'], 'i');
                         $qb->field('extraPayload' . '.' . $property)->equals($arrayValue);
                     }
                 } else {
@@ -533,7 +535,7 @@ class entityManager
                         if (stripos($j, "date") !== false && trim($content) != null) {
                             $datetime = new DateTime();
                             $newDate = $datetime->createFromFormat('Y-m-d', $content);
-                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
+                            $newDate = new UTCDateTime($newDate);
                             $payload[$j] = $newDate;
                         }
                     }
@@ -646,7 +648,7 @@ class entityManager
                         if (stripos($j, "date") !== false && trim($content) != null) {
                             $datetime = new DateTime();
                             $newDate = $datetime->createFromFormat('Y-m-d', $content);
-                            $newDate = new \MongoDB\BSON\UTCDateTime($newDate);
+                            $newDate = new UTCDateTime($newDate);
                             $payload[$j] = $newDate;
                         }
                     }
@@ -720,7 +722,7 @@ class entityManager
             }
 
             if (!is_null($word) && $word != "") {
-                $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
+                $arrayValue = new Regex($word, 'i');
                 $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
                 //   $qb->field('extraPayload.en_designation')->equals($arrayValue);
             }
@@ -729,7 +731,7 @@ class entityManager
 
                 foreach ($linkTags as $tag) {
 
-                    $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
+                    $arrayValue = new Regex($tag, 'i');
                     //  var_dump($arrayValue);
                     $qb->field('extraPayload.listeTags')->equals($arrayValue);
                 }
@@ -754,7 +756,7 @@ class entityManager
             }
 
             if (!is_null($word) && $word != "") {
-                $arrayValue = new \MongoDB\BSON\Regex($word, 'i');
+                $arrayValue = new Regex($word, 'i');
                 $qb->field('extraPayload.' . $lang . '_designation')->equals($arrayValue);
                 // $qb->field('extraPayload.en_designation')->equals($arrayValue);
             }
@@ -764,7 +766,7 @@ class entityManager
 
                 foreach ($linkTags as $tag) {
 
-                    $arrayValue = new \MongoDB\BSON\Regex($tag, 'i');
+                    $arrayValue = new Regex($tag, 'i');
                     $qb->field('extraPayload.listeTags')->equals($arrayValue);
                 }
             }
@@ -913,7 +915,7 @@ class entityManager
             foreach ($data as $key => $value) {
                 foreach (array_keys($value) as $j) {
                     if (stripos($j, "date") !== false) {
-                        if ($data[$key][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                        if ($data[$key][$j] instanceof UTCDateTime) {
                             $mongoDate = $data[$key][$j];
                             $datetime = $mongoDate->toDateTime();
                             $data[$key][$j] = $datetime->format('Y-m-d');
@@ -924,7 +926,7 @@ class entityManager
         } elseif (count($data) == 1) {
             foreach (array_keys($data[0]) as $j) {
                 if (stripos($j, "date") !== false) {
-                    if ($data[0][$j] instanceof \MongoDB\BSON\UTCDateTime) {
+                    if ($data[0][$j] instanceof UTCDateTime) {
                         $mongoDate = $data[0][$j];
                         $datetime = $mongoDate->toDateTime();
                         $data[0][$j] = $datetime->format('Y-m-d');
@@ -1333,7 +1335,7 @@ class entityManager
     }
 
     if (!is_null($localisation) && $localisation != "") {
-        $arrayValue = new \MongoDB\BSON\Regex($localisation, 'i');
+        $arrayValue = new Regex($localisation, 'i');
       //  $qb->field('extraPayload.codePostal')->equals($arrayValue);
         $qb->field('extraPayload.addresse')->equals($arrayValue);
         //$qb->field('extraPayload.ville')->equals($arrayValue);
@@ -1427,7 +1429,7 @@ class entityManager
     }
 
     if (!is_null($localisation) && $localisation != "") {
-        $arrayValue = new \MongoDB\BSON\Regex($localisation, 'i');
+        $arrayValue = new Regex($localisation, 'i');
      //   $qb->field('extraPayload.codePostal')->equals($arrayValue);
         $qb->field('extraPayload.addresse')->equals($arrayValue);
       //  $qb->field('extraPayload.ville')->equals($arrayValue);
