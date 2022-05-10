@@ -19,7 +19,7 @@ class checkDisponibleMaitenantCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('alertNewAnnonce')
+            ->setName('checkDisponibleMaitenant')
             ->setDescription('send notifications')
             ->addArgument(
                 'Who do you want to greet?'
