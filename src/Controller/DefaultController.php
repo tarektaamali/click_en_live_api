@@ -495,6 +495,13 @@ class DefaultController extends AbstractController
                         {
     
                             $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                        }else{
+
+                            $params[0] = 'uploads';
+                            $params[1] = 'single';
+            
+                            $params[2] =$idPhotoPrincipale;
+                            $structureVues[0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
                         }
     
     
@@ -725,6 +732,14 @@ class DefaultController extends AbstractController
 
                         $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
                     }
+                    else{
+
+                        $params[0] = 'uploads';
+                        $params[1] = 'single';
+        
+                        $params[2] =$idPhotoPrincipale;
+                        $structuresFinal['results'][$key]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                    }
 
 
                 }
@@ -927,7 +942,14 @@ class DefaultController extends AbstractController
 
                         $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
                     }
+                    else{
 
+                        $params[0] = 'uploads';
+                        $params[1] = 'single';
+        
+                        $params[2] =$idPhotoPrincipale;
+                        $structuresFinal['results'][$key]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                    }
 
                 }
 
@@ -1041,6 +1063,15 @@ class DefaultController extends AbstractController
                     {
 
                         $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                    }
+
+                    else{
+
+                        $params[0] = 'uploads';
+                        $params[1] = 'single';
+        
+                        $params[2] =$idPhotoPrincipale;
+                        $structuresFinal['results'][$key]['photoPrincipale'] = $strutureVuesService->getUrl($params);
                     }
 
 
@@ -1480,6 +1511,14 @@ class DefaultController extends AbstractController
                         {
 
                             $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                        }
+                        else{
+
+                            $params[0] = 'uploads';
+                            $params[1] = 'single';
+            
+                            $params[2] =$idPhotoPrincipale;
+                            $structureVues[0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
                         }
 
 
