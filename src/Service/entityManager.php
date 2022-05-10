@@ -957,7 +957,9 @@ class entityManager
             //var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
 
-             $payload["publicationDate"]="";
+             $payload["nomInterphone"]="";
+             $payload["codePortail"]="";
+             $payload["autresInformations"]="";
 
 
             $entities->setDateLastMmodif(new DateTime());
