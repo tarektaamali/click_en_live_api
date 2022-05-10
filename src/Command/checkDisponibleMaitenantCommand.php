@@ -86,7 +86,7 @@ class checkDisponibleMaitenantCommand extends Command
         if ($nbreListeDisponibles) {
             foreach ($listeDisponibles as $t) {
 
-                $idAnnonce = $t['annonce'];
+                $idAnnonce = $t->getExtraPayload()['annonce'];
 
 
                 $annonces = $this->dm->createQueryBuilder(Entities::class)
