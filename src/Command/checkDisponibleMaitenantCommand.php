@@ -55,12 +55,22 @@ class checkDisponibleMaitenantCommand extends Command
         $starHour = intval(date('H'));
         $endHour = $starHour + 1;
 
-        $allAnnonces = $this->dm->createQueryBuilder(Entities::class)
+
+        $allAnnonces=   $this->dm->createQueryBuilder(Entities::class)
         ->field('name')->equals('annonces')
-        ->findAndUpdate()
-        ->field('extraPayload.disponible')->set('0')
         ->getQuery()
         ->execute();
+        foreach($allAnnonces as $annonce)
+        {
+             $this->dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('annonces')
+            ->field('extraPayload.Identifiant')->equals($annonce->getExtraPayload()['Identifiant'])
+            ->findAndUpdate()
+            ->field('extraPayload.disponible')->set('0')
+            ->getQuery()
+            ->execute();
+        }
+
 
         $nbreListeDisponibles = $this->dm->createQueryBuilder(Entities::class)
             ->field('name')->equals('timeplanner')
