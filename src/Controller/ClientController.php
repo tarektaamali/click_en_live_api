@@ -851,6 +851,15 @@ class ClientController extends AbstractController
             ->field('extraPayload.etat')->set('0')
             ->getQuery()
             ->execute();
+
+
+            $desactiveAnnonce = $dm->createQueryBuilder(Entities::class)
+            ->field('name')->equals('annonces')
+            ->field('extraPayload.Identifiant')->equals($extraPayload['annonce'])
+            ->findAndUpdate()
+            ->field('extraPayload.disponible')->set('0')
+            ->getQuery()
+            ->execute();
         // $annonce = $dm->getRepository(Entities::class)->find($extraPayload['annonce']);
         $title = "VISITEZ MAINTENANT";
 
