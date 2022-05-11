@@ -373,7 +373,7 @@ class DefaultController extends AbstractController
 
 
                           
-                            $structuresFinal['results'][$key]['typeDeBien']=$name;
+                            $structuresFinal['results'][$key]['typeDeBien']=$ch;
                    
 
                     }
