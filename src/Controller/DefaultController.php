@@ -1612,7 +1612,7 @@ class DefaultController extends AbstractController
     function calculEnergie($val)
     {
 
-        $classe="A";
+        $classe="";
 
         
         if($val<=50)
@@ -1641,7 +1641,7 @@ class DefaultController extends AbstractController
             $classe="F";
 
         }
-        else{
+        elseif(450<$val){
             $classe="G";
         }
         
@@ -1651,6 +1651,8 @@ class DefaultController extends AbstractController
 
     function calculGES($val)
     {
+        $classe="";
+
         if($val<=5)
         {
             $classe="A";
@@ -1676,7 +1678,7 @@ class DefaultController extends AbstractController
         {
             $classe="F";
         }
-        else{
+        elseif(80<$val){
             $classe="G";
         }
 
