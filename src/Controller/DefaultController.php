@@ -751,7 +751,7 @@ class DefaultController extends AbstractController
                     ->field('extraPayload.annonce')->equals($result['Identifiant'])
                     ->getQuery()
                     ->getSingleResult();
-                    if($photoPrincipale)
+                    if($testPhotos)
                     {
 
                         $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
