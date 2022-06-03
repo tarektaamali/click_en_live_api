@@ -170,8 +170,41 @@ class SecurityController extends AbstractController
 
         $emailExistant = $this->em->getRepository(User::class)->findOneBy(array('email' => trim($extraPayload["email"]), 'facebook_id' => null, 'google_id' => null));
         if ($emailExistant) {
-            return new JsonResponse(array('message' => 'email déja utilisé.'), 400);
-        }
+
+            $idMongo=   $emailExistant->getUserIdentifier();
+   
+               $credentials['accessToken'] = $extraPayload['accessToken'];
+               $credentials['idUser'] = $extraPayload['idUser'];
+   
+               if ($extraPayload['type'] == "facebook") {
+                   $test = $this->facebook_check($credentials);
+               } else {
+                   $test = $this->google_check($credentials);
+               }
+   
+   
+               if ($test) {
+   
+               $extraPayload["isActive"] = "1";
+               $data = $this->entityManager->updateResultV2($idMongo, $extraPayload);
+   
+               if ($extraPayload['type'] == "facebook") {
+                   $emailExistant->setFacebookId($extraPayload['idUser']);
+               } else {
+                   $emailExistant->setGoogle_id($extraPayload['idUser']);
+               }
+               $this->em->persist($emailExistant);
+               $this->em->flush();
+   
+               return new JsonResponse(array('message' => 'compte valide'), 200);
+                   
+               
+               } else {
+                   return new JsonResponse(array('message' => 'Access token invalide'), 400);
+               }
+   
+         //      return new JsonResponse(array('message' => 'email déja utilisé.'), 400);
+           }
         if ($extraPayload["type"] == "facebook") {
             $compteExistant = $this->em->getRepository(User::class)->findOneBy(array('facebook_id' => $extraPayload["idUser"]));
         } else {
