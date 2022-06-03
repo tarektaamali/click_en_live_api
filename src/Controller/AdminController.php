@@ -423,7 +423,7 @@ class AdminController extends AbstractController
         $annonceur=$this->documentManager->getRepository(Entities::class)->find($annonce->getExtraPayload()['linkedCompte']);
 
         $title="CLICK ON LIVE";
-        $msg="Votre annonce a été accepté";
+        $msg="Votre annonce a étémp accepté";
 
         
       //  $client = $dm->getRepository(Entities::class)->find($distinataire);
