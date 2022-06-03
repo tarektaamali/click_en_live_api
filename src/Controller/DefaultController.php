@@ -64,7 +64,14 @@ class DefaultController extends AbstractController
             $extraPayload = $content['extraPayload'];
         }
 
+
         $data = $this->entityManager->setResult($form, $entity, $extraPayload);
+
+
+        if($form=="annonces")
+        {
+            $this->entityManager->deposerDisponibilite($data->getId(), $extraPayload['idClient'], $extraPayload['data']);
+        }
 
 
         return new JsonResponse($data->getId());
@@ -732,6 +739,34 @@ class DefaultController extends AbstractController
                     
                 }
 
+
+
+                if(isset($result['photoPrincipale']))
+                {
+                    $idPhotoPrincipale=$result['photoPrincipale'];
+
+                    $testPhotos   = $dm->createQueryBuilder(Entities::class)
+                    ->field('name')->equals('imagesAnnonces')
+                    ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                    ->field('extraPayload.annonce')->equals($result['Identifiant'])
+                    ->getQuery()
+                    ->getSingleResult();
+                    if($photoPrincipale)
+                    {
+
+                        $structuresFinal['results'][$key]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                    }
+                    else{
+
+                        $params[0] = 'uploads';
+                        $params[1] = 'single';
+        
+                        $params[2] =$idPhotoPrincipale;
+                        $structuresFinal['results'][$key]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                    }
+
+
+                }
                 if(isset($result['photoPrincipale']))
                 {
                     $idPhotoPrincipale=$result['photoPrincipale'];

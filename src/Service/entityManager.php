@@ -1528,5 +1528,22 @@ class entityManager
     }
     }
 
-
+    public function deposerDisponibilite($idAnnonce,$idClient,$dataTimePlanner)
+    {
+        //$extraPayload['data']
+        $extraPayload = null;
+        $entity = null;
+    
+            foreach ($dataTimePlanner as $d) {
+                $tab['day'] = $d['day'];
+                $tab['starHour'] = $d['starHour'];
+                $tab['endHour'] = $d['endHour'];
+                $tab['annonce'] = $idAnnonce;
+                $tab['client'] = $idClient;
+                $tab['etat'] = "1";
+                $data = $this->entityManager->setResult("timeplanner", null, $tab);
+            }
+           return  'done';
+    
+    }
 }
