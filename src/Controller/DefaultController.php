@@ -1162,10 +1162,10 @@ class DefaultController extends AbstractController
 
 
               /**
-     * @Route("/configurationAlert", methods={"POST"})
+     * @Route("/configurationAlert/{id}", methods={"POST"})
      */
 
-    public function configurationAlert(DocumentManager $dm,Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
+    public function configurationAlert($id,DocumentManager $dm,Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
     {
     
 
@@ -1228,22 +1228,12 @@ class DefaultController extends AbstractController
 
 
 
-        $configurationAlerts   = $dm->createQueryBuilder(Entities::class)
-        ->field('name')->equals('configurationAlerts')
-        ->field('extraPayload.client')->equals($identifiantMongo)
-        ->getQuery()
-        ->getSingleResult();
+     
+        $configurationAlerts=$entityManager->updateResultV2($id,$extraPayload);
 
-        if($configurationAlerts)
-        {
-          $configurationAlerts=$entityManager->updateResultV2($configurationAlerts->getId(),$extraPayload);
-        }
-        else{
-            $configurationAlerts=$entityManager->setResult("configurationAlerts",null,$extraPayload);
-       }
       
      
-        return new JsonResponse(array('message'=>'save configuration'), '200');
+        return new JsonResponse(array('message'=>'update configuration'), '200');
 
     }
 
