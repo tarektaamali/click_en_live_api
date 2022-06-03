@@ -492,7 +492,7 @@ class DefaultController extends AbstractController
                     }
                     if(isset($structureVues[0]['classeEnergie']))
                     {
-                        $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie(intval($structureVues[0]['classeEnergie'])));
+                        $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie($structureVues[0]['classeEnergie']));
                     }
 
 
@@ -523,7 +523,7 @@ class DefaultController extends AbstractController
                     }
                     if(isset($structureVues[0]['GES']))
                     {
-                        $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES(intval($structureVues[0]['GES'])));
+                        $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES($structureVues[0]['GES']));
                     }
                 }
                 return new JsonResponse($structureVues, '200');
@@ -760,12 +760,12 @@ class DefaultController extends AbstractController
                 }
                 if(isset($result['classeEnergie']))
                 {
-                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie($result['classeEnergie']));
                 }
 
                 if(isset($result['GES']))
                 {
-                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES($result['GES']));
                 }
              
             }
@@ -970,12 +970,12 @@ class DefaultController extends AbstractController
 
                 if(isset($result['classeEnergie']))
                 {
-                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie($result['classeEnergie']));
                 }
 
                 if(isset($result['GES']))
                 {
-                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                   $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES($result['GES']));
                 }
              
             }
@@ -1094,12 +1094,12 @@ class DefaultController extends AbstractController
 
                 if(isset($result['classeEnergie']))
                 {
-                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie(intval($result['classeEnergie'])));
+                    $structuresFinal['results'][$key]['classeEnergie']= array('val'=>$result['classeEnergie'],'classe'=>$this->calculEnergie($result['classeEnergie']));
                 }
 
                 if(isset($result['GES']))
                 {
-                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES(intval($result['GES'])));
+                    $structuresFinal['results'][$key]['GES']= array('val'=>$result['GES'],'classe'=>$this->calculGES($result['GES']));
                 }
              
             }
@@ -1504,12 +1504,12 @@ class DefaultController extends AbstractController
 
                     if(isset($structureVues[0]['classeEnergie']))
                     {
-                        $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie(intval($structureVues[0]['classeEnergie'])));
+                        $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie($structureVues[0]['classeEnergie']));
                     }
 
                     if(isset($structureVues[0]['GES']))
                     {
-                        $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES(intval($structureVues[0]['GES'])));
+                        $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES($structureVues[0]['GES']));
                     }
 
                     if(isset($structureVues[0]['photoPrincipale']))
@@ -1612,10 +1612,14 @@ class DefaultController extends AbstractController
     function calculEnergie($val)
     {
 
-        $classe="A";
+        $classe="";
 
-        
-        if($val<=50)
+        if($val=="")
+	{
+	 $classe="";
+	
+	}
+       elseif($val<=50)
         {
             $classe="A";
         }
@@ -1641,17 +1645,23 @@ class DefaultController extends AbstractController
             $classe="F";
 
         }
-        else{
+        elseif(450<$val){
             $classe="G";
         }
         
         return $classe;
+
     }
 
 
     function calculGES($val)
     {
-        if($val<=5)
+	$classe="";
+	if($val=="")
+	{
+	 $classe="";
+	}
+       elseif($val<=5)
         {
             $classe="A";
         }
@@ -1676,7 +1686,7 @@ class DefaultController extends AbstractController
         {
             $classe="F";
         }
-        else{
+        elseif(80<$val){
             $classe="G";
         }
 

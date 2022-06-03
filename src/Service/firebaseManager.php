@@ -53,7 +53,7 @@ class firebaseManager
         
         $message = CloudMessage::withTarget('token', $token)
         ->withNotification(Notification::create('CLICK ON LIVE '.$title , $msg));
-       // ->withData(['key' => 'value']);
+        //->withData(['content_available' =>1]);
         $response = $this->messaging->send($message);
         return $response;
 

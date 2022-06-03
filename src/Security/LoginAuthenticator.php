@@ -225,7 +225,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         //$request->getSession()->set('act_token',$token->getUser()->getApiTokens()[0]->getToken());
         //$request->getSession()->set('act_token', $apiT->getToken());
         //return new RedirectResponse($this->router->generate('continue_login'));
-        return new JsonResponse(['token' => $apiT->getToken(),'identifiantMongo'=>$auth_user->getUserIdentifier(), 'role' => $auth_user->getRoles(), 'message' => 'login success', 200, [], true]);
+        return new JsonResponse(['user'=>$auth_user->getEmail(),'token' => $apiT->getToken(),'identifiantMongo'=>$auth_user->getUserIdentifier(), 'role' => $auth_user->getRoles(), 'message' => 'login success', 200, [], true]);
     }
     // on failure, that authenticator class is calling getLoginUrl() and trying to redirect there. 
     protected function getLoginUrl()

@@ -734,6 +734,58 @@ class SecurityController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/api/logoutApp",name="app_api_logout")
+     */
+    public function logout_api_app(EntityManagerInterface $entityManager, Request $request)
+    {
+        $auth_user = $this->getUser();
+        $authorizationHeader = $request->headers->get('Authorization');
+        // skip beyond "Bearer "
+        $token = substr($authorizationHeader, 7);
+        //var_dump($token);
+        $apitoken = $entityManager->getRepository(ApiToken::class)->findOneBy(['token' => $token], array('id' => 'desc'));
+        $entityManager->remove($apitoken);
+        return new Response("done");
+        return $this->redirectToRoute('app_logout');
+    }
+
+	    
+    /**
+     * @Route("/api/user", methods={"GET"})
+     */
+ 
+   public function findUserAction(EntityManagerInterface $entityManager,Request $request)
+    {
+/*	$user=$this->getUser();	
+	$tabTokens=[];
+	foreach($user->getApiTokens() as $apiToken)
+	{
+		array_push($tabTokens,$apiToken->getToken());
+	}
+//	dd(end($tabTokens));*/
+        $email = null;
+        if ($request->get('email') != null) {
+            $email = $request->get('email');
+            $user =  $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+        }
+        $id = null;
+        if ($request->get('id') != null) {
+            $id = $request->get('id');
+            $user =  $entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
+        }
+        if ($user == null) {
+            return $this->json(['message' => "user not found"], 404);
+        }
+        //return $this->json($user);
+	$dataUser['email']=$user->getEmail();
+	$dataUser['roles']=$user->getRoles();
+	$dataUser['nom']=$user->getNom();
+        $dataUser['prenom']=$user->getPrenom();
+	 $dataUser['prenom']=$user->getPrenom();
+//	$dataUser['token']=end($tabTokens);	
+	return new JsonResponse($dataUser);
+    }
 
 
     /**
