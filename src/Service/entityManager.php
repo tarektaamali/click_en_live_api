@@ -1541,7 +1541,7 @@ class entityManager
                 $tab['annonce'] = $idAnnonce;
                 $tab['client'] = $idClient;
                 $tab['etat'] = "1";
-                $data = $this->entityManager->setResult("timeplanner", null, $tab);
+                $data = $this->setResult("timeplanner", null, $tab);
             }
            return  'done';
     
