@@ -70,7 +70,7 @@ class DefaultController extends AbstractController
 
         if($form=="annonces")
         {
-            $this->entityManager->deposerDisponibilite($data->getId(), $extraPayload['idClient'], $extraPayload['data']);
+            $this->entityManager->deposerDisponibilite($data->getId(), $extraPayload['linkedCompte'], $extraPayload['data']);
         }
 
 
