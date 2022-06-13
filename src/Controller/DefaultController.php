@@ -359,31 +359,35 @@ class DefaultController extends AbstractController
                         
                     }
 
-                    if(isset($result['typeDeBien']))
+                    if($entity!="configurationAlerts"&&$entity!="recherches")
                     {
-                        $ch="";
-                        foreach($result['typeDeBien'] as $t)
+                        if(isset($result['typeDeBien']))
                         {
-
-                            $typeDeBien= $dm->getRepository(Entities::class)->find($t);
-
-                            $name=$typeDeBien->getExtraPayload()['libelle'];
-                            if($ch=="")
+                            $ch="";
+                            foreach($result['typeDeBien'] as $t)
                             {
-                                $ch=$name;
+    
+                                $typeDeBien= $dm->getRepository(Entities::class)->find($t);
+    
+                                $name=$typeDeBien->getExtraPayload()['libelle'];
+                                if($ch=="")
+                                {
+                                    $ch=$name;
+                                }
+                                else{
+                                    $ch=$ch.",".$name;
+                                }
+    
                             }
-                            else{
-                                $ch=$ch.",".$name;
-                            }
-
+    
+    
+                              
+                                $structuresFinal['results'][$key]['typeDeBien']=$ch;
+                       
+    
                         }
-
-
-                          
-                            $structuresFinal['results'][$key]['typeDeBien']=$ch;
-                   
-
                     }
+                  
                  
                 }
   
@@ -1236,7 +1240,6 @@ class DefaultController extends AbstractController
         return new JsonResponse(array('message'=>'update configuration'), '200');
 
     }
-
 
       /**
      * @Route("/disponibilteAnnonceur", methods={"GET"})
