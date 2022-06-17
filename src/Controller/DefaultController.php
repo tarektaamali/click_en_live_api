@@ -1171,52 +1171,63 @@ class DefaultController extends AbstractController
     public function configurationAlert($id,DocumentManager $dm,Request $request,entityManager $entityManager,strutureVuesService $strutureVuesService)
     {
     
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $content = json_decode($request->getContent(), true);
+            $extraPayload = $content['extraPayload'];
+        }
 
-        $identifiantMongo=$request->get('identifiantMongo');
+        if(isset($extraPayload['identifiantMongo']))
+        {
+            $identifiantMongo=$extraPayload['identifiantMongo'];
+        }
+        else{
+            $identifiantMongo=null;
+        }
+     
         if(is_null($identifiantMongo))
         {
             return new JsonResponse(array('message'=>'merci de verifier identifiant mongodb'),400);
         }
 
-        if(is_null($request->get('localisation')))
+        if(is_null($extraPayload['localisation']))
         {
             $localisation=null;
         }
         else{
-            $localisation=$request->get('localisation');
+            $localisation=$extraPayload['localisation'];
         }
-        if(is_null($request->get('typeDeBien')))
+        if(is_null($extraPayload['typeDeBien']))
         {
             $typeDeBien=null;
         }
         else{
-            $typeDeBien=$request->get('typeDeBien');
+            $typeDeBien=$extraPayload['typeDeBien'];
         }
     
      
-        if(is_null($request->get('budget')))
+        if(is_null($extraPayload['budget']))
         {
             $budget=null;
         }
         else{
-            $budget=$request->get('budget');
+            $budget=$extraPayload['budget'];
         }
 
-        if(is_null($request->get('surface')))
+        if(is_null($extraPayload['surface']))
         {
             $surface=null;
         }
         else{
-            $surface=$request->get('surface');
+            $surface=$extraPayload['surface'];
         }
     
 
-        if(is_null($request->get('nbrePieces')))
+        if(is_null($extraPayload['nbrePieces']))
         {
             $nbrePieces=null;
         }
         else{
-            $nbrePieces=$request->get('nbrePieces');
+            $nbrePieces=$extraPayload['nbrePieces'];
         }
     
        
