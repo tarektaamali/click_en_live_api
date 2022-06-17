@@ -359,35 +359,31 @@ class DefaultController extends AbstractController
                         
                     }
 
-                    if($entity!="configurationAlerts"&&$entity!="recherches")
+                    if(isset($result['typeDeBien']))
                     {
-                        if(isset($result['typeDeBien']))
+                        $ch="";
+                        foreach($result['typeDeBien'] as $t)
                         {
-                            $ch="";
-                            foreach($result['typeDeBien'] as $t)
+
+                            $typeDeBien= $dm->getRepository(Entities::class)->find($t);
+
+                            $name=$typeDeBien->getExtraPayload()['libelle'];
+                            if($ch=="")
                             {
-    
-                                $typeDeBien= $dm->getRepository(Entities::class)->find($t);
-    
-                                $name=$typeDeBien->getExtraPayload()['libelle'];
-                                if($ch=="")
-                                {
-                                    $ch=$name;
-                                }
-                                else{
-                                    $ch=$ch.",".$name;
-                                }
-    
+                                $ch=$name;
                             }
-    
-    
-                              
-                                $structuresFinal['results'][$key]['typeDeBien']=$ch;
-                       
-    
+                            else{
+                                $ch=$ch.",".$name;
+                            }
+
                         }
+
+
+                          
+                            $structuresFinal['results'][$key]['typeDeBien']=$ch;
+                   
+
                     }
-                  
                  
                 }
   
@@ -506,32 +502,35 @@ class DefaultController extends AbstractController
                         $structureVues[0]['classeEnergie']= array('val'=>$structureVues[0]['classeEnergie'],'classe'=>$this->calculEnergie($structureVues[0]['classeEnergie']));
                     }
 
-
-                    if(isset($structureVues[0]['photoPrincipale']))
+                    if($vueAvancer!="annonces_single_update")
                     {
-                        $idPhotoPrincipale= $structureVues[0]['photoPrincipale'];
-    
-                        $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
-                        ->field('name')->equals('imagesAnnonces')
-                        ->field('extraPayload.image')->equals($idPhotoPrincipale)
-                        ->field('extraPayload.annonce')->equals($id)
-                        ->getQuery()
-                        ->getSingleResult();
-                        if($photoPrincipale)
+                        if(isset($structureVues[0]['photoPrincipale']))
                         {
+                            $idPhotoPrincipale= $structureVues[0]['photoPrincipale'];
+        
+                            $photoPrincipale   = $dm->createQueryBuilder(Entities::class)
+                            ->field('name')->equals('imagesAnnonces')
+                            ->field('extraPayload.image')->equals($idPhotoPrincipale)
+                            ->field('extraPayload.annonce')->equals($id)
+                            ->getQuery()
+                            ->getSingleResult();
+                            if($photoPrincipale)
+                            {
+        
+                                $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
+                            }else{
     
-                            $structureVues[0]['photoPrincipale']=   $this->params->get('Hostapi').'/images/placeholder.jpeg';
-                        }else{
-
-                            $params[0] = 'uploads';
-                            $params[1] = 'single';
-            
-                            $params[2] =$idPhotoPrincipale;
-                            $structureVues[0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                                $params[0] = 'uploads';
+                                $params[1] = 'single';
+                
+                                $params[2] =$idPhotoPrincipale;
+                                $structureVues[0]['photoPrincipale'] = $strutureVuesService->getUrl($params);
+                            }
+        
+        
                         }
-    
-    
                     }
+
                     if(isset($structureVues[0]['GES']))
                     {
                         $structureVues[0]['GES']= array('val'=>$structureVues[0]['GES'],'classe'=>$this->calculGES($structureVues[0]['GES']));
