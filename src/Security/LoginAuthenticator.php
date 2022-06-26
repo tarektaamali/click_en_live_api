@@ -90,7 +90,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
             $user = $this->entityManager->getRepository(User::class)->findOneBy(['google_id' => $credentials['idUser']]);
         }
         else {
-            $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => trim($credentials['email'])]);
         }
         if (!$user) {
 
