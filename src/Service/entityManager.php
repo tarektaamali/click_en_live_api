@@ -959,10 +959,8 @@ class entityManager
             //var_dump($c->getId());   
             $payload = $entities->getExtraPayload();
 
-             $payload["nomInterphone"]="";
-             $payload["codePortail"]="";
-             $payload["autresInformations"]="";
-
+             $payload["niveau"]=[];
+             
 
             $entities->setDateLastMmodif(new DateTime());
             $entities->setMutex("");
